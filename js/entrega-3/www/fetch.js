@@ -18,8 +18,10 @@ async function converseMoney(){
     const exchangeTable = await fetch('https://api.exchangerate-api.com/v4/latest/EUR');
     const exchangeTableData = await exchangeTable.json();
     //console.log(exchangeTable, exchangeTableData);
+    
     const changeToDolars = Math.round(getRandomValue(valorMax) * exchangeTableData.rates.USD);
     console.log(`El cambio de ${getRandomValue(valorMax)}€ a $ es: ${changeToDolars}$`);
+
     const changeToYenes = Math.round(changeToDolars * exchangeTableData.rates.JPY);
     console.log(`El cambio de ${getRandomValue(valorMax)}€ a ¥ es: ${changeToYenes}¥`);
 }
