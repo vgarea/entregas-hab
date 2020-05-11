@@ -1,3 +1,0 @@
-applicants (#id, name, surename, alias, email);
-favours (#id, rating_applicant, rating_user, location, description, category, finish_date, -applicants_id, -users_id, status);
-users (#id, name, surename, alias, email, login, password);

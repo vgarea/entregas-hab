@@ -1,0 +1,3 @@
+applicants (#id, name, surename, alias, email, creation_date, modification_date);
+favours (#id, rating_applicant, rating_user, location, description, category, deadline, creation_date, modification_date, -applicants_id, -users_id, status);
+users (#id, name, surename, alias, foto, email, login, password, creation_date, modification_date);
