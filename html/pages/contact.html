@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+    <header>
+        <meta charset="utf-8">
+        <title>Contacto</title>
+        <style>
+            html{
+                text-align: center;
+                color: #ffffff;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background-color:#33658A;
+            }
+            a, a:active, a:link, nav b{
+                font-size: 1.2em;
+                font-weight: 600;
+                color: #c7eafe;
+            }
+            h1{
+                color:#f9e29a;
+            }
+            input[type=submit] {
+                background-color: #F3B700;
+                font-size: 1.1em;
+            }
+        </style>
+    </header>
+    <body>
+        <nav>
+            <!-- MENU -->
+            <a href="../index.html">Inicio</a> <b>|</b> 
+            <a href="#">Contacto (está aquí)</a>
+        </nav>
+        <main>
+            <!--  -->
+            <h1>¿En qué te podemos ayudar?</h1>
+            <p>Puedes contactar con nosotros a través de nuestro <a href="https://twitter.com/DSheldon_Cooper" target="_blank">Twitter</a>, nuestro <a href="mailto:nombre@micorreo.es">email</a>, o completando el formulario🔻:</p>
+            <!-- FORMULARIO -->
+            <section>
+                <form>
+                    <!-- DATOS PERSONALES-->
+                    <fieldset>
+                        <legend>Datos personales</legend>
+                        <label for="name">Nombre:</label>
+                        <input name="name" type="text" placeholder="Por favor, pon tu nombre">
+                        <br><br>
+                        <label for="surename">Apellidos:</label>
+                        <input name="surename" type="text" placeholder="Tus apellidos">
+                        <br><br>
+                        <label for="email">*Email:</label>
+                        <input name="email" type="email" placeholder="Tu email" required>
+                    </fieldset>
+                    <!-- /DATOS PERSONALES-->
+                    <br><br>
+                    <!-- MENSAJE-->
+                    <fieldset>
+                        <legend>Cuéntanos</legend>
+                        <label for="name">Asunto:</label>
+                        <input name="name" type="text" placeholder="El asunto">
+                        <br><br>
+                        <label for="messege" style="vertical-align: top;">*Mensaje:</label>
+                        <textarea id="messege" rows="6" cols="60" required></textarea>
+                    </fieldset>
+                    <!-- /MENSAJE-->
+                    <cite>* Campos obligatorios</cite>
+                    <br><br>
+                    <!-- como es un formulario he puesto el tipo como submit en vez de un button -->
+                    <input type="submit" value="Enviar">
+                </form>
+            </section>
+            <!-- /FORMULARIO -->
+        </main>
+        <br>
+        <hr>
+        <br>
+        <footer>
+            <!-- COPYRIGHT -->
+            Vanessa Almao - vgarea © 2020-2021
+        </footer>
+    </body>
+</html>
