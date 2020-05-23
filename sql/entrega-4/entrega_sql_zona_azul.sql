@@ -6,7 +6,7 @@ CREATE TABLE users
 (
 	id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(50),
-    surename VARCHAR(50),
+    surname VARCHAR(50),
     id_card VARCHAR(10),
     email VARCHAR(50),
     telefone_number VARCHAR(10),
@@ -29,10 +29,10 @@ CREATE TABLE parks
 	id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     initial_time DATETIME,
     finish_time DATETIME,
-    vehicles_id INT UNSIGNED,
-    FOREIGN KEY (vehicles_id) REFERENCES vehicles(id),
-    zones_id INT UNSIGNED,
-    FOREIGN KEY (zones_id) REFERENCES zones(id)
+    vehicle_id INT UNSIGNED,
+    FOREIGN KEY (vehicle_id) REFERENCES vehicles(id),
+    zone_id INT UNSIGNED,
+    FOREIGN KEY (zone_id) REFERENCES zones(id)
 );
 
 CREATE TABLE zones
@@ -51,8 +51,8 @@ CREATE TABLE fines
 	id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     ammount INT UNSIGNED,
     status BOOLEAN,
-    parks_id INT UNSIGNED,
-    FOREIGN KEY (parks_id) REFERENCES parks(id)
+    park_id INT UNSIGNED,
+    FOREIGN KEY (park_id) REFERENCES parks(id)
 );
 
 CREATE TABLE claims
@@ -62,10 +62,10 @@ CREATE TABLE claims
     comments TINYTEXT,
     reason VARCHAR(50),
     status BOOLEAN,
-    fines_id INT UNSIGNED,
-    FOREIGN KEY (fines_id) REFERENCES fines(id),
-    users_id INT UNSIGNED,
-    FOREIGN KEY (users_id) REFERENCES users(id)
+    fine_id INT UNSIGNED,
+    FOREIGN KEY (fine_id) REFERENCES fines(id),
+    user_id INT UNSIGNED,
+    FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
 SET FOREIGN_KEY_CHECKS=1;

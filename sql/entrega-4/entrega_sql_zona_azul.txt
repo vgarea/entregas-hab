@@ -1,6 +1,6 @@
-users (#id, name, surename, id_card, email, telephone_number, account_number);
+users (#id, name, surname, id_card, email, telephone_number, account_number);
 vehicles (#id, plate_number, model, mark, type, -user_id);
-parks (#id, initial_time, finish_time, -vehicles_id, -zones_id);
+parks (#id, initial_time, finish_time, -vehicle_id, -zone_id);
 zones (#id, name, initial_time, finish_time, limit_time, prize_minute, comments);
-fines (#id, ammount, status, -parks_id);
-claims (#id, date, comments, reason, status, -fines_id, -user_id);
+fines (#id, ammount, status, -park_id);
+claims (#id, date, comments, reason, status, -fine_id, -user_id);
