@@ -1,0 +1,182 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap');
+
+@font-face {
+    font-family:Heading;
+    src: url('/fonts/heading.woff2'), url('/fonts/heading.woff');
+}
+html {
+    --dark:#2c2c2c;
+    --darkGray: #999898;
+    --gray: #b4b4b4;
+    --white: #ffffff;
+
+    --title-font: Heading, sans-serif;
+    --body-font: Lato, sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+img {
+    width: 100%;
+}
+
+strong {
+    font-weight: 700;
+}
+
+body {
+    font-family: var(--body-font);
+}
+
+main {
+    max-width: 900px;
+    position: relative;
+    margin: 0 auto;
+    background-color: #fff;
+}
+
+/* Header */
+main > header {
+    background-color: var(--dark);
+    text-align: center;
+    padding: 3.5rem 1rem;
+}
+
+main > header h1 {
+    font-family: var(--title-font);
+    color: var(--white);
+    font-size: 2.5rem;
+    text-decoration: underline;
+    margin-bottom: 1rem;
+}
+
+main > header h1 span {
+    font-family: var(--body-font);
+}
+
+main > header p {
+    color: var(--white);
+    font-size: 1.1rem;
+    padding-bottom: 1rem;
+}
+
+main > header div {
+    background-color: var(--white);
+    display: inline-block;
+    padding: 0.25rem 2rem;
+}
+
+main > header div a {
+    color: var(--dark);
+    text-decoration: none;
+    font-size: 0.8rem;
+}
+
+main > header div a strong {
+    display: block;
+    font-size: 1.2rem;
+}
+
+main > section {
+    padding: 1rem;
+}
+
+/*Section aside*/
+main > section aside {
+    background-color: var(--darkGray);
+    color: var(--dark);
+    text-align: center;
+    text-decoration: underline;
+    padding: 1.2rem
+}
+
+main > section aside p strong {
+    font-size: 1.4rem;
+    display: inline-block;
+    margin-bottom: 1rem;
+    text-decoration: underline;
+}
+
+/* Section content */
+main > section p.explain {
+    color: var(--gray);
+    text-align: center;
+    font-size: 1.3rem;
+    font-weight: 700;
+    padding: 2rem 1rem;
+}
+
+main > section p.article {
+    font-size: 1.1rem;
+    padding: 2rem 1 rem;
+    color: var(--dark);
+}
+
+main > section p.article img {
+    padding-bottom: 1rem;
+}
+
+/* Footer */
+main > footer {
+    font-family: var(--body-font);
+    font-size: 1.1rem;
+    text-align: center;
+    text-decoration: underline;
+    
+    background-color: var(--darkGray);
+    color: var(--dark);
+    
+    padding: 2rem;
+    margin-top: 2rem;
+}
+
+@media (min-width: 700px){
+    html {
+        font-size: 17px;
+    }
+    
+    main > section aside {
+        width: 7rem;
+        padding: 0.5rem;
+        position: absolute;
+        top: 70px;
+        right: 0;
+    }
+
+    main > section aside p{
+        padding: 0.5rem;
+    }
+
+    main > section aside p strong {
+        font-size: 0.8rem;
+        margin-bottom: 0;
+    }    
+
+    main > section aside p:not(strong) {
+        font-size: 0.6rem;
+    }
+
+    main > section > p:last-child {
+        columns: 2;
+        font-size: 1.1rem;
+    }
+}
+
+@media (min-width: 1000px){
+    html {
+        font-size: 20px;
+    }
+    body{
+        background-image: url('/img/electronic.jpg');
+        background-position: center;
+        background-repeat: none;
+        background-size: cover;
+    }
+
+    main {
+        background-color: var(--white);
+    }
+}
