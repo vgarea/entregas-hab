@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap');
 
 @font-face {
     font-family:Heading;
@@ -24,7 +24,7 @@ img {
 }
 
 strong {
-    font-weight: 700;
+    font-weight: 900;
 }
 
 body {
@@ -42,13 +42,13 @@ main {
 main > header {
     background-color: var(--dark);
     text-align: center;
-    padding: 3.5rem 1rem;
+    padding: 5.5rem 1rem;
 }
 
 main > header h1 {
     font-family: var(--title-font);
     color: var(--white);
-    font-size: 2.5rem;
+    font-size: 2.3rem;
     text-decoration: underline;
     margin-bottom: 1rem;
 }
@@ -59,20 +59,21 @@ main > header h1 span {
 
 main > header p {
     color: var(--white);
-    font-size: 1.1rem;
+    font-size: 1.5rem;
     padding-bottom: 1rem;
 }
 
 main > header div {
     background-color: var(--white);
     display: inline-block;
-    padding: 0.25rem 2rem;
+    padding: 0.25rem 3.5rem;
 }
 
 main > header div a {
     color: var(--dark);
     text-decoration: none;
     font-size: 0.8rem;
+    line-height: 0.8;
 }
 
 main > header div a strong {
@@ -90,7 +91,7 @@ main > section aside {
     color: var(--dark);
     text-align: center;
     text-decoration: underline;
-    padding: 1.2rem
+    padding: 1rem
 }
 
 main > section aside p strong {
@@ -102,9 +103,9 @@ main > section aside p strong {
 
 /* Section content */
 main > section p.explain {
-    color: var(--gray);
+    color: var(--darkGray);
     text-align: center;
-    font-size: 1.3rem;
+    font-size: 1rem;
     font-weight: 700;
     padding: 2rem 1rem;
 }
@@ -122,7 +123,7 @@ main > section p.article img {
 /* Footer */
 main > footer {
     font-family: var(--body-font);
-    font-size: 1.1rem;
+    font-size: 0.9rem;
     text-align: center;
     text-decoration: underline;
     
@@ -137,13 +138,15 @@ main > footer {
     html {
         font-size: 17px;
     }
-    
+    main > header h1 {
+        font-size: 3.5rem;
+    }
     main > section aside {
-        width: 7rem;
-        padding: 0.5rem;
+        width: 5rem;
         position: absolute;
-        top: 70px;
+        top: 100px;
         right: 0;
+        padding: 0.2rem
     }
 
     main > section aside p{
@@ -151,7 +154,7 @@ main > footer {
     }
 
     main > section aside p strong {
-        font-size: 0.8rem;
+        font-size: 0.6rem;
         margin-bottom: 0;
     }    
 
@@ -161,11 +164,15 @@ main > footer {
 
     main > section > p:last-child {
         columns: 2;
-        font-size: 1.1rem;
+        font-size: 0.9rem;
+        color:var(--darkGray);
+    }
+    main > section p.explain {
+        padding: 2rem 5rem;
     }
 }
 
-@media (min-width: 1000px){
+@media (min-width: 900px){
     html {
         font-size: 20px;
     }
