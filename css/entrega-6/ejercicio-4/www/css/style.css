@@ -1,0 +1,230 @@
+@import url('https://fonts.googleapis.com/css2?family=Hind:wght@300;400;500;600;700&display=swap');
+
+html {
+    --font:Hind, sans-serif;
+    
+    --light: 300;
+    --normal: 400;
+    --regular: 500;
+    --semiBold: 600;
+    --bold: 700;
+
+    --dark:#222222;
+    --grey: #dddddd;
+    --acent: #f2994a;
+    --bright:#ffffff;
+    
+    --shadow: 0 0 2px rgba(0,0,0,0.5);
+
+    line-height: 1.1;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    box-sizing: border-box;
+    text-decoration: none;
+}
+
+img {
+    max-width: 100%;
+}
+
+body {
+    font-family: var(--font);
+    font-weight: var(--regular);
+}
+
+/*header*/
+body > header {
+    background-image: url('../img/vaca.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    min-height: 15rem;
+    padding: 1rem;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+body > header h1 {
+    font-size: 2rem;
+    color:var(--bright);
+    text-shadow: var(--shadow);
+}
+body > header nav {
+    flex-grow: 1;
+}
+body > header nav ul {
+    display: flex;
+}
+body > header nav ul li {
+    padding: 0 0.5rem;
+    font-weight: var(--bold);
+}
+body a.action {
+    background-color: var(--dark);
+    color: var(--bright);
+    padding: 0.2rem 1rem;
+    font-size: 1.2rem;
+}
+/*section - intro*/
+body > main section#intro {
+    background-color: var(--acent);
+    padding: 1rem;
+}
+body > main section#intro h2 {
+    color: var(--bright);
+    font-size: 2rem;
+    margin: 1rem 0;
+}
+/*section - shop*/
+body > main section#shop {
+    background-color: var(--acent);
+    padding: 3rem 1rem;
+}
+body > main section#shop ul li article figure img {
+    width: 100%;
+    height: 20rem;
+    display: block;
+    object-fit: cover;
+}
+body > main section#shop ul li article section {
+    background-color: var(--dark);
+    color: var(--bright);
+    padding: 1rem;
+}
+body > main section#shop ul li article section h2 {
+    font-size: 2rem;
+    text-align: center;
+    padding: 0.7rem;
+}
+body > main section#shop ul li article section p {
+    line-height: 1;
+}
+body > main section#shop ul li article a {
+    display: block;
+    background-color: var(--grey);
+    color: var(--dark);
+    width: 100%;
+    padding: 1rem 0;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: var(--semiBold);
+}
+/*section - form*/
+body > main > section#form {
+    margin: 2rem 1rem;
+}
+body > main > section#form h2 {
+    color: var(--acent);
+    font-size: 2rem;
+    margin: 1rem 0;
+}
+body > main > section#form form fieldset {
+    border: none;
+    margin: 0.5rem 0;
+}
+body > main > section#form form fieldset label {
+    font-size: 0.8rem;
+}
+body > main > section#form form fieldset input,
+body > main > section#form form fieldset select,
+body > main > section#form form fieldset textarea {
+    border-radius: 0;
+    border: 1px var(--dark) solid;
+    background-color: var(--acent);
+    color:var(--bright);
+    padding: 0.2rem;
+    width: 100%;
+}
+body > main > section#form form fieldset select {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+    background-image: url("/img/flechaDown.png");
+    background-repeat: no-repeat;
+    background-size: 0.8rem;
+    background-position-x: calc(100% - 0.5rem);
+    background-position-y: center;
+}
+body > main > section#form form fieldset textarea {
+    min-height: 5rem;
+}
+body > main > section#form form fieldset.inline label {
+    display: inline;
+}
+body > main > section#form form fieldset.inline input {
+    width: auto;
+}
+body > main > section#form form button.btnDark {
+    background-color: var(--dark);
+    color: var(--bright);
+    padding: 0.4rem 1rem;
+    border: none;
+}
+@media(min-width:700px){
+    html {
+        font-size: 18px;
+    }
+    body > header {
+        flex-direction: row;
+        min-height: 25rem;
+        align-items: baseline;
+        justify-content: space-between;
+    }
+    body > header h1 {
+        font-size: 2.5rem;
+    }
+    body > header nav {
+        order: -1;
+        flex-grow: initial;
+    }
+    body > main section#intro h2 {
+        font-size: 2.5rem;
+    }
+    body > main section#intro p {
+        columns: 2;
+    }
+    body > main section#shop ul {
+        display: flex;
+    }
+    body > main section#shop ul li {
+        margin: 0.5rem;
+    }
+    body > main section#shop ul li article figure img {
+        height: 15rem;
+    }
+    body > main > section#form form {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    body > main > section#form form fieldset {
+        width: 50%;
+        padding: 0.5rem;
+    }
+    body > main > section#form form .wide {
+        width: 100%;
+    }
+    body > main > section#form form fieldset input,
+    body > main > section#form form fieldset select,
+    body > main > section#form form fieldset textarea {
+        padding: 0.5rem;
+    }
+    body > main > section#form form button.btnDark {
+        margin:0.5rem;
+    }
+}
+@media(min-width:700px){
+    html {
+        font-size: 20px;
+    }
+    body > header,
+    body > main {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+}
