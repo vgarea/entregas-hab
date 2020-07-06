@@ -1,0 +1,80 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    --font: sans-serif;
+    --dark: #444444;
+    --light: #c3c3c3;
+
+    font-size:17px;
+}
+
+.button {
+    border: none;
+    background-color: var(--light);
+    color: var(--dark);
+}
+
+/* Cambios en el body */
+
+body {
+    font-family: var(--font);
+    color: var(--dark);
+    max-width: 450px;
+    margin: 0 auto;
+}
+
+/* Cambios en la cabecera */
+
+body > header {
+    padding: 0 1.5rem;
+    position: sticky;
+}
+
+body > header h1 {
+    font-size: 1.8rem;
+    padding: 1rem 0;
+}
+
+body > header section{
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr auto;
+}
+
+body > header button {
+    font-size: 1.1rem;
+    font-weight: 700;
+    padding: 0.6rem 1.2rem;
+}
+
+/* Mensajes */
+ 
+body > main {
+    padding: 0 1.5rem;
+}
+
+main > section {
+    border-bottom: 2px solid var(--dark);
+    padding-bottom: 2rem;
+    margin-top: 1rem;
+}
+
+main > section p {
+    padding-top: 1rem;
+}
+
+main > section time {
+    font-weight: 700;
+    padding-top: 0.5rem;
+    display: block;
+}
+
+main > section button {
+    float: right;
+    font-size: 0.9rem;
+    margin-top: -1rem;
+    padding: 0.5rem 1rem;
+}

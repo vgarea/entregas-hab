@@ -1,0 +1,114 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* para que lo coloque todo bien*/
+}
+
+html{
+    --font: Montserrat, sans-serif;
+    --action: rgb(18, 82, 192);
+    --danger: rgb(207, 20, 20);
+    --dark: rgb(12, 12, 12);
+    --bright: white;
+    --med: rgb(126, 121, 121);
+    --normal: 500;
+    --medium: 700;
+    --bold: 900;
+}
+
+body {
+    font-family: var(--font);
+    color: var(--dark);
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+header {
+    text-align: center;
+    padding: 1rem 0;
+}
+
+header h1 {
+    font-weight: var(--bold);
+}
+
+form#new-todo {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto auto;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+
+    grid-template-areas: 
+    "input input input add"
+    "clean clean delete delete";
+}
+
+form#new-todo button {
+    font-family: var(--font);
+    background-color: var(--action);
+    color: var(--bright);
+    border: none;
+    padding: 0.35rem;
+}
+
+form#new-todo fieldset {
+    border: 0;
+    grid-area: input;
+}
+
+form#new-todo fieldset input {
+    font-family: var(--font);
+    width: 100%;
+    border-radius: 0;
+    padding: 0.25rem;
+    border-style: solid;
+}
+
+form#new-todo button.add{
+    grid-area: add;
+    align-self: end; /*para que no ocupe toda el alto de la línea*/
+    padding: 0.35rem;
+}
+
+form#new-todo button.clean{
+    grid-area: clean;
+}
+
+form#new-todo button.delete{
+    grid-area: delete;
+    background-color: var(--danger);
+}
+
+form#new-todo label {
+    display: block;
+    font-weight: var(--bold);
+    font-size: 0.75rem;
+}
+
+/* ToDo List */
+
+ul#todos {
+    list-style: none;
+    border-top: 1px solid var(--med);
+    padding-top: 1rem;
+}
+
+ul#todos li {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 0.5rem;
+}
+
+ul#todos li input{
+    margin-right: 0.5rem;
+    margin-top: 2px;
+}
+
+ul#todos li.done p {
+    text-decoration: line-through;
+    color: var(--med);
+}

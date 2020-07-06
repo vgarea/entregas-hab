@@ -1,0 +1,61 @@
+@font-face {
+    font-family: Digital;
+    src: url('/fonts/DS-Digital-Bold.woff2'), url('/fonts/DS-Digital-Bold.woff');
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+body {
+    background-color: black;
+    color: #29c1e7;
+    font-family: Digital, sans-serif;
+
+    display: grid;
+    place-content: center;
+
+    /*display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;*/
+
+    height: 100vh;
+
+    background-position: center;
+    background-repeat: none;
+    background-size: cover;
+}
+
+body.morning {
+    background-image: url("/img/morning.jpg");
+}
+
+body.afternoon {
+    background-image: url("/img/afternoon.jpg");
+}
+
+body.night {
+    background-image: url("/img/night.jpg");
+}
+
+body > header h1 {
+    font-size: 7rem;
+}
+body > header h2 {
+    font-size: 3rem;
+}
+
+@media (min-width: 700) {
+    html {
+        font-size: 25px;
+    }
+}
+
+@media (min-width: 1000) {
+    html {
+        font-size: 45px;
+    }
+}
