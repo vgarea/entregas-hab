@@ -1,0 +1,20 @@
+{
+  "name": "ejercicio-horaEnMinutosPares",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon vago.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^7.2.0",
+    "nodemon": "^2.0.4"
+  },
+  "dependencies": {
+    "date-fns": "^2.14.0"
+  }
+}
