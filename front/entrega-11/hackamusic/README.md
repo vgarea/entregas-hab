@@ -1,19 +1,21 @@
-# hackamusic
+🔸 1. Objetivo
 
-## Project setup
-```
-npm install
-```
+	Construir una plataforma de música utilizando Vuejs y la API de Lastfm.
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+🔸 2. Estructura
 
-### Compiles and minifies for production
-```
-npm run build
-```
+	Home - Listado de etiquetas
+	Artistas - Listado de músicos
+	Tracks - Listado de canciones
+	About - Sobre la aplicación y sobre mí
+	404 - Página de error
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+🔸 3. Extras
+
+	Uso del alert SweetAlert2
+	Vue-headful para crear encabezados dinámicos por cada vista
+	Creación de un buscador en la página de Artistas.
+
+
+
+
