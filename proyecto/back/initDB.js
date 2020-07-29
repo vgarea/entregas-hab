@@ -17,14 +17,13 @@ async function main() {
     await connection.query("SET FOREIGN_KEY_CHECKS=0");
     await connection.query("DROP TABLE IF EXISTS favours");
     await connection.query("DROP TABLE IF EXISTS users");
-    await connection.query("SET FOREIGN_KEY_CHECKS=1");
 
     await connection.query("DROP TABLE IF EXISTS diary");
     await connection.query("DROP TABLE IF EXISTS diary_votes");
 
     // Crear las tablas de nuevo
     console.log("Creando tablas");
-    await connection.query("SET FOREIGN_KEY_CHECKS=0");
+
     await connection.query(`
       CREATE TABLE IF NOT EXISTS users (
         id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
@@ -51,18 +50,17 @@ async function main() {
         rating_user INT UNSIGNED,
         location VARCHAR(50),
         description VARCHAR(500),
-        category VARCHAR(50),
+        category ENUM("manitas", "nanny", "transporte", "tareas casa", "otros") DEFAULT "otros" NOT NULL,
         deadline DATETIME NOT NULL,
         status VARCHAR(50),
         creation_date DATETIME NOT NULL,
-        modification_date DATETIME NOT NULL,
+        modification_date DATETIME,
         user_doer_id INT UNSIGNED,
         FOREIGN KEY (user_doer_id) REFERENCES users(id),
         user_maker_id INT UNSIGNED,
         FOREIGN KEY (user_maker_id) REFERENCES users(id)
       );
     `);
-    await connection.query("SET FOREIGN_KEY_CHECKS=1");
     
     await connection.query(`
       CREATE TABLE diary (
@@ -73,22 +71,23 @@ async function main() {
         foto TINYTEXT,
         user_id INTEGER NOT NULL,
         lastUpdate DATETIME NOT NULL
-      );
+        );
     `);
-
+      
     await connection.query(`
       CREATE TABLE diary_votes (
-        id INTEGER PRIMARY KEY AUTO_INCREMENT,
-        entry_id INTEGER NOT NULL,
-        vote TINYINT NOT NULL,
-        date DATETIME NOT NULL,
-        user_id INTEGER NOT NULL,
-        lastUpdate DATETIME NOT NULL
-      )
+          id INTEGER PRIMARY KEY AUTO_INCREMENT,
+          entry_id INTEGER NOT NULL,
+          vote TINYINT NOT NULL,
+          date DATETIME NOT NULL,
+          user_id INTEGER NOT NULL,
+          lastUpdate DATETIME NOT NULL
+        )
     `);
+        
+    await connection.query("SET FOREIGN_KEY_CHECKS=1");
 
     // Meter datos de prueba en las tablas
-
     console.log("Creando usuario administrador");
 
     await connection.query(
@@ -116,25 +115,25 @@ async function main() {
     }
 
     console.log("Metiendo datos de prueba en favours");
-
     const favoursEntries = 10;
+    const categoryType = ["manitas", "nanny", "transporte", "tareas casa", "otros"];
 
     for (let index = 0; index < favoursEntries; index++) {
       const date = formatDateToDB(faker.date.recent());
 
       await connection.query(`
-        INSERT INTO diary(date, description, place, lastUpdate, user_id)
+        INSERT INTO favours(location, description, category, deadline, creation_date, user_doer_id )
         VALUES(
-          "${date}", 
-          "${faker.lorem.paragraph()}", 
-          "${faker.address.city()}", 
-          UTC_TIMESTAMP(), 
+          "${faker.address.city()}",
+          "${faker.lorem.paragraph()}",
+          "${categoryType[random(0, categoryType.length-1)]}",
+          "${date}",  
+          UTC_TIMESTAMP(),
           "${random(2, users + 1)}")
       `);
     }
 
     console.log("Metiendo datos de prueba en diary");
-
     const diaryEntries = 10;
 
     for (let index = 0; index < diaryEntries; index++) {
@@ -152,7 +151,6 @@ async function main() {
     }
 
     console.log("Metiendo datos de prueba en diary_votes");
-
     const diaryVotesEntries = 100;
 
     for (let index = 0; index < diaryVotesEntries; index++) {
