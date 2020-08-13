@@ -10,7 +10,7 @@ async function getUser(req, res, next) {
 
     const [result] = await connection.query(
       `
-      SELECT id, registrationDate, email, role, name, foto
+      SELECT id, registrationDate, email, role, name, surname, alias, foto
       FROM users
       WHERE id=?
     `,
@@ -28,6 +28,9 @@ async function getUser(req, res, next) {
     const responseData = {
       registrationDate: userData.registrationDate,
       name: userData.name,
+      surname: userData.surname,
+      role: userData.role,
+      alias: userData.alias,
       image: userData.image,
     };
 

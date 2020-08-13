@@ -33,6 +33,22 @@ const editUserSchema = Joi.object().keys({
         400
       )
     ),
+  surname: Joi.string()
+    .max(100)
+    .error(
+      generateError(
+        "El campo apellido no debe de tener más de 100 caracteres",
+        400
+      )
+    ),
+  alias: Joi.string()
+    .max(100)
+    .error(
+      generateError(
+        "El campo alias no debe de tener más de 100 caracteres",
+        400
+      )
+    )
 });
 
 const editUserPasswordSchema = Joi.object().keys({

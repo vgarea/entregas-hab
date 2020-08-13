@@ -28,7 +28,7 @@ async function editUser(req, res, next) {
     // Comprobar que el usuario existe
     const [currentUser] = await connection.query(
       `
-      SELECT id, email, foto
+      SELECT id, email,z foto
       FROM users
       WHERE id=?
     `,

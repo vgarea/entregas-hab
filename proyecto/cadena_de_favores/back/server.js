@@ -4,24 +4,32 @@ const express = require("express");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const fileUpload = require("express-fileupload");
+const cors = require('cors');
 
-const entryExists = require("./middlewares/entryExists");
+//const entryExists = require("./middlewares/entryExists");
 const isUser = require("./middlewares/isUser");
 const isAdmin = require("./middlewares/isAdmin");
 
 // Content controllers
-const listEntries = require("./controllers/diary/listEntries");
-const getEntry = require("./controllers/diary/getEntry");
-const newEntry = require("./controllers/diary/newEntry");
-const editEntry = require("./controllers/diary/editEntry");
-const deleteEntry = require("./controllers/diary/deleteEntry");
-const voteEntry = require("./controllers/diary/voteEntry");
-const getEntryVotes = require("./controllers/diary/getEntryVotes");
+//const listEntries = require("./controllers/diary/listEntries");
+//const getEntry = require("./controllers/diary/getEntry");
+//const newEntry = require("./controllers/diary/newEntry");
+//const editEntry = require("./controllers/diary/editEntry");
+//const deleteEntry = require("./controllers/diary/deleteEntry");
+//const voteEntry = require("./controllers/diary/voteEntry");
+//const getEntryVotes = require("./controllers/diary/getEntryVotes");
+
+const listFavours = require("./controllers/favours/listFavours");
+const listFavoursFind = require("./controllers/favours/listFavoursFind");
+const listFavoursAsker = require("./controllers/favours/listFavoursAsker");
+const listFavoursMaker = require("./controllers/favours/listFavoursMaker");
+const asignFavour = require("./controllers/favours/asignFavour");
 
 // User controllers
 const newUser = require("./controllers/users/newUser");
 const validateUser = require("./controllers/users/validateUser");
 const loginUser = require("./controllers/users/loginUser");
+const listUsers = require("./controllers/users/listUsers");
 const getUser = require("./controllers/users/getUser");
 const editUser = require("./controllers/users/editUser");
 const deleteUser = require("./controllers/users/deleteUser");
@@ -44,6 +52,38 @@ app.use(bodyParser.json());
 // Procesado de body tipo form-data
 app.use(fileUpload());
 
+// Intercambio de origen cruzado para habilitar solicitudes de HTTP
+app.use(cors());
+
+/*
+  ENDPOINTS DE FAVORES
+*/
+
+// Listar multiples entradas de favores
+// GET - /favours ✅
+// Público
+app.get("/favours", listFavours);
+
+// Listar multiples entradas de favores
+// POST - /favours ✅
+// Público
+app.post("/favours/find", listFavoursFind);
+
+// Listar entradas de favores de usuario pedichón
+// GET - /favours/:id ✅
+// Público
+app.get("/favours/asker/:id", listFavoursAsker);
+
+// Listar entradas de favores de usuario héroe
+// GET - /favours/:id ✅
+// Público
+app.get("/favours/maker/:id", listFavoursMaker);
+
+// Listar entradas de favores de usuario héroe
+// POST - /favours/:id ✅
+// Sólo usuarios registrados
+app.post("/favours/:id", isUser, asignFavour);
+
 /*
   ENDPOINTS DE CONTENIDO
 */
@@ -51,37 +91,37 @@ app.use(fileUpload());
 // Listar multiples entradas del diario de viajas
 // GET - /entries ✅
 // Público
-app.get("/entries", listEntries);
+//app.get("/entries", listEntries);
 
 // Mostrar una sola entrada del diario
 // GET - /entries/:id ✅
 // Público
-app.get("/entries/:id", entryExists, getEntry);
+//app.get("/entries/:id", entryExists, getEntry);
 
 // Crear una nueva entrada del diario
 // POST - /entries ✅
 // Sólo usuarios registrados
-app.post("/entries", isUser, newEntry);
+//app.post("/entries", isUser, newEntry);
 
 // Editar una entrada del diario
 // PUT - /entries/:id ✅
 // Sólo usuario que creara esta entrada o admin
-app.put("/entries/:id", isUser, entryExists, editEntry);
+//app.put("/entries/:id", isUser, entryExists, editEntry);
 
 // Borrar una entrada del diario
 // DELETE - /entries/:id ✅
 // Sólo usuario que creara esta entrada o admin
-app.delete("/entries/:id", isUser, entryExists, deleteEntry);
+//app.delete("/entries/:id", isUser, entryExists, deleteEntry);
 
 // Votar una entrada
 // POST - /entries/:id/votes ✅
 // Sólo usuarios registrados
-app.post("/entries/:id/votes", isUser, entryExists, voteEntry);
+//app.post("/entries/:id/votes", isUser, entryExists, voteEntry);
 
 // Ver votos de una entrada
 // GET - /entries/:id/votes ✅
 // Público
-app.get("/entries/:id/votes", entryExists, getEntryVotes);
+//app.get("/entries/:id/votes", entryExists, getEntryVotes);
 
 /*
   ENDPOINTS DE USUARIO
@@ -101,6 +141,11 @@ app.get("/users/validate/:code", validateUser);
 // POST - /users/login ✅
 // Público
 app.post("/users/login", loginUser);
+
+// Ver listado de usuarios
+// GET - /users
+// Para todos los usuarios
+app.get("/users", listUsers);
 
 // Ver información de un usuario
 // GET - /users/:id ✅

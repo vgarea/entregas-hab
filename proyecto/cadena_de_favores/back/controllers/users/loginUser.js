@@ -45,11 +45,14 @@ async function loginUser(req, res, next) {
       expiresIn: "30d",
     });
 
+    const idUser =  dbUser[0].id
+
     // Devolver el token
     res.send({
       status: "ok",
       data: {
         token,
+        idUser
       },
     });
   } catch (error) {

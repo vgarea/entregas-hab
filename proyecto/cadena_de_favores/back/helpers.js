@@ -6,13 +6,23 @@ const crypto = require("crypto");
 
 const sendgrid = require("@sendgrid/mail");
 
-const { format } = require("date-fns");
+const { format, addMinutes } = require("date-fns");
 
 // Definimos directorio de subida de imágenes
 const imageUploadPath = path.join(__dirname, process.env.UPLOADS_DIR);
 
 function formatDateToDB(date) {
-  return format(new Date(date), "yyyy-MM-dd HH:mm:ss");
+  let internalDate;
+  if(typeof date === 'string'){
+    internalDate = new Date(date);
+  } else {
+    internalDate = date;
+  }
+  const adjustedDate = addMinutes(
+    internalDate,
+    internalDate.getTimezoneOffset()
+  );
+  return format(adjustedDate, "yyyy-MM-dd HH:mm:ss");
 }
 
 async function processAndSaveImage(uploadedImage) {
