@@ -23,12 +23,6 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
 
 /* RESETEO DE ESTILOS */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  color: var(--gray);
-}
 
 html {
   --accent: #00ccff;
@@ -37,7 +31,14 @@ html {
   --red: #ad1111;
   --green: #059005;
   --font: Quicksand, sans-serif;
-  
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  color: var(--gray);
+
   font-family: var(--font);
 }
 
@@ -71,7 +72,11 @@ fieldset {
   position: sticky;
 }
 
-#menu nav section.register {
+#menu nav section.register.out {
+  margin-top: 0.5rem;
+}
+
+#menu nav section.register.in {
   margin-top: 0.7rem;
 }
 
@@ -98,7 +103,7 @@ fieldset {
   color: var(--light);
   text-decoration: none;
   font-size: 1.2rem;
-  padding: 0 .1rem;
+  padding: .4rem;
 }
 
 #menu nav {
@@ -137,11 +142,20 @@ footer {
 
 /* ESTILOS GENERALES */
 input {
+    font-size: 1rem;
     display: block;
     margin: 1rem auto;
     padding: 0.2rem;
     border: none;
-    border-bottom: 2px solid var(--accent);
+    border-bottom: 1px dashed var(--accent);
+}
+
+select {
+  -webkit-appearance: none;
+  border-radius: 0.2rem;
+  background: none;
+  border: 1px dashed var(--accent);
+  padding: 0.2rem;
 }
 
 button {
@@ -165,6 +179,11 @@ button:hover {
   cursor: pointer;
 }
 
+input[type="datetime-local" i] {
+    font-size: 1rem;
+    font-family: var(--font);
+}
+
 /* ESTILOS TEXTOS */
 h1{
   font-size: 1.5rem;
@@ -173,10 +192,11 @@ h1{
 h2, h3 {
   margin: 1.5rem;
 }
-li p {
+li p,
+#addFavour section p {
   display: inline-block;
   width: 50%;
-  padding: .2rem 0.2rem;
+  padding: 0.3rem;
   vertical-align: top;
 }
 li div button {
@@ -186,10 +206,10 @@ li div button {
 li div.stock, li div.noStock, li div.edit {
   margin: 1rem auto;
 }
-li p:nth-child(even){
+li p:nth-child(even) {
   text-align: left;
 }
-li p:nth-child(odd){
+li p:nth-child(odd) {
   text-align: right;
 }
 strong{
@@ -204,11 +224,12 @@ ul {
     margin: 0 auto;
     max-width: 1200px;
 }
-li {
+li,
+#addFavour section {
     border: 2px solid var(--accent);
     background-color: var(--light);
     border-radius: 2rem;
-    width: 400px;
+    width: 450px;
     padding: 1rem;
     margin: 1rem;
 }
@@ -220,6 +241,44 @@ img {
   object-fit: cover;
   object-position: center;
 }
+
+/* ESTILOS FAVORESCARD && FAVORES EN PROFILE && CAJAS ESTILO FEIVS */
+#favores ul li button,
+#profile ul li button,
+#addFavour section button {
+  margin: 2rem auto 0 auto;
+  display: block;
+}
+#favores ul li input,
+#profile ul li input,
+#addFavour section input {
+  display: inline-block;
+  margin: 0;
+}
+#favores ul li p:nth-child(3n+2),
+#favores ul li input,
+#favores ul li select,
+#profile ul li p:nth-child(3n+2),
+#profile ul li input,
+#profile ul li select,
+#addFavour section p:nth-child(even),
+#addFavour select {
+  text-align: left;
+  width: 60%;
+}
+#favores ul li p:nth-child(3n+1),
+#profile ul li p:nth-child(3n+1),
+#addFavour section p:nth-child(odd) {
+  text-align: right;
+  width: 40%;
+}
+
+/* ESTILOS ERRORES */
+.error {
+  font-size: 0.9rem;
+  color: var(--red);
+}
+
 /* MEDIA QUERIES */
 @media (max-width: 1200px) {
   html {

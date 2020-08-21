@@ -17,10 +17,7 @@ async function validateUser(req, res, next) {
     );
 
     if (result.length === 0) {
-      throw generateError(
-        "No hay ningún usuario pendiente de validación con ese código",
-        404
-      );
+      throw generateError("No hay ningún usuario pendiente de validación con ese código", 404);
     }
 
     // Actualizar la tabla de usuarios marcando como activo

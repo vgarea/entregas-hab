@@ -6,24 +6,19 @@ const bodyParser = require("body-parser");
 const fileUpload = require("express-fileupload");
 const cors = require('cors');
 
-//const entryExists = require("./middlewares/entryExists");
+const entryExists = require("./middlewares/entryExists");
 const isUser = require("./middlewares/isUser");
 const isAdmin = require("./middlewares/isAdmin");
-
-// Content controllers
-//const listEntries = require("./controllers/diary/listEntries");
-//const getEntry = require("./controllers/diary/getEntry");
-//const newEntry = require("./controllers/diary/newEntry");
-//const editEntry = require("./controllers/diary/editEntry");
-//const deleteEntry = require("./controllers/diary/deleteEntry");
-//const voteEntry = require("./controllers/diary/voteEntry");
-//const getEntryVotes = require("./controllers/diary/getEntryVotes");
 
 const listFavours = require("./controllers/favours/listFavours");
 const listFavoursFind = require("./controllers/favours/listFavoursFind");
 const listFavoursAsker = require("./controllers/favours/listFavoursAsker");
 const listFavoursMaker = require("./controllers/favours/listFavoursMaker");
 const asignFavour = require("./controllers/favours/asignFavour");
+const editFavour = require("./controllers/favours/editFavour");
+const voteFavour = require("./controllers/favours/voteFavour");
+const newFavour = require("./controllers/favours/newFavour");
+//const deleteEntry = require("./controllers/diary/deleteEntry");
 
 // User controllers
 const newUser = require("./controllers/users/newUser");
@@ -36,6 +31,8 @@ const deleteUser = require("./controllers/users/deleteUser");
 const editUserPassword = require("./controllers/users/editUserPassword");
 const recoverUserPassword = require("./controllers/users/recoverUserPassword");
 const resetUserPassword = require("./controllers/users/resetUserPassword");
+
+const { checkData } = require('./helpers');
 
 const app = express();
 
@@ -55,6 +52,10 @@ app.use(fileUpload());
 // Intercambio de origen cruzado para habilitar solicitudes de HTTP
 app.use(cors());
 
+
+// 
+app.use(express.static("static"));
+
 /*
   ENDPOINTS DE FAVORES
 */
@@ -69,20 +70,35 @@ app.get("/favours", listFavours);
 // Público
 app.post("/favours/find", listFavoursFind);
 
-// Listar entradas de favores de usuario pedichón
+// Listar los favores de usuario pedichón
 // GET - /favours/:id ✅
 // Público
 app.get("/favours/asker/:id", listFavoursAsker);
 
-// Listar entradas de favores de usuario héroe
+// Listar los favores de usuario héroe
 // GET - /favours/:id ✅
 // Público
 app.get("/favours/maker/:id", listFavoursMaker);
 
-// Listar entradas de favores de usuario héroe
+// Aceptar un favor
 // POST - /favours/:id ✅
 // Sólo usuarios registrados
 app.post("/favours/:id", isUser, asignFavour);
+
+// Editar un favor
+// PUT - /favours/:id ✅
+// Sólo el usuario que lo ha subido o admin
+app.put("/favours/:id", isUser, entryExists, editFavour);
+
+// Votar un favor asker o maker
+// POST - /favours/:id/votes ✅
+// Sólo usuarios registrados
+app.post("/favours/:id/votes", isUser, entryExists, voteFavour);
+
+// Crear un nuevo favor
+// POST - /favours ✅
+// Sólo usuarios registrados
+app.post("/favours", isUser, newFavour);
 
 /*
   ENDPOINTS DE CONTENIDO
@@ -177,6 +193,14 @@ app.post("/users/recover-password", recoverUserPassword);
 // POST - /users/reset-password
 // Público
 app.post("/users/reset-password", resetUserPassword);
+
+
+// 
+setInterval(() => {
+  checkData();
+}, 10000);
+// lanzamos la comprobación
+checkData();
 
 // Middlewares finales
 

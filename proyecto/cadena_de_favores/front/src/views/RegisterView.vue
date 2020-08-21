@@ -1,7 +1,7 @@
 <template>
-    <div class='register'>
-        <vue-headful title='Registro' />
-        <h1>Registro</h1>
+    <main id='register'>
+        <vue-headful title='REGISTRO' />
+        <h1>REGISTRO</h1>
         <input type='text'  v-model='email' placeholder='Email' />
         <input type='password' v-model='password1' placeholder='Contraseña' />
         <input type='password'  v-model='password' placeholder='Repite aquí tu contraseña' />
@@ -9,7 +9,7 @@
         <p v-show='errorMsg'>
             *Tienes campos vacíos.
         </p>
-    </div>
+    </main>
 </template>
 
 <script>
@@ -44,7 +44,7 @@ name: 'Registro',
                 text: `${text[id].text}`,
                 icon: 'info',
                 confirmButtonText: 'Go',
-                confirmButtonColor: '#003366',
+                confirmButtonColor: '#00ccff',
             })
         },
         validatingData(){

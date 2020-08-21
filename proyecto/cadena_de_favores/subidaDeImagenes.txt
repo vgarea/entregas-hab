@@ -1,0 +1,87 @@
+Front
+
+<input type="file" ref="avatarAct" @change="uploadAvatar">
+
+
+uploadAvatar() {
+      this.avatarAct = this.$refs.avatarAct.files[0];
+      console.log('this.avatarAct: ');
+      console.log(this.avatarAct);
+    },
+
+
+async updateData(){
+        try {
+            let formData = new FormData();
+            formData.append('avatar', this.avatarAct);
+            formData.append('email', this.emailAct);
+            formData.append('name' ,this.nameAct)
+            formData.append('surname', this.surnameAct)
+            formData.append('alias', this.aliasAct)
+
+            const response = await axios.put('http://localhost:3001/users/'+ getUserId(), formData, {
+                headers: { 
+                    Authorization: `${getAuthToken()}`
+                }
+            })
+            console.log('updateData:' + response);
+            location.reload()
+        } catch (error) {
+            this.messageData = error.response.data.message;
+        }
+    },
+
+
+
+BACK
+
+let savedFileName;
+
+    if (req.files && req.files.avatar) {
+      try {
+        // Procesar y guardar imagen
+        savedFileName = await processAndSaveImage(req.files.avatar);
+      } catch (error) {
+        throw generateError("No se pudo procesar la imagen. Inténtalo de nuevo",400);
+      }
+    } else {
+      savedFileName = currentUser[0].image;
+    }
+
+
+
+helpers.js
+
+const sharp = require("sharp");
+const fs = require("fs").promises;
+
+const imageUploadPath = path.join(__dirname, process.env.UPLOADS_DIR);
+
+
+async function processAndSaveImage(uploadedImage) {
+  // Creamos el directorio (con recursive: true por si hay subdirectorios y así no da error)
+  await fs.mkdir(imageUploadPath, { recursive: true });
+
+  // Leer la imagen que se subio
+  const image = sharp(uploadedImage.data);
+
+  // Saco información de la imagen
+  const imageInfo = await image.metadata();
+
+  // Cambiarle el tamaño si es necesario
+  if (imageInfo.width > 1000) {
+    image.resize(1000);
+  }
+
+  // Guardar la imagen en el directorio de subidas
+  const imageFileName = `${uuid.v4()}.jpg`;
+  await image.toFile(path.join(imageUploadPath, imageFileName));
+
+  // Devolver el nombre con el que fue guardada
+  return imageFileName;
+}
+
+
+.env
+
+UPLOADS_DIR=static/uploads

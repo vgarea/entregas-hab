@@ -14,7 +14,7 @@ async function listUsers(req, res, next) {
 
     const [result] = await connection.query(
       `
-      SELECT id, registrationDate, name, surname, email
+      SELECT id, registrationDate, name, surname, email, foto
       FROM users
       ORDER BY registrationDate ${orderDirection}
       `

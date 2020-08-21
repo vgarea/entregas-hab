@@ -24,10 +24,7 @@ async function newUser(req, res, next) {
     );
 
     if (existingUser.length > 0) {
-      throw generateError(
-        "Ya existe un usuario en la base de datos con ese email",
-        409
-      );
+      throw generateError("Ya existe un usuario en la base de datos con ese email", 409);
     }
 
     // enviar un mensaje de confirmación de registro al email indicado

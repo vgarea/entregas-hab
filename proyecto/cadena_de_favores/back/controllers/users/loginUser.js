@@ -25,15 +25,9 @@ async function loginUser(req, res, next) {
     );
 
     if (dbUser.length === 0) {
-      throw generateError(
-        "No hay ningún usuario registrado con ese email o la password es incorrecta",
-        401
-      );
+      throw generateError("No hay ningún usuario registrado con ese email o la password es incorrecta", 401);
     } else if (!dbUser[0].active) {
-      throw generateError(
-        "El usuario está registrado pero no activado. Por favor revisa tu email y activalo",
-        401
-      );
+      throw generateError("El usuario está registrado pero no activado. Por favor revisa tu email y activalo", 401);
     }
     // Generar token con información del usuario
     const tokenInfo = {

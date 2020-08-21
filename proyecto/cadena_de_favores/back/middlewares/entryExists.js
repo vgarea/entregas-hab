@@ -11,17 +11,14 @@ async function entryExists(req, res, next) {
     const [current] = await connection.query(
       `
     SELECT id
-    FROM diary
+    FROM favours
     WHERE id=?
   `,
       [id]
     );
 
     if (current.length === 0) {
-      throw generateError(
-        `La entrada con id ${id} no existe en la base de datos`,
-        404
-      );
+      throw generateError(`El favor con id ${id} no existe en la base de datos`, 404);
     } else {
       next();
     }

@@ -1,9 +1,7 @@
 const { getConnection } = require("../../db");
 const { randomString, sendMail, generateError } = require("../../helpers");
 
-const {
-  recoverUserPasswordSchema,
-} = require("../../validators/userValidators");
+const { recoverUserPasswordSchema } = require("../../validators/userValidators");
 
 async function recoverUserPassword(req, res, next) {
   let connection;
@@ -26,10 +24,7 @@ async function recoverUserPassword(req, res, next) {
     );
 
     if (current.length === 0) {
-      throw generateError(
-        `No hay ningún usuario con email ${email} en la base de datos`,
-        404
-      );
+      throw generateError(`No hay ningún usuario con email ${email} en la base de datos`, 404);
     }
 
     // Introducir en la fila del usuario un código aleatorio

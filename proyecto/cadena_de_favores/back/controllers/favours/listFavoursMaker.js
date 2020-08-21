@@ -13,7 +13,7 @@ async function listFavoursMaker(req, res, next) {
     let queryResults;
     queryResults = await connection.query(
     `
-        SELECT F.id, F.creation_date, F.deadline, F.location, F.description, F.category, F.status, F.reason, F.user_asker_id, F.user_maker_id,
+        SELECT F.id, F.creation_date, F.deadline, F.location, F.description, F.category, F.status, F.reason, F.user_asker_id, F.user_maker_id,  F.rating_asker, F.rating_maker,
         A.name AS user_asker_name, A.surname AS user_asker_surname,
         M.name AS user_maker_name, M.surname AS user_maker_surname
         FROM favours F

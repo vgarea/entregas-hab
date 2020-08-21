@@ -1,32 +1,28 @@
 import jwt from 'jwt-decode';
 import axios from 'axios';
 
-const URL = 'http://localhost:3001';
+import { format, addMinutes } from "date-fns";
+//import formatISO from "date-fns/formatISO";
+import es from "date-fns/locale/es";
 
-export function login(user, password) {
-        //console.log(user +' user + email'+ password);
-        axios.post(`${URL}/users/login`, {
-            email: user,
-            password: password
-        })
-        .then((response) => {
-            console.log(response.data.data);
-            
-            // ME GUARDO EL TOKEN
-            setAuthToken(response.data.data.token);
+/* ${process.env.URL} */
+export async function login(user, password) {
+    const response = await axios.post(`http://localhost:3001/users/login`, {
+        email: user,
+        password: password
+    });
+        console.log(response.data.data);
+        // ME GUARDO EL TOKEN EN EL LOCAL STORAGE
+        setAuthToken(response.data.data.token);
 
-            // ME GUARDO EL ID DEL USER
-            setUserId(response.data.data.idUser);
+        // ME GUARDO EL ID DEL USER EN EL LOCAL STORAGE
+        setUserId(response.data.data.idUser);
+        // await setUserId(response.data.data.token);
 
-            // ME GUARDO EL ID DEL USER (otra forma)
-            //const tokenDecoded = jwt(response.data.data.token);
-            //setUserId(tokenDecoded.id);
-            
-            // ME GUARDO EL ROL
-            //setIsAdmin(response.data.admin);
-            // ME GUARDO EL NOMBRE DEL USER
-            //setName(response.data.user);
-        })
+        // ME GUARDO EL ROL
+        //setIsAdmin(response.data.admin);
+        // ME GUARDO EL NOMBRE DEL USER
+        //setName(response.data.user);
 }
 
 // FUNCIÓN PARA GUARDAR EL LOCALSTORAGE EL JSONWEBTOKEN
@@ -68,6 +64,10 @@ export function isLoggedIn() {
 // FUNCIÓN PARA GUARDAR EL ID DEL USUARIO LOGUEADO EN EL LOCALSTORAGE
 export function setUserId(id){
     localStorage.setItem('USER', id);
+
+    // ME GUARDO EL ID DEL USER (otra forma)
+    //const tokenDecoded = jwt(id);
+    //localStorage.setItem('USER', tokenDecoded.id;
 }
 
 // FUNCIÓN PARA RECUPERAR EL ID DEL USUARIO LOGUEADO EN EL LOCALSTORAGE
@@ -114,4 +114,59 @@ export function logout(){
     localStorage.removeItem('USER');
     //localStorage.removeItem('ROLE');
     //localStorage.removeItem('NAME');
+}
+
+// FUNCIÓN PARA CAMBIAR LA HORA A DB
+export function formatDateToDB(date) {
+    let internalDate;
+    if(typeof date === 'string'){
+        internalDate = new Date(date);
+    } else {
+        internalDate = date;
+    }
+    const adjustedDate = addMinutes(
+        internalDate,
+        internalDate.getTimezoneOffset()
+    );
+    return format(adjustedDate, "yyyy-MM-dd HH:mm:ss", { locale: es });
+}
+
+// FUNCIÓN PARA CAMBIAR LA HORA EN LOS INPUT DATA-
+export function formatDateToInputDate(date){
+    let internalDate;
+
+    if(typeof date === 'string'){
+        internalDate = new Date(date);
+    } else {
+        internalDate = date;
+    }
+
+    const adjustedDate = addMinutes(
+        internalDate,
+        internalDate.getTimezoneOffset()
+    );
+
+    const dateDay = format(internalDate, "yyy-MM-dd", { locale: es });
+    const dateHour = format(internalDate, "p", { locale: es });
+
+    return String(dateDay +'T'+ dateHour);
+}
+// FUNCIÓN PARA PONER BIEN LA HORA EN LOCAL
+export function formatDateToUser(date) {
+    let internalDate;
+    if(typeof date === 'string'){
+        internalDate = new Date(date);
+    } else {
+        internalDate = date;
+    }
+    const adjustedDate = addMinutes(
+        internalDate,
+        internalDate.getTimezoneOffset()
+    );
+    return format(new Date(adjustedDate), "yyyy-MM-dd p", { locale: es });
+}
+
+// FUNCIÓN PARA PASAR LA RUTA A LAS IMÁGENES
+export function getImageName(name) {
+    return process.env.VUE_APP_STATIC + name;
 }

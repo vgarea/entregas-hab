@@ -31,7 +31,7 @@ async function getUser(req, res, next) {
       surname: userData.surname,
       role: userData.role,
       alias: userData.alias,
-      image: userData.image,
+      foto: userData.foto,
     };
 
     if (userData.id === req.auth.id || req.auth.role === "admin") {

@@ -24,10 +24,7 @@ async function resetUserPassword(req, res, next) {
     );
 
     if (current.length === 0) {
-      throw generateError(
-        "No hay ningún usuario con este código de recuperación de password",
-        404
-      );
+      throw generateError("No hay ningún usuario con este código de recuperación de password", 404);
     }
 
     // Actualizar password

@@ -48,13 +48,10 @@ async function editUser(req, res, next) {
         // Procesar y guardar imagen
         savedFileName = await processAndSaveImage(req.files.avatar);
       } catch (error) {
-        throw generateError(
-          "No se pudo procesar la imagen. Inténtalo de nuevo",
-          400
-        );
+        throw generateError("No se pudo procesar la imagen. Inténtalo de nuevo",400);
       }
     } else {
-      savedFileName = currentUser[0].image;
+      savedFileName = currentUser[0].foto;
     }
 
     // Si el email es diferente al actual comprobar que no existe en la base de datos
@@ -69,10 +66,7 @@ async function editUser(req, res, next) {
       );
 
       if (existingEmail.length > 0) {
-        throw generateError(
-          "Ya existe un usuario con este email en la base de datos",
-          403
-        );
+        throw generateError("Ya existe un usuario con este email en la base de datos", 403);
       }
 
       // Verificamos de nuevo el email recibido

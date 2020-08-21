@@ -1,6 +1,6 @@
 const { getConnection } = require("../../db");
-//const { randomString, sendMail, generateError } = require("../../helpers");
-//const { newUserSchema } = require("../../validators/userValidators");
+
+const { formatDateToDB } = require("../../helpers");
 
 async function listFavoursFind(req, res, next) {
   let connection;
@@ -8,8 +8,6 @@ async function listFavoursFind(req, res, next) {
   try {
     connection = await getConnection();
 
-    //await newUserSchema.validateAsync(req.body);
-        
     // Sacamos las posibles opciones del body:
     //  search: para listar solo las entradas que contengan su valor en location, category o deadline
     //  locationFavour: para buscar en location
@@ -19,7 +17,7 @@ async function listFavoursFind(req, res, next) {
     //  direction: para la dirección de la ordenación desc o asc
     const { search, locationFavour, categoryFavour, dataFavour, order, direction } = req.body;
 
-    console.log(order +' hola '+ search);
+    //console.log(order +' hola '+ search);
 
     // Proceso la dirección de orden
     const orderDirection =
@@ -37,36 +35,36 @@ async function listFavoursFind(req, res, next) {
     }
     
     // Ejecuto la query en base a si existe querystring de search / location, category, deadline
-
     let queryResults;
-    
+
+    // MEJORA: Hacer un desde hoy hasta fecha límite por ejemplo.    
     if (order) {
       queryResults = await connection.query(
       `
-        SELECT F.id, F.creation_date, F.deadline, F.location, F.description, F.category, F.status, F.reason, F.user_asker_id, F.user_maker_id,
+        SELECT F.id, F.creation_date, F.deadline, F.location, F.description, F.category, F.status, F.reason, F.user_asker_id, F.user_maker_id, F.rating_asker, F.rating_maker,
         A.name AS user_asker_name, A.surname AS user_asker_surname,
         M.name AS user_maker_name, M.surname AS user_maker_surname
         FROM favours F
           INNER JOIN users A ON F.user_asker_id = A.id
           LEFT JOIN users M ON F.user_maker_id = M.id
-          WHERE F.location LIKE ? OR F.category LIKE ? OR F.deadline LIKE ?
+          WHERE F.location LIKE ? OR F.category LIKE ?
         ORDER BY ${orderBy} ${orderDirection}
       `,
-        [`%${search}%`, `%${search}%`, `%${search}%`]
+        [`%${search}%`, `%${search}%`]
       );
     } else if (search) {
       queryResults = await connection.query(
       `
-        SELECT F.id, F.creation_date, F.deadline, F.location, F.description, F.category, F.status, F.reason, F.user_asker_id, F.user_maker_id,
+        SELECT F.id, F.creation_date, F.deadline, F.location, F.description, F.category, F.status, F.reason, F.user_asker_id, F.user_maker_id, F.rating_asker, F.rating_maker,
         A.name AS user_asker_name, A.surname AS user_asker_surname,
         M.name AS user_maker_name, M.surname AS user_maker_surname
         FROM favours F
           INNER JOIN users A ON F.user_asker_id = A.id
           LEFT JOIN users M ON F.user_maker_id = M.id
-          WHERE F.location LIKE ? OR F.category LIKE ? OR F.deadline LIKE ?
+          WHERE F.location LIKE ? OR F.category LIKE ?
         ORDER BY location DESC
       `,
-        [`%${search}%`, `%${search}%`, `%${search}%`]
+        [`%${search}%`, `%${search}%`]
       );
     } else {
       queryResults = await connection.query(
@@ -77,10 +75,10 @@ async function listFavoursFind(req, res, next) {
         FROM favours F
           INNER JOIN users A ON F.user_asker_id = A.id
           LEFT JOIN users M ON F.user_maker_id = M.id
-        WHERE F.location LIKE ? AND F.category LIKE ? AND F.deadline LIKE ?
+        WHERE F.location LIKE ? AND F.category LIKE ? AND F.deadline < ?
         ORDER BY location DESC
       `,
-        [`%${locationFavour}%`, `%${categoryFavour}%`, `%${dataFavour}%`]
+        [`%${locationFavour}%`, `%${categoryFavour}%`, formatDateToDB(dataFavour)]
       );
     }
 

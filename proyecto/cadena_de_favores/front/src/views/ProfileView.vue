@@ -1,23 +1,27 @@
 <template>
-    <div class='profile'>
-        <vue-headful title='Perfil' />
-        <h1>Modifica aquí tus datos:</h1>
-        <h2>Login</h2>
+    <main id='profile'>
+        <vue-headful title='MIS DATOS' />
+        <h1>MODIFICA TUS DATOS</h1>
+        <h2>LOGIN</h2>
             <label>{{ this.emailAct }}</label>
             <input type='password' v-model='passOld' placeholder='Password antigua' />
             <input type='password' v-model='passAct0' placeholder='Nueva password' />
             <input type='password' v-model='passAct1' placeholder='Repite la nueva password' />
+            <p>{{ messagePass }}</p>
             <button @click='updateUser()'>Actualizar contraseña</button>
-        <h2>Datos</h2>
+        <h2>DATOS</h2>
             <input type='text' v-model='nameAct' placeholder='Nombre' />
             <input type='text' v-model='surnameAct' placeholder='Apellidos' />
             <input type='text' v-model='aliasAct' placeholder='Escribe aquí tu alias' />
+            <input type="file" ref="avatarAct" @change="uploadAvatar">
+            <p>Nombre del avatar: {{avatarAct.name}}</p>
+            <p>{{ messageData }}</p>
             <button @click='updateData()'>Actualizar datos</button>
-        <h2>Histórico de Favores</h2>
+        <h2>HISTÓRICO DE #FEIVS</h2>
         <button @click="getAllFavoursAsker()">Solicitados</button><button @click="getAllFavoursMaker()">Realizados</button>
         <listafavours :favours='favours' />
         <p>{{ message }}</p>
-    </div>
+    </main>
 </template>
 
 <script>
@@ -34,40 +38,50 @@ export default {
   },
   data() {
     return {
-      emailAct: '',
-      passOld: '',
-      passAct0: '',
-      passAct1: '',
-      nameAct: '',
-      surnameAct: '',
-      aliasAct:'',
-      datosUser: [],
-      userId: null,
-      favours: [],
-      message: ''
+        emailAct: '',
+        passOld: '',
+        passAct0: '',
+        passAct1: '',
+        nameAct: '',
+        surnameAct: '',
+        aliasAct:'',
+        datosUser: [],
+        userId: null,
+        favours: [],
+        message: '',
+        messagePass: '',
+        messageData: '',
+        avatarAct: ''
     }
   },
   methods: {
-    // ACTUALIZAMOS LOS DATOS DEL USUARIO POR AHORA SIN LA FOTO
+    // FUNCIÓN PARA SUBIR LA FOTO
+    uploadAvatar() {
+      this.avatarAct = this.$refs.avatarAct.files[0];
+      console.log('this.avatarAct: ');
+      console.log(this.avatarAct);
+    },
+
+    // ACTUALIZAMOS LOS DATOS DEL USUARIO
     async updateData(){
         try {
-            const response = await axios.put('http://localhost:3001/users/'+ getUserId(), {
-                email: this.emailAct,
-                name: this.nameAct,
-                surname: this.surnameAct,
-                alias: this.aliasAct
-            },
+            let formData = new FormData();
+            formData.append('avatar', this.avatarAct);
+            formData.append('email', this.emailAct);
+            formData.append('name' ,this.nameAct);
+            formData.append('surname', this.surnameAct);
+            formData.append('alias', this.aliasAct);
+
+            const response = await axios.put('http://localhost:3001/users/'+ getUserId(), formData,
             {
                 headers: { 
                     Authorization: `${getAuthToken()}`
                 }
             })
-            //.then( response => {
-            //})
-            .finally( () => location.reload());
-            console.log(response);
+            console.log('updateData:' + response);
+            location.reload();
         } catch (error) {
-            this.message = error.response.data.message;
+            this.messageData = error.response.data.message;
         }
     },
     // ACTUALIZAMOS LA CONTRASEÑA DEL USUARIO
@@ -85,17 +99,13 @@ export default {
                         Authorization: `${getAuthToken()}`
                     }
                 })
-                //.then( response => {
-                //})
-                .finally( () => {
-                    location.reload()
-                    this.$router.push('/login');
-                    location.reload();
-                });
+                this.$router.push('/login');
+                location.reload();
+                console.log('updateUser: ')
                 console.log(response);
             }
         } catch (error) {
-            console.error;
+            this.messagePass = error.response.data.message;
         }
     },
     // RECUPERAMOS LOS DATOS DEL USUARIO LOGUEADO
@@ -106,14 +116,15 @@ export default {
                     Authorization: `${getAuthToken()}`
                 }
             })
-            //.then( response => {
-                console.log(response.data.data);
                 const datosUser = response.data.data;
+                
+                console.log('getUserData: ');
+                console.log(datosUser);
+
                 this.emailAct = datosUser.email;
                 this.nameAct = datosUser.name;
                 this.surnameAct = datosUser.surname;
                 this.aliasAct = datosUser.alias;
-            //})            
         } catch (error) {
             console.error;
         }
@@ -126,13 +137,11 @@ export default {
                     Authorization: `${getAuthToken()}`
                 }
             })
-            //.then( response => {
                 console.log('MAKER:');
                 console.log(response.data.data);
                 this.favours = response.data.data;
-            //})            
         } catch (error) {
-            console.error;
+            this.message = error.response.data.message;
         }
     },
     // FUNCIÓN PARA LISTAR LOS FAVORES QUE SUBIÓ ESTE USUARIO
@@ -143,14 +152,11 @@ export default {
                     Authorization: `${getAuthToken()}`
                 }
             })
-            //.then( response => {
                 console.log('ASKER:');
                 console.log(response.data.data);
                 this.favours = response.data.data;
-            //})
-            
         } catch (error) {
-            console.error;
+            this.message = error.response.data.message;
         }
     },
   },

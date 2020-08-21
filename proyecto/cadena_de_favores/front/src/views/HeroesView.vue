@@ -1,9 +1,9 @@
 <template>
-    <div class='heroes'>
-        <vue-headful title='#Heroes' />
+    <main id='heroes'>
+        <vue-headful title='#HEROES' />
         <h1>#HEROES</h1>
         <listaheroes :heroes='heroes' />
-    </div>
+    </main>
 </template>
 
 <script>
@@ -24,15 +24,13 @@ export default {
     // FUNCIÓN PARA LISTAR TODOS LOS CLIENTES
     async getAllHeroes(){
       try {
-        const result = await axios
-        .get('http://localhost:3001/users')
-        .then((response) => {
+        const response = await axios.get('http://localhost:3001/users')
           console.log('heroes: ');
           console.log(response.data.data);
+
           this.heroes = response.data.data;
-        })
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
     },
   },

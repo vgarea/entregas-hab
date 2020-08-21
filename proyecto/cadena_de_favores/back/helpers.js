@@ -4,9 +4,12 @@ const sharp = require("sharp");
 const uuid = require("uuid");
 const crypto = require("crypto");
 
+const { getConnection } = require("./db");
+
 const sendgrid = require("@sendgrid/mail");
 
 const { format, addMinutes } = require("date-fns");
+const es = require("date-fns/locale/es");
 
 // Definimos directorio de subida de imágenes
 const imageUploadPath = path.join(__dirname, process.env.UPLOADS_DIR);
@@ -22,7 +25,7 @@ function formatDateToDB(date) {
     internalDate,
     internalDate.getTimezoneOffset()
   );
-  return format(adjustedDate, "yyyy-MM-dd HH:mm:ss");
+  return format(adjustedDate, "yyyy-MM-dd HH:mm:ss", { locale: es });
 }
 
 async function processAndSaveImage(uploadedImage) {
@@ -56,6 +59,7 @@ function randomString(length = 20) {
   return crypto.randomBytes(length).toString("hex").slice(0, length);
 }
 
+// Función de envío de Mail
 async function sendMail({ email, title, content }) {
   // Configurar api key de sendgrid
   sendgrid.setApiKey(process.env.SENDGRID_KEY);
@@ -78,6 +82,7 @@ async function sendMail({ email, title, content }) {
   await sendgrid.send(message);
 }
 
+// Función para generar el Error
 function generateError(message, code = 500) {
   const error = new Error(message);
   error.httpStatus = code;
@@ -90,6 +95,49 @@ function showDebug(message) {
   }
 }
 
+// COMPROBAR FECHAS FIN
+async function checkData(){
+  console.log('comprobar fecha fin');
+  let connection;
+  let hoy = new Date();
+
+  try {
+    connection = await getConnection();
+
+    // Seleccionamos el estado y las deadline de todos los favores
+    const [current] = await connection.query(
+        `
+        SELECT id, status, deadline
+        FROM favours
+        `
+    );
+
+    const [currentEntry] = current;
+    
+    // Meter en una variable los id's de los favores que cumplan la condición del if
+    // Actualizar el estado a cancelado
+    for(let currentValue of current){
+      // Comprobar el estado y la fecha del favor
+      if (formatDateToDB(currentValue.deadline) <= formatDateToDB(hoy) && currentValue.status === 'pendiente'){
+        
+        // Ejecutar la query de edición de la entrada
+        await connection.query(
+          `
+          UPDATE favours SET status=?, modification_date=UTC_TIMESTAMP
+          WHERE id=?
+        `,
+          ['cancelado', currentValue.id]
+        )
+      }
+    }
+    console.log('Status OK')
+  } catch (error) {
+    console.log(error);
+  } finally {
+    if (connection) connection.release();
+  }
+}
+
 module.exports = {
   formatDateToDB,
   processAndSaveImage,
@@ -98,4 +146,5 @@ module.exports = {
   sendMail,
   generateError,
   showDebug,
+  checkData
 };
