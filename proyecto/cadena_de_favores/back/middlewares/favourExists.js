@@ -1,7 +1,7 @@
 const { getConnection } = require("../db");
 const { generateError } = require("../helpers");
 
-async function entryExists(req, res, next) {
+async function favourExists(req, res, next) {
   let connection;
   try {
     connection = await getConnection();
@@ -29,4 +29,4 @@ async function entryExists(req, res, next) {
   }
 }
 
-module.exports = entryExists;
+module.exports = favourExists;

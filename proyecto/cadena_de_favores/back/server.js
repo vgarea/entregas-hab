@@ -6,7 +6,7 @@ const bodyParser = require("body-parser");
 const fileUpload = require("express-fileupload");
 const cors = require('cors');
 
-const entryExists = require("./middlewares/entryExists");
+const favourExists = require("./middlewares/favourExists");
 const isUser = require("./middlewares/isUser");
 const isAdmin = require("./middlewares/isAdmin");
 
@@ -18,7 +18,7 @@ const asignFavour = require("./controllers/favours/asignFavour");
 const editFavour = require("./controllers/favours/editFavour");
 const voteFavour = require("./controllers/favours/voteFavour");
 const newFavour = require("./controllers/favours/newFavour");
-//const deleteEntry = require("./controllers/diary/deleteEntry");
+const deleteFavour = require("./controllers/favours/deleteFavour");
 
 // User controllers
 const newUser = require("./controllers/users/newUser");
@@ -88,56 +88,22 @@ app.post("/favours/:id", isUser, asignFavour);
 // Editar un favor
 // PUT - /favours/:id ✅
 // Sólo el usuario que lo ha subido o admin
-app.put("/favours/:id", isUser, entryExists, editFavour);
+app.put("/favours/:id", isUser, favourExists, editFavour);
 
 // Votar un favor asker o maker
 // POST - /favours/:id/votes ✅
 // Sólo usuarios registrados
-app.post("/favours/:id/votes", isUser, entryExists, voteFavour);
+app.post("/favours/:id/votes", isUser, favourExists, voteFavour);
 
 // Crear un nuevo favor
 // POST - /favours ✅
 // Sólo usuarios registrados
 app.post("/favours", isUser, newFavour);
 
-/*
-  ENDPOINTS DE CONTENIDO
-*/
-
-// Listar multiples entradas del diario de viajas
-// GET - /entries ✅
-// Público
-//app.get("/entries", listEntries);
-
-// Mostrar una sola entrada del diario
-// GET - /entries/:id ✅
-// Público
-//app.get("/entries/:id", entryExists, getEntry);
-
-// Crear una nueva entrada del diario
-// POST - /entries ✅
-// Sólo usuarios registrados
-//app.post("/entries", isUser, newEntry);
-
-// Editar una entrada del diario
-// PUT - /entries/:id ✅
-// Sólo usuario que creara esta entrada o admin
-//app.put("/entries/:id", isUser, entryExists, editEntry);
-
-// Borrar una entrada del diario
+// Borrar una entrada del favor
 // DELETE - /entries/:id ✅
-// Sólo usuario que creara esta entrada o admin
-//app.delete("/entries/:id", isUser, entryExists, deleteEntry);
-
-// Votar una entrada
-// POST - /entries/:id/votes ✅
-// Sólo usuarios registrados
-//app.post("/entries/:id/votes", isUser, entryExists, voteEntry);
-
-// Ver votos de una entrada
-// GET - /entries/:id/votes ✅
-// Público
-//app.get("/entries/:id/votes", entryExists, getEntryVotes);
+// Sólo usuario que creara esta favor o admin
+app.delete("/favours/:id", isUser, favourExists, deleteFavour);
 
 /*
   ENDPOINTS DE USUARIO
@@ -195,11 +161,12 @@ app.post("/users/recover-password", recoverUserPassword);
 app.post("/users/reset-password", resetUserPassword);
 
 
-// 
+// Comprobamos cada 10000ms si alguna fecha está caducada
+// y en tal caso, la cancelamos
 setInterval(() => {
   checkData();
 }, 10000);
-// lanzamos la comprobación
+// Lanzamos la comprobación la primera vez
 checkData();
 
 // Middlewares finales

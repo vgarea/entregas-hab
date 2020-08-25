@@ -4,10 +4,9 @@ const sharp = require("sharp");
 const uuid = require("uuid");
 const crypto = require("crypto");
 
-const { getConnection } = require("./db");
-
 const sendgrid = require("@sendgrid/mail");
 
+const { getConnection } = require("./db");
 const { format, addMinutes } = require("date-fns");
 const es = require("date-fns/locale/es");
 
@@ -65,6 +64,7 @@ async function sendMail({ email, title, content }) {
   sendgrid.setApiKey(process.env.SENDGRID_KEY);
 
   // Configurar mensaje
+  /* MEJORA: poner un script con CSS para darle estilo a este mensaje */
   const message = {
     to: email,
     from: process.env.SENDGRID_FROM,
@@ -111,8 +111,7 @@ async function checkData(){
         FROM favours
         `
     );
-
-    const [currentEntry] = current;
+    //const [currentEntry] = current;
     
     // Meter en una variable los id's de los favores que cumplan la condición del if
     // Actualizar el estado a cancelado

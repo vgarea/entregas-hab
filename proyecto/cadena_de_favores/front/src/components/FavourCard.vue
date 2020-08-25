@@ -1,7 +1,11 @@
 <template>
     <ul>
         <li v-for="favour in favours" :key="favour.id">
-            <favourdata :favour="favour" />
+            <favourdata
+                :is-authenticated="isAuthenticated"
+                :is-id-user="isIdUser"
+                :favour="favour"
+            />
         </li>
     </ul>
 </template>
@@ -12,16 +16,20 @@ import favourdata from "@/components/FavourData.vue";
 
 export default {
     name: "ListaFavours",
+    props: {
+        favours: Array,
+        isAuthenticated: Boolean,
+        isIdUser:Number
+    },
     data() {
         return {
             favour: {}
         }
     },
+    computed:{
+    },
     components:{
         favourdata,
-    },
-    props:{
-        favours: Array,
     },
 }
 </script>

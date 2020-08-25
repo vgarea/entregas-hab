@@ -20,37 +20,27 @@
             <option value='otros'>Otros</option>
           </select>
           <input type='datetime-local' v-model='dataFav' placeholder='Escoge fecha'>
-          <!-- <button @click="findFavours">¿QUÉ PUEDES HACER?</button> -->
-          <button @click="getFavours">¿QUÉ PUEDES HACER?</button>
+          <button @click="findFavours()">¿QUÉ PUEDES HACER?</button>
         </p>
       </fieldset>
       <p>{{ message }}</p>
-      <listafavours
-        :favours='favours'
-        :is-authenticated="isAuthenticated"
-        :is-id-user="isIdUser"
-      />
+      <listafavours :favours='favours' />
     </section>
   </content>
 </template>
 
 <script>
 import axios from 'axios';
+import { formatDateToDB } from '../api/utils';
 import listafavours from '@/components/FavourCard.vue';
-import api from '@/api/api'
-
 export default {
   name: 'Favours',
-  props: {
-      isAuthenticated: Boolean,
-      isIdUser: Number
-  },
   components: {
-    listafavours,
+    listafavours
   },
   data() {
     return {
-      favours:[],
+      favours: [],
       message:'',
       searchFav: '',
       locationFav: '',
@@ -58,25 +48,8 @@ export default {
       dataFav: '',
     }
   },
-  computed: {
-  },
   methods: {
-    getFavours() {
-      if(this.locationFav.length > 0 || this.categoryFav.length > 0 || this.dataFav.length > 0){
-        this.searchFav = '';
-      } else if(this.searchFav === '') {
-        this.searchFav = '%';
-      }
-
-      api.getFavours(this.searchFav, this.locationFav, this.categoryFav, this.dataFav)
-      .then(result => {
-        this.favours = result;
-      })
-      .then(() => {
-        this.cleanInputs();
-      })
-    },
-    /* // FUNCIÓN PARA LISTAR LOS FAVORES EN FUNCIÓN DE LA BÚSQUEDA
+    // FUNCIÓN PARA LISTAR LOS FAVORES EN FUNCIÓN DE LA BÚSQUEDA
     async findFavours(){
       try {
         //console.log(this.locationFav.length +' > 0 || '+ this.categoryFav.length +' > 0 || '+ this.dataFav.length +'> 0 - this.searchFav === '+ this.searchFav )
@@ -97,7 +70,6 @@ export default {
         this.favours = response.data.data;
         console.log('favours: ');
         console.log( this.favours);
-
         // LIMPIO LOS CAMPOS DE BÚSQUEDA
         this.cleanInputs();
       } catch (error) {
@@ -107,12 +79,11 @@ export default {
           console.log(error);
         }
       }
-    }, */
+    },
     // VISUALIZACIÓN POR DEFECTO DE TODOS LOS FAVORES SI NO VIENE DE LA BÚSQUEDA DE LA HOME
     viewFavours(){
         let url = window.location.href;
         let searchValue = url.split("?");
-
         searchValue[1] ? this.searchFav = searchValue[1] : false;
         this.findFavours();
     },
@@ -120,16 +91,14 @@ export default {
       // Mejorar con un bucle que busque todos los inputs y los limpie ;)
       this.locationFav = '';
       this.categoryFav = '';
-      this.dataFav = '';
+      this.dataFav = 0;
     }
   },
   created() {
-    /* this.findFavours(); */
-    this.getFavours();
+    this.viewFavours();
   }
 }
 </script>
 
 <style scoped>
-
 </style>

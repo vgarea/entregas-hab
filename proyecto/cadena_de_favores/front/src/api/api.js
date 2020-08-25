@@ -1,37 +1,90 @@
+import jwt from 'jwt-decode';
 import axios from 'axios';
 
+import { format, addMinutes } from "date-fns";
+//import formatISO from "date-fns/formatISO";
+import es from "date-fns/locale/es";
+
 const instance = axios.create({
-    baseURL: 'http://localhost:3001',
+    baseURL: process.env.VUE_APP_SERVER_URL,
 });
 
-
 export default {
-   /*  getProducts: () => {
-        return instance.get('products/')
+    // Creo la función que hace el login
+    login: function (user, password) {
+        return instance.post('users/login/', {
+                email: user,
+                password: password
+            })
             .then(response => {
-                return response.data;
+                this.setToken(response.data.data.token);
+                this.setuserId(response.data.data.idUser);
+                return response.data.data;
             });
     },
-    getProduct: (id) => {
-        return instance.get('products/' + id + '/')
-            .then(response => {
-                return response.data
-            });
+    // Guardo el token
+    setToken: (token) => {
+        instance.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+        localStorage.setItem('AUTH_TOKEN_KEY', token);
     },
-    addProduct: (product) => {
-        return instance.post('products/', product)
+    // Guardo el Id del usuario logueado
+    setuserId: (userId) => {
+        // Por ahora pongo el userId en el localStorage
+        localStorage.setItem('USER', userId);
     },
-    deleteProduct: (product) => {
-        return instance.delete('products/' + product.id + '/', product)
+    // Borra el token
+    logout: () => {
+        localStorage.removeItem('AUTH_TOKEN_KEY');
+        localStorage.removeItem('USER');
+        delete instance.defaults.headers.common['Authorization'];
     },
-    updatePrice: (product, newPrice) => {
-        return instance.patch('products/' + product.id + '/', {
-            price: newPrice
-        });
+    
+    // Consigue la fecha de caducidad del token
+    tokenExpiration: (encodedToken) => {
+        let token = jwt(encodedToken);
+        let date = new Date(0);
+
+        if(!token.exp) {
+            return null;
+        }
+        
+        date.setUTCSeconds(token.exp);
+        return date;
     },
-    updateQuantity: (product, newQuantity) => {
-        return instance.patch('products/' + product.id + '/', {
-            quantity: newQuantity
-        });
-    }, */
+    // Comprueba si el token está activo
+    isExpired: (token) => {
+        let expirationDate = this.tokenExpiration(token);
+        return expirationDate < new Date();
+    },
+    // Recupero el token
+    getAuthToken: () => {
+        console.log('getAuthToken');
+        return localStorage.getItem('AUTH_TOKEN_KEY');
+    },
+    // Estoy logueado
+    isLoggedIn: () => {
+        console.log('isLoggedIn');
+        let authToken = this.getAuthToken();
+        return !!authToken && !this.isExpired(authToken);
+    },
+    
+    // FUNCIÓN PARA RECUPERAR EL ID DEL USUARIO LOGUEADO EN EL LOCALSTORAGE
+    getUserId: () => {
+        return localStorage.getItem('USER');
+    },
+
+    // Favours
+    getFavours: function(searchFav, locationFav, categoryFav, dataFav) {
+          instance.post('http://localhost:3001/favours/find', {
+            search: searchFav,
+            locationFavour: locationFav,
+            categoryFavour: categoryFav,
+            dataFavour: dataFav
+          })
+          .then(response => {
+              return response.data.data;
+          })
+      }
+
+    
 }

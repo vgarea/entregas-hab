@@ -1,26 +1,32 @@
 <template>
     <main id='profile'>
         <vue-headful title='MIS DATOS' />
-        <h1>MODIFICA TUS DATOS</h1>
-        <h2>LOGIN</h2>
-            <label>{{ this.emailAct }}</label>
-            <input type='password' v-model='passOld' placeholder='Password antigua' />
-            <input type='password' v-model='passAct0' placeholder='Nueva password' />
-            <input type='password' v-model='passAct1' placeholder='Repite la nueva password' />
-            <p>{{ messagePass }}</p>
-            <button @click='updateUser()'>Actualizar contraseña</button>
-        <h2>DATOS</h2>
-            <input type='text' v-model='nameAct' placeholder='Nombre' />
-            <input type='text' v-model='surnameAct' placeholder='Apellidos' />
-            <input type='text' v-model='aliasAct' placeholder='Escribe aquí tu alias' />
-            <input type="file" ref="avatarAct" @change="uploadAvatar">
-            <p>Nombre del avatar: {{avatarAct.name}}</p>
-            <p>{{ messageData }}</p>
-            <button @click='updateData()'>Actualizar datos</button>
-        <h2>HISTÓRICO DE #FEIVS</h2>
-        <button @click="getAllFavoursAsker()">Solicitados</button><button @click="getAllFavoursMaker()">Realizados</button>
-        <listafavours :favours='favours' />
-        <p>{{ message }}</p>
+        <section v-if='!isNotLogued'>
+            <h1>MODIFICA TUS DATOS</h1>
+            <h2>LOGIN</h2>
+                <label>{{ this.emailAct }}</label>
+                <input type='password' v-model='passOld' placeholder='Password antigua' />
+                <input type='password' v-model='passAct0' placeholder='Nueva password' />
+                <input type='password' v-model='passAct1' placeholder='Repite la nueva password' />
+                <p>{{ messagePass }}</p>
+                <button @click='updateUser()'>Actualizar contraseña</button>
+            <h2>DATOS</h2>
+                <input type='text' v-model='nameAct' placeholder='Nombre' />
+                <input type='text' v-model='surnameAct' placeholder='Apellidos' />
+                <input type='text' v-model='aliasAct' placeholder='Escribe aquí tu alias' />
+                <input type="file" ref="avatarAct" @change="uploadAvatar">
+                <p>Nombre del avatar: {{avatarAct.name}}</p>
+                <p>{{ messageData }}</p>
+                <button @click='updateData()'>Actualizar datos</button>
+            <h2>HISTÓRICO DE #FEIVS</h2>
+            <button @click="getAllFavoursAsker()">Solicitados</button><button @click="getAllFavoursMaker()">Realizados</button>
+            <listafavours
+                :favours='favours'
+                :is-authenticated="isAuthenticated"
+                :is-idUser="isIdUser"
+            />
+            <p>{{ message }}</p>
+        </section>
     </main>
 </template>
 
@@ -33,6 +39,10 @@ import { getUserId, getAuthToken, logout } from '../api/utils';
 
 export default {
   name: 'Perfil',
+  props: {
+      isAuthenticated: Boolean,
+      isIdUser: Number
+  },
   components: {
     listafavours
   },
@@ -52,6 +62,16 @@ export default {
         messagePass: '',
         messageData: '',
         avatarAct: ''
+    }
+  },
+  computed: {
+    idUser(){
+      return this.isIdUser;
+    },
+    isNotLogued(){
+      if(!this.isAuthenticated){
+        this.$router.push({name: 'Login'});
+      }
     }
   },
   methods: {

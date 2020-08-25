@@ -1,18 +1,18 @@
 <template>
     <header id='menu'>
-        <nav>
+         <nav>
             <section class='logo'>
                 #FEIVS
             </section>
 
-            <section v-show='!logged' class='register in'>
-                <router-link :to="{ name:'Login' }">LOGIN</router-link>
-                <router-link :to="{ name:'Register' }">REGISTRO</router-link>
+            <section v-if="isAuthenticated" class='register out'>
+                <router-link :to="{ name:'Profile' }">MIS DATOS</router-link>
+                <button @click="doLogout">LOGOUT</button><!-- @click="logoutUser()" -->
             </section>
             
-            <section v-show='logged' class='register out'>
-                <router-link :to="{ name:'Profile' }">MIS DATOS</router-link>
-                <button @click="logoutUser()">LOGOUT</button>
+            <section v-else class='register in'>
+                <router-link :to="{ name:'Login' }">LOGIN</router-link>
+                <router-link :to="{ name:'Register' }">REGISTRO</router-link>
             </section>
         </nav>
         <aside id='nav'>
@@ -26,29 +26,24 @@
 </template>
 <script>
 
-import { logout, isLoggedIn } from '../api/utils';
+/* import { logout, isLoggedIn } from '../api/utils'; */
 /* import utils from '@/api/utilsNew'; */
 
 export default {
     name:'MenuPpal',
+    props: {
+        isAuthenticated: Boolean,
+    },
     data() {
         return {
-            logged: false,
+            
         }
     },
     methods: {
-        logoutUser(){
-            logout();
-            this.$router.push('/login');
-            location.reload();
-        },
-        getLogin(){
-            this.logged = isLoggedIn();
-        },
-    },
-  created(){
-    this.getLogin();
-  }
+        doLogout() {
+            this.$emit('logout');
+        }
+    }
 }
 </script>
 <style scoped>

@@ -1,10 +1,11 @@
 <template>
-    <div>
+    <div id='heroe'>
         <ul>
             <li v-for='heroe in heroes' :key='heroe.id'>
-                <p><strong>Nombre:</strong></p><p>{{ heroe.name }}</p>
-                <p><strong>Apellido:</strong></p><p>{{ heroe.surname }}</p>
-                <p><strong>Email:</strong></p><p>{{ heroe.email }}</p>
+                <p>{{ heroe.name }}</p><p>{{ heroe.surname }}</p>
+                <p>VOTOS</p><p>(estrellas)</p>
+                <p>MAKER:</p><p>{{ heroe.voteMakerAverage }}</p>
+                <p>ASKER:</p><p>{{ heroe.voteAskerAverage }}</p>
                 <img :src='getImageName(heroe.foto)' />
             </li>
         </ul>
@@ -35,5 +36,11 @@ export default {
 </script>
 
 <style scoped>
-
+#heroe p {
+    font-weight: 600;
+    text-transform: uppercase;
+}
+#heroe img {
+    margin-top:2rem;
+}
 </style>

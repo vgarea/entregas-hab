@@ -6,7 +6,7 @@ import { format, addMinutes } from "date-fns";
 import es from "date-fns/locale/es";
 
 /* ${process.env.URL} */
-export async function login(user, password) {
+/* export async function login(user, password) {
     const response = await axios.post(`http://localhost:3001/users/login`, {
         email: user,
         password: password
@@ -23,7 +23,7 @@ export async function login(user, password) {
         //setIsAdmin(response.data.admin);
         // ME GUARDO EL NOMBRE DEL USER
         //setName(response.data.user);
-}
+} */
 
 // FUNCIÓN PARA GUARDAR EL LOCALSTORAGE EL JSONWEBTOKEN
 export function setAuthToken(token){
@@ -86,7 +86,7 @@ export function getUserId(){
 }*/
 
 // FUNCIÓN QUE COMPRUEBA SI ES ADMIN O NO
-/*export function checkIsAdmin(){
+export function checkIsAdmin(){
     let role = null;
     let admin = getIsAdmin();
     if (admin === 'true') {
@@ -95,7 +95,7 @@ export function getUserId(){
         role === false;
     }
     return role;
-}*/
+}
 
 // FUNCIÓN DE GAURDAR EL NOMBRE DE USER EN EL LOCALSTORAGE
 /*export function setName(user) {
@@ -107,14 +107,14 @@ export function getUserId(){
     return localStorage.getItem('NAME');
 }*/
 
-// FUNCIÓN DE LOGOUT
+/* // FUNCIÓN DE LOGOUT
 export function logout(){
     axios.defaults.headers.common['Authorization'] = '';
     localStorage.removeItem('AUTH_TOKEN_KEY');
     localStorage.removeItem('USER');
     //localStorage.removeItem('ROLE');
     //localStorage.removeItem('NAME');
-}
+} */
 
 // FUNCIÓN PARA CAMBIAR LA HORA A DB
 export function formatDateToDB(date) {
