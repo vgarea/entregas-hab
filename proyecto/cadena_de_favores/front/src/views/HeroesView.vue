@@ -1,14 +1,18 @@
 <template>
-    <main id='heroes'>
-        <vue-headful title='#HEROES' />
-        <h1>#HEROES</h1>
-        <listaheroes :heroes='heroes' />
-    </main>
+  <main v-if='isLoading'>
+    Aquí el componente del loading
+  </main>
+  <main id='heroes' v-else>
+      <vue-headful title='#HEROES' />
+      <h1>#HEROES</h1>
+      <listaheroes :heroes='heroes' />
+  </main>
 </template>
 
 <script>
-import axios from 'axios';
+/* import axios from 'axios'; */
 import listaheroes from '@/components/ListaHeroes.vue';
+import favours from '@/favours/favours'
 
 export default {
   name: 'Heroes',
@@ -20,8 +24,19 @@ export default {
       heroes: [],
     }
   },
+  computed: {
+    isLoading(){
+      return !!!this.heroes;
+    }
+  },
   methods: {
-    // FUNCIÓN PARA LISTAR TODOS LOS CLIENTES
+    getHeroes(){
+      favours.getAllHeroes()
+      .then(result => {
+        this.heroes = result;
+      })
+    }
+    /* // FUNCIÓN PARA LISTAR TODOS LOS CLIENTES
     async getAllHeroes(){
       try {
         const response = await axios.get('http://localhost:3001/users')
@@ -32,10 +47,10 @@ export default {
       } catch (error) {
         console.error(error);
       }
-    },
+    }, */
   },
   created() {
-    this.getAllHeroes();
+    this.getHeroes();
   }
 }
 </script>

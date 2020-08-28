@@ -1,5 +1,5 @@
 <template>
-    <main>
+    <article>
         <!-- VALORES MODIFICABLES -->
         <section v-if='!edit'>
             <p><strong>Localidad:</strong></p><p>{{ favour.location }}</p>
@@ -12,6 +12,29 @@
             <p><strong>Pide #FEIV:</strong></p><p>{{ favour.user_asker_name + ' ' + favour.user_asker_surname}}</p>
             <p v-show='favour.user_maker_id !== null'><strong>Hace #FEIV:</strong></p>
             <p v-show='favour.user_maker_id !== null'>{{ favour.user_maker_name + ' ' + favour.user_maker_surname }}</p>
+            <!-- BOTONES -->
+            <button v-show='(isIdUser === Number(favour.user_asker_id)) && ((favour.status === "asignado") || (favour.status === "pendiente"))' @click="editFavour">Editar</button>
+        </section>
+        <section v-else-if='editStatus'>
+            <p><strong>Localidad:</strong></p><p>{{ favour.location }}</p>
+            <p><strong>Descripción:</strong></p><p>{{ favour.description }}</p>
+            <p><strong>Categoría:</strong></p><p>{{ favour.category }}</p>
+            <p><strong>Razón:</strong></p><p>{{ favour.reason }}</p>
+            <p><strong>Estado:</strong></p>
+            <select name='select' v-model='newStatus'>
+                <option disabled value="">Estado</option>
+                <option value='asignado'>Asignado</option>
+                <option value='finalizado'>Finalizado</option>
+                <option value='cancelado'>Cancelado</option>
+            </select>
+            <p><strong>Fecha límite:</strong></p><p>{{ favour.deadline }}</p>
+            <!-- PERSONAS -->
+            <p><strong>Pide #FEIV:</strong></p><p>{{ favour.user_asker_name + ' ' + favour.user_asker_surname}}</p>
+            <p v-show='favour.user_maker_id !== null'><strong>Hace #FEIV:</strong></p>
+            <p v-show='favour.user_maker_id !== null'>{{ favour.user_maker_name + ' ' + favour.user_maker_surname }}</p>
+            <!-- BOTONES -->
+            <button @click="actualizarDatos">ActualizarDatos</button>
+            <button @click="cancelar">Cancelar</button>
         </section>
         <section v-else>
             <p><strong>Localidad:</strong></p><input type='text' v-show='edit' v-model='newLocation' placeholder="Localidad" />
@@ -37,31 +60,26 @@
             <p><strong>Estado:</strong></p>
             <select name='select' v-model='newStatus'>
                 <option disabled value="">Estado</option>
-                <option value='finalizado'>Finalizado</option>
+                <option value='pendiente'>Pendiente</option>
                 <option value='cancelado'>Cancelado</option>
             </select>
-            <p><strong>Fecha límite:</strong></p><input v-show='edit' type='datetime-local' v-model='newDeadline' />
+            <p><strong>Fecha límite:</strong></p><input type='datetime-local' v-model='newDeadline' />
             <!-- PERSONAS -->
             <p><strong>Pide #FEIV:</strong></p><p>{{ favour.user_asker_name + ' ' + favour.user_asker_surname}}</p>
             <p v-show='favour.user_maker_id !== null'><strong>Hace #FEIV:</strong></p>
             <p v-show='favour.user_maker_id !== null'>{{ favour.user_maker_name + ' ' + favour.user_maker_surname }}</p>
             <!-- BOTONES -->
-                <section v-if='isAuthenticated'>
-                <button v-show='Number(isIdUser)===Number(id)'>Editar</button>
-                <button v-show='(Number(id) !== Number(favour.user_asker_id) && favour.user_maker_id === null) && favour.status !== "cancelado" && login' @click="aceptFavour">¡Acepto el reto!</button>
-                <button v-show='(Number(this.$userId) === Number(favour.user_asker_id)) && ((favour.status === "asignado") || (favour.status === "pendiente")) && !editButon' @click="editFavour()">Editar</button>
-            </section>
-            <section v-else>
-                <button v-show='editButon' @click="actualizarDatos">ActualizarDatos</button>
-                <button v-show='editButon' @click="cancelar">Cancelar</button>
-            </section>
+            <button @click="actualizarDatos">ActualizarDatos</button>
+            <button @click="cancelar">Cancelar</button>
         </section>
-    </main>
+        <button v-show='(isIdUser !== Number(favour.user_asker_id)) && (favour.user_maker_id === null) && (favour.status !== "cancelado") && isAuthenticated' @click="aceptFavour">¡Acepto el reto!</button>
+    </article>
 </template>
 
 <script>
-/* import { getAuthToken, getUserId, formatDateToDB, formatDateToInputDate, formatDateToUser, logout } from '@/api/utils';
-import axios from 'axios'; */
+import { getAuthToken, formatDateToDB, formatDateToInputDate, formatDateToUser, logout } from '@/api/utils';
+import favours from '@/favours/favours';
+import axios from 'axios';
 
 export default {
     name: 'FavoursData',
@@ -69,7 +87,6 @@ export default {
         return{
             message:'',
             message1:'',
-            userId: '',
             favourId: '',
             askerId: '',
             edit: false,
@@ -82,7 +99,6 @@ export default {
             newStatus:'',
             newDeadline:'',
             userVote:'',
-            login:true,
         }
     },
     props: {
@@ -92,8 +108,15 @@ export default {
     },
     methods: {    
         // FUNCIÓN PARA LISTAR LOS FAVORES EN FUNCIÓN DE LA BÚSQUEDA
-        /* async aceptFavour(){
-            const favourId = this.favour.id;
+        aceptFavour(){
+            favours.aceptFavour(this.favour.id, this.favour.user_asker_id)
+            .then(() => {
+                alert('Has aceptado el favor: '+ favourId);
+            })
+            .catch((error) => {
+                this.message = error;
+            })
+            /* const favourId = this.favour.id;
             const askerId = this.favour.user_asker_id;
             //console.log('favour_id: ' + favourId + ' | asker_id: ' + askerId);
 
@@ -112,29 +135,27 @@ export default {
                 location.reload();
             } catch (error) {
                 this.message = error.response.data.message;
-            }
+            } */
         },
         editFavour(){
-            //console.log((Number(this.$userId) === Number(this.favour.user_asker_id)) +'&&'+ (this.favour.status === "asignado") +'||'+ (this.favour.status === "pendiente") +'&&'+ !this.editButon);
-            if(this.favour.status === 'asignado') {
+             if(this.favour.status === 'asignado') {
                 //console.log('solo puedo editar el estado');
                 this.editStatus = true;
-                this.edit = false;
+                this.edit = true;
             } else {
                 //console.log('puedo editar todo');
-                this.editStatus = true;
+                this.editStatus = false;
                 this.edit = true;
             }
+            
             this.newLocation = this.favour.location;
             this.newDescription = this.favour.description;
             this.newCategory = this.favour.category;
             this.newReason = this.favour.reason;
             this.newStatus = this.favour.status;
             this.newDeadline = formatDateToInputDate(this.favour.deadline);
-            this.editButon = true;
         },
         cancelar(){
-            this.editButon = false;
             if(this.favour.status === 'asignado') {
                 this.editStatus = false;
                 this.edit = false;
@@ -171,10 +192,10 @@ export default {
             const favourId = this.favour.id;
             let favourUser, favourType;
 
-            if (Number(this.$userId) === Number(this.favour.user_asker_id)){
+            if (this.isIdUser === Number(this.favour.user_asker_id)){
                 favourUser = this.favour.user_maker_name;
                 favourType ='hecho';
-            } else if (Number(this.$userId) === Number(this.favour.user_maker_id)){
+            } else if (this.isIdUser === Number(this.favour.user_maker_id)){
                 favourUser = this.favour.user_asker_name;
                 favourType ='pedido';
             }
@@ -193,33 +214,13 @@ export default {
                 this.message1 = error.response.data.message;
                 //console.log(error.response.data.message);
             }
-        }, */
+        },
     },
     created(){
-        
-    }
-    /*
-    beforeCreate(){
-        // TRAEMOS EL ID DE USUARIO PARA TRABAJAR EN EL COMPONENTE
-        this.$userId = getUserId();
-        this.$userId > 0 ? this.login = true : this.login = false;
-    },
-    created(){
-        // TRAEMOS EL ID DE USUARIO PARA TRABAJAR EN EL COMPONENTE
-        this.$userId = getUserId();
         // APLICAR FORMATO A LAS FECHAS CON FUNCIÓN DESDE UTILS
         this.favour.deadline = formatDateToUser(this.favour.deadline);
     },
-    beforeUpdate(){
-        // SE ME HACE RECURSIVA Y NO SÉ PORQUÉ
-        for(let i=0; i<=12; i++){
-            // APLICAR FORMATO A LAS FECHAS CON FUNCIÓN DESDE UTILS 
-            this.favour.deadline = formatDateToUser(this.favour.deadline);
-            // TRAEMOS EL ID DE USUARIO PARA TRABAJAR EN EL COMPONENTE
-            this.$userId = getUserId();
-            this.$userId > 0 ? this.login = true : this.login = false;
-        }
-    },*/
+    
 }
 </script>
 

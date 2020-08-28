@@ -12,7 +12,7 @@
 
 <script>
 
-import favourdata from "@/components/FavourData.vue";
+import favourdata from "@/components/FavourDetail.vue";
 
 export default {
     name: "ListaFavours",

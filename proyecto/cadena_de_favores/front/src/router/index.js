@@ -1,8 +1,18 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import api from '@/api/api';
 
-import Home from '../views/Home.vue';
+import store from '@/store/store';
+
+import Home from '@/views/Home';
+import LoginView from '@/views/LoginView';
+import FavourListView from '@/views/FavourListView';
+import FavourDetailView from '@/views/FavourDetailView';
+import AddFavourView from '@/views/AddFavourView';
+import RegisterView from '@/views/RegisterView';
+import ProfileView from '@/views/ProfileView';
+import HeroesView from '@/views/HeroesView';
+import AboutView from '@/views/AboutView';
+import ErrorView from '@/views/ErrorView';
 
 Vue.use(VueRouter);
 
@@ -13,65 +23,64 @@ const routes = [
     component: Home
   },
   {
-    path: '/favours',
-    name: 'Favours',
-    component: () => import('../views/FavoursView.vue'),
-  },
-  {
-    path: '/heroes',
-    name: 'Heroes',
-    component: () => import('../views/HeroesView.vue'),
-  },
-  {
-    path: '/about',
-    name: 'About',
-    component: () => import('../views/AboutView.vue'),
-  },
-  {
-    path: '/add-favour',
-    name: 'AddFavour',
-    component: () => import('../views/AddFavourView.vue'),
-    /* beforeEnter: (to, from, next) => {
-      if (to.name !== 'login' && to.name === 'AddFavour' && !api.isLoggedIn()) {
-          next({name: 'login'})
-      } else {
-          next();
-      }
-    } */
-  },
-  {
-    path: '/login',
+    path: '/login/',
     name: 'Login',
-    component: () => import('../views/LoginView.vue'),
+    component: LoginView,
   },
   {
-    path: '/register',
+    path: '/favours/',
+    name: 'Favours',
+    component: FavourListView,
+  },
+  {
+    path: '/favour/:id/',
+    name: 'Favour',
+    component: FavourDetailView,
+  },
+  {
+    path: '/add-favour/',
+    name: 'AddFavour',
+    component: AddFavourView,
+    beforeEnter: (to, from, next) => {
+      if (to.name !== 'Login' && to.name === 'AddFavour' && !store.isLogged()) {
+        next({name: 'Login'})
+      } else {
+        next();
+      }
+    }
+  },
+  {
+    path: '/register/',
     name: 'Register',
-    component: () => import('../views/RegisterView.vue'),
+    component: RegisterView,
   },
   {
-    path: '/profile',
+    path: '/profile/',
     name: 'Profile',
-    component: () => import('../views/ProfileView.vue'),
-    /* beforeEnter: (to, from, next) => {
-      if (to.name !== 'login' && to.name === 'AddFavour' && !api.isLoggedIn()) {
-        next({name: 'login'})
+    component: ProfileView,
+    beforeEnter: (to, from, next) => {
+      if (to.name !== 'Login' && to.name === 'Profile' && !store.isLogged()) {
+        next({name: 'Login'})
       } else {
           next();
       }
-    } */
+    }
   },
+  {
+    path: '/heroes/',
+    name: 'Heroes',
+    component: HeroesView,
+  },
+  {
+    path: '/about/',
+    name: 'About',
+    component: AboutView,
+  },  
   {
     path: '*',
     name: 'Error',
-    component: () => import('../views/ErrorView.vue'),
+    component: ErrorView,
   }
 ];
-
-/* const router = new VueRouter({
-  routes
-});
-
-export default router; */
 
 export default routes;

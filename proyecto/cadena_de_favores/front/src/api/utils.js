@@ -167,6 +167,6 @@ export function formatDateToUser(date) {
 }
 
 // FUNCIÓN PARA PASAR LA RUTA A LAS IMÁGENES
-export function getImageName(name) {
+/* export function getImageName(name) {
     return process.env.VUE_APP_STATIC + name;
-}
+} */

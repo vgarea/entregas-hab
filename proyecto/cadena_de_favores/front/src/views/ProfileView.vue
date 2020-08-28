@@ -33,7 +33,7 @@
 <script>
 
 import axios from 'axios';
-import listafavours from '@/components/FavourCard.vue';
+import listafavours from '@/components/Favour.vue';
 
 import { getUserId, getAuthToken, logout } from '../api/utils';
 

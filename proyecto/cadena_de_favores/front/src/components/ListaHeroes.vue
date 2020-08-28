@@ -1,37 +1,38 @@
 <template>
-    <div id='heroe'>
+    <div v-if='isLoading'>
+        componente loading
+    </div>
+    <div id='heroe' v-else>
         <ul>
             <li v-for='heroe in heroes' :key='heroe.id'>
                 <p>{{ heroe.name }}</p><p>{{ heroe.surname }}</p>
                 <p>VOTOS</p><p>(estrellas)</p>
                 <p>MAKER:</p><p>{{ heroe.voteMakerAverage }}</p>
                 <p>ASKER:</p><p>{{ heroe.voteAskerAverage }}</p>
-                <img :src='getImageName(heroe.foto)' />
+                <img :src='getImage(heroe.foto)' />
             </li>
         </ul>
     </div>
 </template>
 
 <script>
-/*
-PASOS A SEGUIR:
-1 - CREAR LA FUNCIÓN EN LA API (SINO, NANAI)
-2 - CREAR EVENTO CON EL QUE ENVÍO EL ID
-3 - CREAR FUNCIÓN EN LA VISTA QUE RECOJA EL ID
-*/
-
-import { getImageName } from '../api/utils';
+import favours from '@/favours/favours';
 
 export default {
     name: 'ListaHeroes',
     props:{
         heroes: Array
     },
-     methods: {
-         getImageName(name) {
-            return process.env.VUE_APP_STATIC + name;
+    computed: {
+        isLoading(){
+            return !this.heroes;
         }
-     }
+    },
+    methods: {
+        getImage(name) {
+            return favours.getImageName(name);
+        }    
+    }
 }
 </script>
 

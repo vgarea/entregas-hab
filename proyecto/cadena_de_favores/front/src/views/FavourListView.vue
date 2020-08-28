@@ -19,7 +19,7 @@
             <option value='tareas casa'>Tareas casa</option>
             <option value='otros'>Otros</option>
           </select>
-          <input type='datetime-local' v-model='dataFav' placeholder='Escoge fecha'>
+          <input type='datetime-local' v-model='dataFav'>
           <!-- <button @click="findFavours">¿QUÉ PUEDES HACER?</button> -->
           <button @click="getFavours">¿QUÉ PUEDES HACER?</button>
         </p>
@@ -36,8 +36,9 @@
 
 <script>
 import axios from 'axios';
-import listafavours from '@/components/FavourCard.vue';
-import api from '@/api/api'
+import listafavours from '@/components/Favour.vue';
+import favours from '@/favours/favours'
+import { formatDateToDB, formatDateToInputDate } from '@/api/utils';
 
 export default {
   name: 'Favours',
@@ -55,20 +56,21 @@ export default {
       searchFav: '',
       locationFav: '',
       categoryFav: '',
-      dataFav: '',
+      dataFav: ''
     }
   },
   computed: {
   },
   methods: {
+    // Recupera la lista de favores
     getFavours() {
-      if(this.locationFav.length > 0 || this.categoryFav.length > 0 || this.dataFav.length > 0){
+      if(this.locationFav.length > 0 || this.categoryFav.length > 0 || this.dataFav !== ''){
         this.searchFav = '';
       } else if(this.searchFav === '') {
         this.searchFav = '%';
       }
 
-      api.getFavours(this.searchFav, this.locationFav, this.categoryFav, this.dataFav)
+      favours.getFavours(this.searchFav, this.locationFav, this.categoryFav, this.dataFav)
       .then(result => {
         this.favours = result;
       })
@@ -76,6 +78,22 @@ export default {
         this.cleanInputs();
       })
     },
+    // Recupera datos de la url para saber la búsqueda que viene de la home
+    viewFavours(){
+        let url = window.location.href;
+        let searchValue = url.split("?");
+
+        searchValue[1] ? this.searchFav = searchValue[1] : false;
+        /* this.findFavours(); */
+        this.getFavours();
+    },
+    // Limpiar todos los campos
+    cleanInputs(){
+      // Mejorar con un bucle que busque todos los inputs y los limpie ;)
+      this.locationFav = '';
+      this.categoryFav = '';
+      this.dataFav = '';
+    }
     /* // FUNCIÓN PARA LISTAR LOS FAVORES EN FUNCIÓN DE LA BÚSQUEDA
     async findFavours(){
       try {
@@ -108,24 +126,10 @@ export default {
         }
       }
     }, */
-    // VISUALIZACIÓN POR DEFECTO DE TODOS LOS FAVORES SI NO VIENE DE LA BÚSQUEDA DE LA HOME
-    viewFavours(){
-        let url = window.location.href;
-        let searchValue = url.split("?");
-
-        searchValue[1] ? this.searchFav = searchValue[1] : false;
-        this.findFavours();
-    },
-    cleanInputs(){
-      // Mejorar con un bucle que busque todos los inputs y los limpie ;)
-      this.locationFav = '';
-      this.categoryFav = '';
-      this.dataFav = '';
-    }
   },
   created() {
     /* this.findFavours(); */
-    this.getFavours();
+    this.viewFavours();
   }
 }
 </script>

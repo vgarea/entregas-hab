@@ -26,9 +26,6 @@
 </template>
 <script>
 
-/* import { logout, isLoggedIn } from '../api/utils'; */
-/* import utils from '@/api/utilsNew'; */
-
 export default {
     name:'MenuPpal',
     props: {

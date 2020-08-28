@@ -246,7 +246,8 @@ img {
 #profile ul li input,
 #profile ul li select,
 #addFavour section p:nth-child(even),
-#addFavour select {
+#addFavour select,
+#addFavour input {
   text-align: left;
   width: 60%;
 }
@@ -263,6 +264,7 @@ img {
 .error {
   font-size: 0.9rem;
   color: var(--red);
+  display: block;
 }
 
 /* MEDIA QUERIES */

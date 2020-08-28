@@ -18,14 +18,14 @@
                 <input v-model='newPassword' type='password' placeholder='Contraseña' />
                 <input v-model='newPassword1' type='password' placeholder='Repite aquí la contraseña' />
                 <p class='error'>{{ this.message }}</p>
-                <button @click="resetPassword()">Enviar</button>
+                <button @click="resetPassword">Enviar</button>
             </section>
             <section v-else>
                 <h1>Recupera tu contraseña</h1>
                 <input v-model='emailRecover' type='text' placeholder='Email' />
                 <a @click="recoverLogin()">Pulsa aquí si ya tienes el código</a>
                 <p class='error'>{{ this.messageMail }}</p>
-                <button @click="recoverPassword()">Enviar</button>
+                <button @click="recoverPassword">Enviar</button>
             </section>
         </section>
     </main>
@@ -38,7 +38,7 @@
     import axios from 'axios';
 
     export default {
-        name: 'Login',
+        name: 'LoginView',
         data(){
             return {
                 email: 'drgnzt@gmail.com',
@@ -54,7 +54,10 @@
                 isInvalid: false,
             }
         },
-        methods: {            
+        computed:{
+            
+        },
+        methods: {         
             /* async loginUser(){
                 if(this.email === '' || this.password === ''){
                     this.message = 'Te faltan datos.';
@@ -72,13 +75,13 @@
             // Login
             loginUser() {
                 this.isInvalid = false;
-                api.login(this.email, this.password)
-                    .then(data => {
-                        this.$emit('login', data);
-                    })
-                    .catch(() => {
-                        this.isInvalid = true;
-                    })
+                return api.login(this.email, this.password)
+                .then(data => {
+                    this.$emit('login', data);
+                })
+                .catch(() => {
+                    this.isInvalid = true;
+                })
             },
             // Limpiar campos
             resetLogin(){

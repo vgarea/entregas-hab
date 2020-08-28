@@ -23,8 +23,8 @@ async function listFavoursFind(req, res, next) {
     const orderDirection =
       (direction && direction.toLowerCase()) === "desc" ? "DESC" : "ASC";
 
-    // Proceso el campo de orden
-    
+
+    // Proceso el campo de orden    
     let orderBy;
     switch (order) {
       case "location":
@@ -33,7 +33,7 @@ async function listFavoursFind(req, res, next) {
       default:
         orderBy = "creation_date";
     }
-    
+
     // Ejecuto la query en base a si existe querystring de search / location, category, deadline
     let queryResults;
 
@@ -66,7 +66,7 @@ async function listFavoursFind(req, res, next) {
       `,
         [`%${search}%`, `%${search}%`]
       );
-    } else {
+    } else if (dataFavour !== '') {
       queryResults = await connection.query(
       `
         SELECT F.id, F.creation_date, F.deadline, F.location, F.description, F.category, F.status, F.reason, F.user_asker_id, F.user_maker_id,
@@ -80,6 +80,20 @@ async function listFavoursFind(req, res, next) {
       `,
         [`%${locationFavour}%`, `%${categoryFavour}%`, formatDateToDB(dataFavour)]
       );
+    } else {
+      queryResults = await connection.query(
+        `
+          SELECT F.id, F.creation_date, F.deadline, F.location, F.description, F.category, F.status, F.reason, F.user_asker_id, F.user_maker_id,
+          A.name AS user_asker_name, A.surname AS user_asker_surname,
+          M.name AS user_maker_name, M.surname AS user_maker_surname
+          FROM favours F
+            INNER JOIN users A ON F.user_asker_id = A.id
+            LEFT JOIN users M ON F.user_maker_id = M.id
+          WHERE F.location LIKE ? AND F.category LIKE ?
+          ORDER BY location DESC
+        `,
+          [`%${locationFavour}%`, `%${categoryFavour}%`]
+        );
     }
 
     // Extraigo los resultados reales del resultado de la query

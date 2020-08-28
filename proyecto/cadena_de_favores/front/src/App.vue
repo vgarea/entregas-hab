@@ -7,7 +7,7 @@
         <!-- :is-staff="isStaff" -->
     <router-view
         :is-authenticated="isAuthenticated"
-        :is-id-user="isIdUser"
+        :is-id-user="isIdUser"        
         @login="doLogin"
     />
     <footerppal />
@@ -16,8 +16,12 @@
 
 <script>
 import api from "@/api/api";
+import store from "@/store/store";
+
 import menuppal from '@/components/MenuPpal.vue'; 
 import footerppal from '@/components/FooterPpal.vue';
+
+const TOKEN_KEY = 'AUTH_TOKEN_KEY';
 
 export default {
   name: 'App',
@@ -29,41 +33,59 @@ export default {
         return {
             token: '',
             //refresh: '',
-            user: null,
+            //user: null,
+            sharedStore: store.state,
         }
     },
     computed: {
+        isIdUser() {
+            return Number(this.sharedStore.user);
+        },
         isAuthenticated() {
-            if(this.token != ''){
-                return true;
-            }
-            return false;
+            return this.token !== "";
         },
         /* isStaff() {
-            if (this.user !== null) {
-                return this.user.is_staff;
-            }
-            return false;
+            return store.isStaff();
         }, */
-        isIdUser(){
-            console.log('this.user '+this.user);
+        /* isIdUser(){
+            //console.log('this.user '+this.user);
             return this.user;
+        } */
+    },
+    created() {
+        let token = localStorage.getItem(TOKEN_KEY);
+        if (token !== null) {
+            this.token = token;
+            api.setAuthToken(this.token);
+            this.getUser();
         }
-
     },
     methods: {
         doLogin(data) {
-            console.log('estoy logueado ');
             this.token = data.token;
-            this.user = data.idUser;
-            //api.getOwnUser().then(user => this.user = user);
-            this.$router.push({name: 'Home'});
+            //this.refresh = data.refresh;
+            localStorage.setItem(TOKEN_KEY, this.token)
+            this.getUser()
+                this.$router.push({name: 'Home'})
         },
         doLogout() {
-            this.token = '';
-            this.user = null;
+            this.token = "";
+            //this.refresh = "";
+            localStorage.removeItem(TOKEN_KEY);
+            store.deleteUser();
             api.logout();
         },
+        getUser() {
+            return store.storeUser(api.getUserId());
+            /* return api.getUserId()
+            .then(user => {
+                store.storeUser(user);
+            }); */
+        },
+        /* async asyncGetUser() {
+            let user = await api.getUserId();
+            store.storeUser(user);
+        } */
     },
 };
 </script>
