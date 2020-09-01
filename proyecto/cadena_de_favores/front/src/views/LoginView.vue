@@ -7,8 +7,8 @@
             <input id="exampleInputEmail1" v-model='email' type='email' class="form-control" />
             <label for="exampleInputPassword1">Password</label>
             <input id="exampleInputPassword1" type='password' v-model='password' :class="{'is-invalid': isInvalid}" />
-            <a @click="resetLogin">Recupera tu contraseña</a>
             <p class='error'>{{ this.message }}</p>
+            <a @click="resetLogin">Recupera tu contraseña</a>
             <button type="submit" @click="loginUser">Enviar</button>
         </section>
         <section v-else>
@@ -34,8 +34,6 @@
 <script>
     // si consigo subir los errores a la vista
     import api from '@/api/api';
-   /*  import { login } from '@/api/utils'; */
-    import axios from 'axios';
 
     export default {
         name: 'LoginView',
@@ -57,30 +55,17 @@
         computed:{
             
         },
-        methods: {         
-            /* async loginUser(){
-                if(this.email === '' || this.password === ''){
-                    this.message = 'Te faltan datos.';
-                } else {
-                    try {
-                        await login(this.email, this.password);
-                        // SI TODO VA BIEN VOY A LA HOME Y RECARGO LA PÁGINA
-                        this.$router.push('/');
-                        location.reload();
-                    } catch (error) {
-                        this.message = error.response.data.message;
-                    }
-                }
-            }, */
-            // Login
+        methods: {
+            // Loguear usuario
             loginUser() {
                 this.isInvalid = false;
-                return api.login(this.email, this.password)
+                api.login(this.email, this.password)
                 .then(data => {
                     this.$emit('login', data);
                 })
-                .catch(() => {
+                .catch(error => {
                     this.isInvalid = true;
+                    this.message = error;
                 })
             },
             // Limpiar campos
@@ -96,19 +81,18 @@
                 } else if(this.newPassword !== this.newPassword1 ){
                     this.message = 'Las contraseñas han de ser iguales';
                 } else {
-                    try {
-                        const response = await axios.post('http://localhost:3001/users/reset-password', {
-                            recoverCode: this.code,
-                            newPassword: this.newPassword
-                        });
+                    api.resetPassword(this.code, this.newPassword)
+                    .then(response => {
+                        this.message = response;
                         this.code = '';
                         this.newPassword ='';
                         this.newPassword1 = '';
                         this.$router.push('/login');
-                        location.reload();
-                    } catch (error) {
-                        this.message = error.response.data.message;
-                    }
+                    })
+                    .catch(error => {
+                        this.isInvalid = true;
+                        this.message = error;
+                    })
                 }
             },
             recoverLogin(){
@@ -118,13 +102,14 @@
                 if(this.emailRecover === '') {
                     this.messageMail ='El campo de email debe estar cubierto';
                 } else {
-                        axios.post('http://localhost:3001/users/recover-password',
-                    {
-                        email: this.emailRecover,
-                    });
-                    this.email='';
-                    //this.$router.push('/login');
-                    //location.reload();
+                    api.recoverPassword(this.emailRecover)
+                    .then(response => {
+                        this.message = response;
+                        this.email='';
+                    })
+                    .catch(error => {
+                        this.message = error;
+                    })
                 }
             },
         }

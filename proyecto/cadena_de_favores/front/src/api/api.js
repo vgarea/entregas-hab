@@ -7,10 +7,10 @@ const instance = axios.create({
 
 export default {
     // Creo la función que hace el login
-    login: function(user, password) {
+    login: function(email, password) {
         return instance.post('users/login/', {
-                email: user,
-                password: password
+                email,
+                password
             })
             .then(response => {
                 this.setAuthToken(response.data.data.token);
@@ -18,7 +18,7 @@ export default {
                 return response.data.data;
             })
             .catch((error) => {
-                return error;
+                throw error.response.data.message;
             });
     },
     // Guardo el token
@@ -28,7 +28,6 @@ export default {
     },
      // Recupero el token
     getAuthToken: () => {
-        //console.log('getAuthToken: ' + localStorage.getItem('AUTH_TOKEN_KEY'));
         return localStorage.getItem('AUTH_TOKEN_KEY');
     },
     // Guardo el Id del usuario logueado
@@ -40,13 +39,6 @@ export default {
     getUserId: () => {
         return localStorage.getItem('USER');
     },
-    /*// Está logueado
-    isLogued() {
-        if(this.getAuthToken() != ''){
-            return true;
-        }
-        return false;
-    },*/
     // Borra el token
     logout: () => {
         localStorage.removeItem('AUTH_TOKEN_KEY');
@@ -72,15 +64,6 @@ export default {
     },
     // Estoy logueado
     isLoggedIn: function() {
-        /* let authToken = localStorage.getItem('AUTH_TOKEN_KEY');
-        console.log('authToken: ' + authToken);
-        if(authToken === '' || authToken === null){
-            return false;
-        } else {
-            return true;
-        } */
-
-        //console.log('isLoggedIn: '+ this.getAuthToken());
         let tokenExpired;
         let authToken;
         if (this.getAuthToken() !== null){
@@ -92,5 +75,31 @@ export default {
             tokenExpired = false;
         }
         return !!authToken && !tokenExpired;
+    },
+    // Resetear password
+    resetPassword: function(recoverCode, newPassword) {
+        return instance.post('users/reset-password', {
+            recoverCode,
+            newPassword
+        })
+        .then(response => {
+            return response.data.data;
+        })
+        .catch((error) => {
+            throw error.response.data.message;
+        });
+    },
+    // Recuperar contraseña
+    recoverPassword: function(email) {
+        return instance.post('users/recover-password',
+        {
+            email,
+        })
+        .then(response => {
+            return response.data.data;
+        })
+        .catch((error) => {
+            throw error.response.data.message;
+        });
     }
 }

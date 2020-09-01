@@ -39,7 +39,7 @@ export default {
     },
     computed: {
         isIdUser() {
-            return Number(this.sharedStore.user);
+            return parseInt(this.sharedStore.user);
         },
         isAuthenticated() {
             return this.token !== "";
@@ -51,14 +51,6 @@ export default {
             //console.log('this.user '+this.user);
             return this.user;
         } */
-    },
-    created() {
-        let token = localStorage.getItem(TOKEN_KEY);
-        if (token !== null) {
-            this.token = token;
-            api.setAuthToken(this.token);
-            this.getUser();
-        }
     },
     methods: {
         doLogin(data) {
@@ -74,7 +66,7 @@ export default {
             localStorage.removeItem(TOKEN_KEY);
             store.deleteUser();
             api.logout();
-            this.$router.push({name: 'Login'})
+            this.$router.push({name: 'Login'});
         },
          getUser() {
             return store.storeUser(api.getUserId());
@@ -87,6 +79,14 @@ export default {
             let user = await api.getUserId();
             store.storeUser(user);
         } */
+    },
+    created() {
+        let token = localStorage.getItem(TOKEN_KEY);
+        if (token !== null) {
+            this.token = token;
+            api.setAuthToken(this.token);
+            this.getUser();
+        }
     },
 };
 </script>

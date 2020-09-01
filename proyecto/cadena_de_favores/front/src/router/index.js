@@ -64,13 +64,6 @@ const routes = [
     path: '/profile/',
     name: 'Profile',
     component: ProfileView,
-    beforeEnter: (to, from, next) => {
-      if (to.name !== 'Login' && to.name === 'Profile' && !store.isLogged()) {
-        next({name: 'Login'})
-      } else {
-          next();
-      }
-    }
   },
   {
     path: '/heroes/',

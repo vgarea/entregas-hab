@@ -14,7 +14,7 @@ export default {
             password: password,
         })
         .catch (error => {
-            return error.response.data.message;
+            throw error.response.data.message;
         })
     },
     // Listado de usuarios
@@ -26,7 +26,7 @@ export default {
             }
         })
         .catch (error => {
-            return error.response.data.message;
+            throw error.response.data.message;
         })
     },
     // Actualizar contraseña de usuario
@@ -41,9 +41,10 @@ export default {
             }
         })
         .catch (error => {
-            return error.response.data.message;
+            throw error.response.data.message;
         })
     },
+    // Actualizar datos de usuario (no password)
     updateData: function(idUser, formData){
 
         return instance.put('users/'+ idUser, formData,
@@ -53,14 +54,27 @@ export default {
             }
         })
         .catch (error => {
-            return error.response.data.message;
+            throw error.response.data.message;
         })
     },
     // Validar un usuario
     validateUser: function(regCode) {
         return instance.get('users/validate/' + regCode)
         .catch (error => {
-            return error.response.data.message;
+            throw error.response.data.message;
         })
-    }
+    },
+    votarUsuario: function(favourId, userVote) {
+        return instace.post('favours/' + favourId + '/votes', {
+            vote: userVote
+        },
+        {
+            headers: { 
+                Authorization: `${api.getAuthToken()}`
+            }
+        })
+        .catch (error => {
+            throw error.response.data.message;
+        })
+    },
 }

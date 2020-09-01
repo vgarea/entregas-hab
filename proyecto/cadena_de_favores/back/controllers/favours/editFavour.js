@@ -92,6 +92,7 @@ async function editFavour(req, res, next) {
     // Devolver resultados
     res.send({
       status: "ok",
+      message: `Se ha editado el favor ${id}`,
       data: {
         id,
         location,

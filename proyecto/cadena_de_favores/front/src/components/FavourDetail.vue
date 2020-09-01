@@ -2,9 +2,15 @@
     <article>
         <header>
             <h1>NECESITO {{ title }} </h1>
-            <img v-if='isFoto' :src='getImage(favour.user_maker_foto)' />
+            <img v-if='isFoto' :src='getImage(favour.user_asker_foto)' />
             <img v-else :src='getImage("no-image.jpg")' />
         </header>
+        <a @click="$router.go(-1)" class='volver'>
+            <img
+                src="../assets/close.png"
+                alt="Volver"
+            />
+        </a>
         <!-- VALORES MODIFICABLES -->
         <section v-if='!edit'>
             <p><strong>Localidad:</strong></p><p>{{ favour.location }}</p>
@@ -18,7 +24,8 @@
             <p v-show='isMaker'><strong>Hace #FEIV:</strong></p>
             <p v-show='isMaker'>{{ favour.user_maker_name + ' ' + favour.user_maker_surname }}</p>
             <!-- BOTONES -->
-            <button v-show='isEditable' @click="editFavour">Editar</button>
+            <span class='error'>{{ message }}</span>
+            <button v-show='isEditable' @click="editar">Editar</button>
         </section>
         <section v-else-if='editStatus'>
             <p><strong>Localidad:</strong></p><p>{{ favour.location }}</p>
@@ -38,7 +45,8 @@
             <p v-show='isMaker'><strong>Hace #FEIV:</strong></p>
             <p v-show='isMaker'>{{ favour.user_maker_name + ' ' + favour.user_maker_surname }}</p>
             <!-- BOTONES -->
-            <button @click="actualizarDatos">ActualizarDatos</button>
+            <span class='error'>{{ message }}</span>
+            <button @click="editFavour">Actualizar datos</button>
             <button @click="cancelar">Cancelar</button>
         </section>
         <section v-else>
@@ -76,17 +84,21 @@
             <p v-show='isMaker'><strong>Hace #FEIV:</strong></p>
             <p v-show='isMaker'>{{ favour.user_maker_name + ' ' + favour.user_maker_surname }}</p>
             <!-- BOTONES -->
-            <button @click="actualizarDatos">ActualizarDatos</button>
+            <span class='error'>{{ message }}</span>
+            <button @click="editFavour">Actualizar datos</button>
             <button @click="cancelar">Cancelar</button>
         </section>
-        <button v-show='isAcepted' @click="aceptFavour">¡Acepto el reto!</button>
+        <section v-show='canVote' class='vote'>
+            <p><strong>Voto:</strong></p>
+            <input @click.prevent="" class='voteClass' type='text' v-model='userVote' placeholder="Voto" />
+            <button @click.prevent="votarUsuario">ok</button>
+        </section>
+        <button v-show='isAcepted' @click="aceptFavour(favour.id)">¡Acepto el reto!</button>
     </article>
 </template>
 
 <script>
-/* import { getAuthToken, formatDateToDB, formatDateToInputDate, formatDateToUser, logout } from '@/api/utils'; */
 import favours from '@/favours/favours';
-import axios from 'axios';
 
 export default {
     name: 'FavourDetail',
@@ -124,7 +136,7 @@ export default {
                     titleCategory = 'TRANSPORTE'
                     break;
                 case 'manitas':
-                    titleCategory = 'UN HANDYMAN/HANDYWOMAN'
+                    titleCategory = 'HANDYMAN'
                     break;
                 case 'tareas casa':
                     titleCategory = 'HOUSEKEEPER'
@@ -135,17 +147,26 @@ export default {
             }
             return titleCategory;
         },
+        canVote() {
+            return (((this.isIdUser === parseInt(this.favour.user_maker_id)) && this.favour.rating_asker === null)
+            || ((this.isIdUser === parseInt(this.favour.user_asker_id)) && this.favour.rating_maker === null))
+            && this.favour.status === "finalizado";
+        },
         isFoto() {
-            return this.favour.user_maker_foto !== null;
+            return this.favour.user_asker_foto !== null;
         },
         isMaker(){
             return this.favour.user_maker_id !== null;
         },
         isEditable(){
-            return (this.isIdUser === parseInt(this.favour.user_asker_id)) && ((this.favour.status === "asignado") || (this.favour.status === "pendiente"));
+            return (this.isIdUser === parseInt(this.favour.user_asker_id))
+            && ((this.favour.status === "asignado") || (this.favour.status === "pendiente"));
         },
         isAcepted(){
-            return (this.isIdUser !== parseInt(this.favour.user_asker_id)) && (this.favour.user_maker_id === null) && (this.favour.status !== "cancelado") && this.isAuthenticated;
+            return (this.isIdUser !== parseInt(this.favour.user_asker_id))
+            && (this.favour.user_maker_id === null)
+            && (this.favour.status !== "cancelado" || this.favour.status !== "asignado")
+            && this.isAuthenticated;
         }
     },
     methods: {
@@ -153,43 +174,25 @@ export default {
         getImage(name) {
             return favours.getImageName(name);
         },    
-        // FUNCIÓN PARA LISTAR LOS FAVORES EN FUNCIÓN DE LA BÚSQUEDA
-        aceptFavour(){
-            favours.aceptFavour(this.favour.id)
-            .then(() => {
-                alert('Has aceptado el favor: '+ favourId);
+        // Aceptar el reto de hacer un favor
+        aceptFavour(id){
+            favours.aceptFavour(id)
+            .then(response => {
+                this.message = `Has aceptado el favor con id: ${id}. Se te ha enviado un correo con los datos del usuario`;
+                setTimeout(() => {
+                    this.message='';
+                    this.favour.status = 'asignado';
+                }, 3000)
             })
             .catch((error) => {
                 this.message = error;
             })
-            /* const favourId = this.favour.id;
-            const askerId = this.favour.user_asker_id;
-            //console.log('favour_id: ' + favourId + ' | asker_id: ' + askerId);
-
-            try {
-                const response = await axios.post('http://localhost:3001/favours/' + favourId, {
-                    favour_status: 'asignado'
-                },
-                {
-                    headers: { 
-                        Authorization: `${getAuthToken()}`
-                    }
-                })
-                console.log('Aceptado el Favor ' + response);
-                alert('Has aceptado el favor: '+ favourId);
-                
-                location.reload();
-            } catch (error) {
-                this.message = error.response.data.message;
-            } */
         },
-        editFavour(){
+        editar(){
              if(this.favour.status === 'asignado') {
-                //console.log('solo puedo editar el estado');
                 this.editStatus = true;
                 this.edit = true;
             } else {
-                //console.log('puedo editar todo');
                 this.editStatus = false;
                 this.edit = true;
             }
@@ -210,60 +213,47 @@ export default {
                 this.edit = false;
             }
         },
-        async actualizarDatos(){
+        editFavour(){
             const favourId = this.favour.id;
-            try {
-                const response = await axios.put('http://localhost:3001/favours/' + favourId, {
-                    location: this.newLocation,
-                    description: this.newDescription,
-                    category: this.newCategory,
-                    reason: this.newReason,
-                    status: this.newStatus,
-                    deadline: favours.formatDateToDB(this.newDeadline)
-                },
-                {
-                    headers: { 
-                        Authorization: `${favours.getAuthToken()}`
-                    }
-                })
-                //console.log('Actualizado el Favor ' + response);
-                alert('Has actualizado el favor: '+ favourId);
-                location.reload();
-            } catch (error) {
-                this.message = error.response.data.message;
-                //console.log(error);
-            }
+            favours.editFavour(this.newLocation, this.newDescription, this.newCategory, this.newReason, this.newStatus, this.newDeadline, favourId)
+            .then((result) => {
+                this.message = result.data.message;
+                this.$emit('isupload');
+                setTimeout(() => {
+                    this.message='';
+                    this.cancelar();
+                }, 1000);
+            })
+            .catch((error) => {
+                this.message = error;
+            })
         },
-        async votarUsuario() {
+        votarUsuario() {
             const favourId = this.favour.id;
             let favourUser, favourType;
 
-            if (this.isIdUser === Number(this.favour.user_asker_id)){
+            if (this.isIdUser === parseInt(this.favour.user_asker_id)){
                 favourUser = this.favour.user_maker_name;
                 favourType ='hecho';
-            } else if (this.isIdUser === Number(this.favour.user_maker_id)){
+            } else if (this.isIdUser === parseInt(this.favour.user_maker_id)){
                 favourUser = this.favour.user_asker_name;
                 favourType ='pedido';
             }
-            try {
-                const response = await axios.post('http://localhost:3001/favours/' + favourId + '/votes', {
-                    vote: this.userVote
-                },
-                {
-                    headers: { 
-                        Authorization: `${favours.getAuthToken()}`
-                    }
-                });
-                alert(`Has votado al usuario ${favourUser} que ha ${favourType} el favor ${favourId} `);
-                location.reload();
-            } catch (error) {
-                this.message1 = error.response.data.message;
-                //console.log(error.response.data.message);
-            }
+            favours.votarUsuario(favourId, this.userVote)
+            .then((result) => {
+                this.message = result.data.message;
+                setTimeout(() => {
+                    this.message='';
+                    this.favour.status='votado';
+                }, 1000);
+            })
+            .catch((error) => {
+                this.message = error;
+            })
         },
     },
     created(){
-        // APLICAR FORMATO A LAS FECHAS CON FUNCIÓN DESDE UTILS
+        // Aplicar formato a las fechas
         this.favour.deadline = favours.formatDateToUser(this.favour.deadline);
     },
     

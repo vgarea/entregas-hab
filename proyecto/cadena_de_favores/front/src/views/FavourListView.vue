@@ -2,12 +2,12 @@
   <main id="favours" >
     <vue-headful title='#FEIVS' />
     <header>
-      <h1>#FEIVS</h1>
+      <h1>¿QUIERES SER UN #HÉROE?</h1>
     </header>
     <section id='favores' v-if="isLoaded">
       <fieldset>
         <p>
-          <label for='favour'>¿QUIERES SER UN #HÉROE?</label>
+          <h2 for='favour'>LISTADO DE #FEIS</h2>
           <input type='text' v-model='locationFav' placeholder='Localización'>
           <!-- CONVERTIR CATEGORY EN UN SELECT -->
           <select name='select' v-model='categoryFav'>
@@ -41,6 +41,7 @@
 
 <script>
 import favourdata from '@/components/FavourListDetail.vue';
+
 import favours from '@/favours/favours';
 
 export default {

@@ -6,15 +6,11 @@
         <input type='password' @focus="cleanError" v-model='password1' placeholder='Contraseña' />
         <input type='password' @focus="cleanError" v-model='password' placeholder='Repite aquí tu contraseña' />
         <p class='error'>{{ message }}</p>
-        <p v-show='errorMsg'>
-            *Tienes campos vacíos.
-        </p>
-        <button @click='validatingData()'> Enviar </button>
+        <button @click='validatingData'> Enviar </button>
     </main>
 </template>
 
 <script>
-/* import axios from 'axios'; */
 import users from '@/users/users';
 import swal from 'sweetalert2';
 
@@ -26,7 +22,7 @@ name: 'RegisterView',
             password1: '',
             password: '',
             createClient: false,
-            errorMsg: false,
+            /* errorMsg: false, */
             message: '',
         }
     },
@@ -52,13 +48,14 @@ name: 'RegisterView',
         },
         validatingData(){
             if(this.email === '' || this.password === '' || this.password1 === '') {
-                //alert('No puedes dejar campos vacíos');
                 this.sweetalertCreate(false);
-                this.errorMsg = true;
+                /* this.errorMsg = true; */
+                this.message = 'Tienes campos vacíos'
                 this.createClient = false;
             } else if(this.password != this.password1) {
                 this.sweetalertCreate(false);
-                this.errorMsg = true;
+                /* this.errorMsg = true; */
+                this.message = 'Las contraseñas no coinciden'
                 this.createClient = false;
             } else {
                 this.createClient = true;
@@ -68,22 +65,18 @@ name: 'RegisterView',
         addNewClient(){
             if(this.createClient === true){
                 users.addNewUser(this.email, this.password)
-                /* axios.post('http://localhost:3001/users', {
-                    email: this.email,
-                    password: this.password,
-                }) */
                 .then(response => {
-                    //console.log(response);
                     this.sweetalertCreate(true);
-                    this.errorMsg = false;
+                    /* this.errorMsg = false; */
                 })
                 .catch(error => {
-                    this.message = error.response.data.message;
+                    this.message = error;
                 });
                 this.createClient = false;
                 this.cleanInputs();
+                this.$router.push({name: 'Login'});
             } else {
-                console.log('Yo no debería estar aquí');
+                this.message = 'Ha habido un error y no se ha creado el nuevo usuario'
             }
         },
         cleanInputs(){

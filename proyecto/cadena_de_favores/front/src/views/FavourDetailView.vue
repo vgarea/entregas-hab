@@ -1,19 +1,13 @@
 <template>
-    <div id='favorDetail'>
+    <div id='favourDetail'>
         <div v-if="isLoaded">
-            <!-- <router-link to="/">Volver atrás</router-link> -->
-             <!-- <listafavours v-if="isLoaded"
-                :favours='favours'
-                :is-authenticated="isAuthenticated"
-                :is-id-user="isIdUser"
-            /> -->
             <ul>
-                <!-- <li v-for="favour in favours" :key="favour.id"> -->
                 <li>
                     <favourdata
                         :is-authenticated="isAuthenticated"
                         :is-id-user="isIdUser"
                         :favour="favour"
+                        @isupload="viewFavours($route.params.id)"
                     />
                 </li>
             </ul>
@@ -25,8 +19,9 @@
 </template>
 
 <script>
-import api from "@/api/api";
 import favourdata from '@/components/FavourDetail.vue';
+
+import api from "@/api/api";
 import favours from '@/favours/favours'
 
 export default {
@@ -76,7 +71,6 @@ export default {
             let searchValue = url.split("?");
 
             searchValue[1] ? this.searchFav = searchValue[1] : false;
-            /* this.findFavours(); */
             this.getFavours(id);
         },
         // Limpiar todos los campos
@@ -88,7 +82,6 @@ export default {
         }
     },
     created() {
-        /* this.findFavours(); */
         this.viewFavours(this.$route.params.id);
     }
 }

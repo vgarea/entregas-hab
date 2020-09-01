@@ -1,17 +1,22 @@
 <template>
-    <div id='heroe'>
-        <ul>
+    <div id='heroe'> 
+        <ul  v-if='isLoaded'>
             <li v-for='heroe in heroes' :key='heroe.id'>
                 <header>
-                    <h1>{{ heroe.name +' '+ heroe.surname }}</h1>
+                    <h1>#{{ heroe.alias }}</h1>
+                    <!-- <h1>{{heroe.name }}</h1> -->
+                    <!-- <h2>{{heroe.surname }}</h2> -->
                     <img v-if='isFoto' :src='getImage(heroe.foto)' />
                     <img v-else :src='getImage("no-image.jpg")' />
                 </header>
-                <p>VOTOS</p><p>(estrellas)</p>
-                <p>MAKER:</p><p>{{ heroe.voteMakerAverage }}</p>
-                <p>ASKER:</p><p>{{ heroe.voteAskerAverage }}</p>
+                <p>- COMO -</p><p>( 1-5 )</p>
+                <p>#HÉROE:</p><p>{{ heroe.voteMakerAverage }}</p>
+                <p>#ASKER:</p><p>{{ heroe.voteAskerAverage }}</p>
             </li>
         </ul>
+         <div class="loader" v-else>
+            Loading...
+        </div>
     </div>
 </template>
 
@@ -24,8 +29,8 @@ export default {
         heroes: Array
     },
     computed: {
-        isLoading(){
-            return !this.heroes;
+        isLoaded(){
+            return this.heroes;
         },
         isFoto() {
             return heroe.foto !== null;

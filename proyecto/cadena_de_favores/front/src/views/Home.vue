@@ -8,24 +8,26 @@
       <fieldset id='favourNeed'>
         <label>¿NECESITAS ALGO?</label>
         <p>Añade tu petición de ayuda</p>
-        <button @click="addFavour()">ADD #FEIV</button>
+        <button @click="addFavour">ADD #FEIV</button>
       </fieldset>
       <fieldset id='favourAsk'>
         <label for='favour'>¿QUIERES AYUDAR?</label>
         <input type='text' v-model='searchFav' placeholder='Localidad o categoría'>
         <p>Escribe una localidad, categoría o pulsa FIND #FEIV y podrás ver en qué puedes ayudar</p>
-        <button @click="sendFavours()">FIND #FEIV</button>
+        <button @click="sendFavours">FIND #FEIV</button>
         <p>{{ message }}</p>
       </fieldset>
       <!--listafavours :favours='favours' /-->
     </section>
     <section id='whatIs'>
-      <h2>¿QUÉ ES UN #FEIV?</h2>
-      <h3>Explicación aquí de qué es un #FEIV</h3>
+      <h2>¿QUÉ ES #FEIV?</h2>
+      <h3>#FEIV conecta a personas que necesitan AYUDA con #HÉROES dispuestos a AYUDARLES </h3>
     </section>
     <section id='topHeroes'>
       <h2>TOP#HEROES</h2>
-      <h3>PONER AQUÍ 3 FICHAS DE LOS HÉROES</h3>
+      <listaheroes
+        :heroes='heroes'
+      />
     </section>
     <section>
       <h2>¿CÓMO PUEDO?</h2>
@@ -42,48 +44,54 @@
 </template>
 
 <script>
-
-// @ is an alias to /src
-//import axios from 'axios';
-//import listafavours from '@/components/FavourCard.vue';
-
+import listaheroes from '@/components/ListaHeroes.vue';
+import favours from '@/favours/favours'
 export default {
   name: 'Home',
   components: {
-    //listafavours
+    listaheroes
   },
   data() {
     return {
-      //favours: [],
+      heroes: [],
+      heroesHome:[], 
       message:'',
       searchFav: '',
     }
   },
   methods: {
     // FUNCIÓN PARA ENVIAR LOS DATOS A #FAVS Y HACER AHÍ LA BÚSQUEDA Y EL FILTRADO
-    async sendFavours(){
+    sendFavours(){
       this.$router.push('/favours?'+this.searchFav);
     },
     addFavour(){
       this.$router.push('/add-favour');
     },
-    askFavour(){
-
-    },
-    makeFavour(){
-      
+    getHeroes(){
+      favours.getAllHeroes()
+      .then(result => {
+        for(let i= 0; i< 2; i++){
+          this.heroesHome[i] = result[i];
+        }
+        this.heroes = this.heroesHome;
+      })
     }
+  },
+  created() {
+    this.getHeroes();
   }
 }
 </script>
 
 <style scoped>
 h1, h2 {
-  background-color: rgba(180,202,35, 0.5);
+  background-color: rgba(126,153,0, 0.5);
   color: var(--light);
-  padding: 3rem;
+  padding: 1rem;
   margin: 0;
-
+}
+h3 {
+  font-size: 1.5rem;
 }
 #home #favours,
 #home #howIs {
@@ -152,5 +160,11 @@ h1, h2 {
 
 section {
   margin-bottom: 4rem;
+}
+@media(min-width:1201px) {
+#home #favours,
+#home #howIs {
+    max-width: none;
+  }
 }
 </style>

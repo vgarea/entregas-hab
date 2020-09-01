@@ -8,7 +8,6 @@
         <p><strong>Descripción:</strong></p><input type='text' @focus="cleanError" v-model='newDescription' placeholder="Descripción" />
 
         <p><strong>Categoría:</strong></p>
-        <!--input type='text' v-model='newCategory' placeholder="Categoría" /-->
         <select name='select' @focus="cleanError" v-model='newCategory'>
           <option disabled value="">Elige una categoría</option>
           <option value='manitas'>Manitas</option> 
@@ -19,7 +18,6 @@
         </select>
         
         <p><strong>Razón:</strong></p>
-        <!--input type='text' v-model='newReason' placeholder="Razón" /-->
         <select name='select' @focus="cleanError" v-model='newReason'>
           <option disabled value="">Cuál es tu razón</option>
           <option value='movilidad reducida'>Movilidad reducida</option> 
@@ -30,18 +28,17 @@
         
         <p><strong>Fecha límite:</strong></p><input type='datetime-local' @focus="cleanError" v-model='newDeadline' />
         <span class='error'>{{ message }}</span>
-        <button @click="actualizarDatos">Envía tu #FEIV</button>
+        <button @click="addFavour">Envía tu #FEIV</button>
       </section>
   </main>
 </template>
 
 <script>
 
-/* import { getAuthToken, getUserId, formatDateToDB, formatDateToInputDate } from '../api/utils'; */
-/* import { formatDateToDB, formatDateToInputDate } from '@/api/utils'; */
-import api from '@/api/api';
 import favours from '@/favours/favours';
-import axios from 'axios';
+
+import api from '@/api/api';
+import swal from 'sweetalert2';
 
 export default {
   name: 'AddFavourView',
@@ -51,7 +48,6 @@ export default {
   data(){
     return{
       message:'',
-      //userId: '',
       favourId: '',
       newLocation: '',
       newDescription:'',
@@ -61,10 +57,6 @@ export default {
     }
   },
   computed: {
-    //user() {
-      // TRAEMOS EL ID DE USUARIO PARA TRABAJAR EN EL COMPONENTE
-      //this.userId = this.getUser();
-    //},
     isNotLogued(){
       if(!this.isAuthenticated){
         this.$router.push({name: 'Login'});
@@ -72,18 +64,31 @@ export default {
     },
   },
   methods: {
-    /* getUser(){
-      return api.getUserId();
-    }, */
-    actualizarDatos(){
+    // Añadir un favor nuevo
+    addFavour(){
       if(this.newLocation === '' || this.newDescription === '' || this.newCategory === '' || this.newReason === '' || this.newDeadline === ''){
         this.message = 'Debes rellenar todos los campos'
       } else {
-        favours.actualizarDatos(this.newLocation, this.newDescription, this.newCategory, this.newReason, this.newDeadline);
-        alert('Tu favor se ha registrado correctamente');
-        this.cleanInputs();
+        favours.addFavour(this.newLocation, this.newDescription, this.newCategory, this.newReason, this.newDeadline)
+        .then(() => {
+          this.cleanInputs();
+          this.sweetalertCreate();
+        })
+        .catch(error => {
+          this.message = error;
+        })
       }
     },
+    sweetalertCreate(){
+      swal.fire({
+          title: 'Favor Registrado',
+          text: 'Tu favor se ha registrado correctamente',
+          icon: 'info',
+          confirmButtonText: 'Go',
+          confirmButtonColor: 'var(--accent)',
+      })
+    },
+    // Limpiar inputs
     cleanInputs() {
       console.log('limpiando')
       this.newLocation = '';
@@ -93,6 +98,7 @@ export default {
       this.newDeadline = '';
       this.message = '';
     },
+    // Limpiar mensajes
     cleanError(){
       this.message = '';
     }

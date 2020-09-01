@@ -10,8 +10,8 @@
 </template>
 
 <script>
-/* import axios from 'axios'; */
 import listaheroes from '@/components/ListaHeroes.vue';
+
 import favours from '@/favours/favours'
 
 export default {
@@ -36,18 +36,6 @@ export default {
         this.heroes = result;
       })
     }
-    /* // FUNCIÓN PARA LISTAR TODOS LOS CLIENTES
-    async getAllHeroes(){
-      try {
-        const response = await axios.get('http://localhost:3001/users')
-          console.log('heroes: ');
-          console.log(response.data.data);
-
-          this.heroes = response.data.data;
-      } catch (error) {
-        console.error(error);
-      }
-    }, */
   },
   created() {
     this.getHeroes();

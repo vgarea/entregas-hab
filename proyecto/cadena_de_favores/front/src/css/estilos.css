@@ -55,19 +55,22 @@ fieldset {
 #menu {
   margin: 0 auto;
   background-color: var(--gray);
-  height: 3rem;
+  height: 46px;
   position: sticky;
 }
 #menu div {
   max-width: 1200px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap-reverse;
 }
 /* #menu nav section.register.out {
   margin-top: 0.5rem;
 } */
 
 #menu nav section.register.in {
-  margin-top: 0.7rem;
+  /* margin-top: 0.7rem; */
 }
 
 #menu nav section.register a {
@@ -81,11 +84,9 @@ fieldset {
   padding: 30px;
   display: flex;
   flex-direction: column;
-  position: absolute;
-  right: 2rem;
-  top: 3rem;
   text-align: left;
   background-color: var(--gray);
+  width: fit-content;
 }
 
 #menu aside#nav a {
@@ -102,6 +103,8 @@ fieldset {
   justify-content: space-between;
   align-items: center;
   text-align: initial;
+  background-color: var(--gray);
+  z-index: 1;
 }
 
 #menu nav .register {
@@ -131,9 +134,9 @@ fieldset {
   color: var(--accent);
 }
 
-#menu nav .hamburgerSect {
+/* #menu nav .hamburgerSect {
   margin: 0 1rem;
-}
+} */
 
 /* FOOTER */
 footer {
@@ -190,8 +193,11 @@ input[type='datetime-local' i] {
 
 /* ESTILOS TEXTOS */
 h1 {
-  font-size: 1.5rem;
+  font-size: 2rem;
   margin: 2rem;
+}
+h2 {
+  font-size: 1.5rem
 }
 h2,
 h3 {
@@ -239,7 +245,7 @@ li,
   border: 2px solid #dddddd;
   background-color: var(--light);
   border-radius: 8px;
-  width: 450px;
+  width: 400px;
   /* padding: 1rem; */
   margin: 1rem;
   box-shadow: 0 2px 6px rgba(22,22,22,0.2);
@@ -253,38 +259,52 @@ img {
   object-position: center;
 }
 
-/* ESTILOS FAVOUR CARD */
+/* ESTILOS FAVORES CARD && FAVORES EN PROFILE && CAJAS ESTILO FEIVS */
 .description {
   max-height: 5.5rem;
   overflow: hidden;
 }
-
-/* ESTILOS FAVORESCARD && FAVORES EN PROFILE && CAJAS ESTILO FEIVS */
 #favores ul li article,
-#favorDetail ul li article,
-#heroe ul li article {
+#favourDetail ul li article,
+#heroe ul li article,
+#profile ul li article {
   margin-bottom: 1rem;
 }
 #favores ul li header,
-#favorDetail ul li header,
-#heroe ul li header {
+#favourDetail ul li header,
+#heroe ul li header,
+#profile ul li header {
   display: flex;
   justify-content: start;
   order: -1;
   flex-direction: column;
 }
 #favores ul li header h1,
-#favorDetail ul li header h1,
-#heroe ul li header h1 {
+#favourDetail ul li header h1,
+#heroe ul li header h1,
+#profile ul li header h1 {
   color: var(--accent);
 /*   align-items: center;
   align-self: center; */
   text-transform: uppercase;
+  margin: 1rem 0 0 0;
+}
+#favores ul li header h2,
+#favourDetail ul li header h2,
+#heroe ul li header h2,
+#profile ul li header h2 {
+  color: var(--accentdk);
+  text-transform: uppercase;
+  margin: 0;
+  font-size: 1.7rem;
+  margin:0 0 0.5rem 0;
+  line-height: 0.8;
 }
 #favores ul li header img,
-#favorDetail ul li header img,
-#heroe ul li header img {
-  height: 300px;
+#favourDetail ul li header img,
+#heroe ul li header img,
+#profile ul li header img {
+  height: 200px;
   order: -1;
   border-radius: 8px 8px 0 0;
 }
@@ -295,9 +315,10 @@ img {
   margin: 1rem auto;
   display: block;
 }
-#favores ul li button {
+#favores ul li button,
+#favourDetail ul li .vote button {
   display: inline-block;
-  margin: 0 auto 1rem 0;
+  /* margin: 0 auto 1rem 0; */
 }
 #favores ul li input,
 #profile ul li input,
@@ -305,16 +326,16 @@ img {
   display: inline-block;
   margin: 0;
 }
-#favorDetail {
+#favourDetail {
   margin: 5rem auto;
 }
 /* #favores ul li p:nth-child(3n + 2), */
 #favores ul li p:nth-child(2n + 2),
 #favores ul li select,
 #favores ul li input,
-#favorDetail ul li input,
-#favorDetail ul li select,
-#favorDetail ul li p:nth-child(2n + 2),
+#favourDetail ul li input,
+#favourDetail ul li select,
+#favourDetail ul li p:nth-child(2n + 2),
 #heroe ul li p:nth-child(odd),
 /* #profile ul li p:nth-child(3n + 2), */
 #profile ul li p:nth-child(2n + 2),
@@ -326,7 +347,7 @@ img {
   text-align: left;
   width: 60%;
 }
-#favorDetail ul li input {
+#favourDetail ul li input {
   display: inline-block;
   margin: 0;
 }
@@ -334,14 +355,14 @@ img {
 #profile ul li p:nth-child(3n + 1), */
 #favores ul li p:nth-child(2n + 1),
 #profile ul li p:nth-child(2n + 1),
-#favorDetail ul li p:nth-child(2n + 1),
+#favourDetail ul li p:nth-child(2n + 1),
 #heroe ul li p:nth-child(even),
 #addFavour section p:nth-child(odd) {
   text-align: right;
   width: 30%;
 }
-
-#favores .voteClass {
+#favores .voteClass,
+#favourDetail .voteClass {
   width: calc(60% - 4.5rem);
   display: inline-block;
   margin-right: 1rem;
@@ -350,8 +371,23 @@ img {
 /* ESTILOS ERRORES */
 .error {
   font-size: 0.9rem;
-  color: var(--red);
+  color: var(--contrastdk);
   display: block;
+}
+
+/* ESTILOS BOTONES NAVEGACIÓN */
+.volver {
+  position: relative;
+  /* top: -30rem; */
+  /* right: -16rem; */
+  top: -16rem;
+  right: -11rem;
+  cursor: pointer;
+}
+.volver img {
+  width: 35px;
+  box-shadow: none;
+  background-color: var(--accent);
 }
 
 /* ESTILOS LOADING */
@@ -419,44 +455,15 @@ img {
   }
 }
 
-/* ESTILOS HAMBURGER MENU */
-/* .hamburger {
-  cursor: pointer;
-  min-height: 22px;
-  max-width: 20px;
-}
-.hamburger-inner,
-.hamburger-inner:after,
-.hamburger-inner:before {
-  background-color: var(--accent);
-  position: absolute;
-  width: 24px;
-  height: 3px;
-  border-radius: 5px;
-  content: '';
-  transition-timing-function: ease;
-  transition-duration: .2s;
-  transition-property: transform,opacity;
-}
-.hamburger-inner:before {
-  top: 8px;
-}
-.hamburger-inner:after {
-  top: 16px;
-}
-.hamburger.open .hamburger-inner {
-  transform: translate3d(0,10px,0) rotate(45deg);
-}
-.hamburger.open .hamburger-inner:after,
-.fade-enter, .fade-leave-to {
-  transform: translate3d(0,-17px,0) rotate(-90deg);
-}
-.hamburger.open .hamburger-inner:before,
-.fade-enter-active, .fade-leave-active  {
-  transform: translate3d(0,-7px,0) rotate(90deg);
-} */
-
 /* MEDIA QUERIES */
+@media(min-width:1201px) {
+  .volver {
+    top: -16rem;
+    right: -11rem;
+    /* top: -16rem; */
+    /* right: -8rem; */
+  }
+}
 @media (max-width: 1200px) {
   html {
     font-size: 12px;
@@ -464,10 +471,27 @@ img {
   ul {
     width: 100%;
   }
+  #menu {
+    height: 43px;
+  }
+  .volver {
+    top: -20rem;
+    right: -14.5rem;
+  }
 }
 @media (max-width: 600px) {
   html {
     font-size: 10px;
+  }
+  li,
+  #addFavour section {
+    width: 280px;
+    margin: 0;
+  }
+  .volver {
+    /* top: -37rem; */
+    top: -23rem;
+    right: -11rem;
   }
 }
 @media (max-width: 320px) {

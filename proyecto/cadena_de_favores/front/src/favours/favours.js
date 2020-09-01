@@ -14,7 +14,7 @@ export default {
     getFavour: (id) => {
         return instance.get('favours/' + id)
         .catch((error) => {
-            return error;
+            throw error;
         })
     },
     // Listar todos los favores
@@ -31,7 +31,7 @@ export default {
             return response.data.data;
         })
         .catch(error => {
-            return error;
+            throw error;
         })
     },
     // Listado de favores como asker
@@ -43,7 +43,7 @@ export default {
             }
         })
         .catch (error => {
-            return error.response.data.message;
+            throw error.response.data.message;
         })
     },
     // Listado de favores como maker
@@ -55,7 +55,7 @@ export default {
             }
         })
         .catch (error => {
-            return error.response.data.message;
+            throw error.response.data.message;
         })
     },
     // Images
@@ -72,17 +72,17 @@ export default {
             return response.data.data;
         })
         .catch(error => {
-            return error;
+            throw error;
         })
     },
-    actualizarDatos: function(newLocation, newDescription, newCategory, newReason, newDeadline) {
-        return instance.post('favours/', {
-            location: newLocation,
-            description: newDescription,
-            category: newCategory,
-            reason: newReason,
-            status: 'pendiente',
-            deadline: this.formatDateToDB(newDeadline)
+    editFavour: function (location, description, category, reason, status, deadline, favourId) {
+        return instance.put('favours/' + favourId, {
+            location,
+            description,
+            category,
+            reason,
+            status,
+            deadline: this.formatDateToDB(deadline)
         },
         {
             headers: { 
@@ -90,13 +90,32 @@ export default {
             }
         })
         .catch (error => {
-            return error.response.data.message;
+            throw error.response.data.message;
+        })
+    },
+    addFavour: function(location, description, category, reason, deadline) {
+        return instance.post('favours/', {
+            location,
+            description,
+            category,
+            reason,
+            status: 'pendiente',
+            deadline: this.formatDateToDB(deadline)
+        },
+        {
+            headers: { 
+                Authorization: `${api.getAuthToken()}`
+            }
+        })
+        .catch (error => {
+            throw error.response.data.message;
         })
     },
     // Aceptar favor
-    aceptFavour: function(id) {
+    aceptFavour: function(id, userMaker) {
         return instance.post('favours/' + id, {
-            favour_status: 'asignado'
+            favour_status: 'asignado',
+            userMaker
         },
         {
             headers: { 
@@ -104,7 +123,7 @@ export default {
             }
         })
         .catch ((error) => {
-            return error.response.data.message;
+            throw error.response.data.message;
         });
     },
     // Votar usuario
@@ -119,7 +138,7 @@ export default {
         })
         .catch ((error) => {
             console.log(error);
-            return error.response.data.message;
+            throw error.response.data.message;
         });
     },
     // Formatear fechas

@@ -3,7 +3,7 @@
         <router-link :to="{ name: 'Favour', params: { id: favour.id } }"  v-if='isLoaded'>
             <header>
                 <h1>NECESITO {{ title }} </h1>
-                <img v-if='isFoto' :src='getImage(favour.user_maker_foto)' />
+                <img v-if='isFoto' class='askerFoto' :src='getImage(favour.user_asker_foto)' />
                 <img v-else :src='getImage("no-image.jpg")' />
             </header>
             <content>
@@ -17,8 +17,8 @@
                     <input @click.prevent="" class='voteClass' type='text' v-model='userVote' placeholder="Voto" />
                     <button @click.prevent="votarUsuario">ok</button>
                 </section>
-                {{ message }}
-                <button v-show='isAcepted' @click.prevent="aceptFavour">¡Acepto el reto!</button>
+                <span class='error'>{{ message }}</span>
+                <button v-show='isAcepted' @click.prevent="aceptFavour(favour.id)">¡Acepto el reto!</button>
             </content>
         </router-link>
         <div class="loader" v-else>
@@ -28,9 +28,7 @@
 </template>
 
 <script>
-/* import { formatDateToUser, formatDateToInputDate } from '@/api/utils'; */
 import favours from '@/favours/favours';
-import axios from 'axios';
 
 export default {
     name: 'FavourListDetail',
@@ -57,7 +55,7 @@ export default {
                     titleCategory = 'TRANSPORTE'
                     break;
                 case 'manitas':
-                    titleCategory = 'UN HANDYMAN/HANDYWOMAN'
+                    titleCategory = 'HANDYMAN'
                     break;
                 case 'tareas casa':
                     titleCategory = 'HOUSEKEEPER'
@@ -77,12 +75,12 @@ export default {
             && this.favour.status === "finalizado";
         },
         isFoto() {
-            return this.favour.user_maker_foto !== null;
+            return this.favour.user_asker_foto !== null;
         },
         isAcepted() {
             return (this.isIdUser !== parseInt(this.favour.user_asker_id))
             && (this.favour.user_maker_id === null)
-            && (this.favour.status !== "cancelado")
+            && (this.favour.status !== "cancelado" || this.favour.status !== "asignado")
             && this.isAuthenticated;
         }
     },
@@ -95,14 +93,18 @@ export default {
         getImage(name) {
             return favours.getImageName(name);
         },
-        // Búsqueda de favores
-        aceptFavour(){
-            favours.aceptFavour(this.favour.id, this.favour.user_asker_id)
-            .then(() => {
-                alert('Has aceptado el favor: '+ favourId);
+        // Aceptar el reto de hacer un favor
+        aceptFavour(id){
+            favours.aceptFavour(id)
+            .then(response => {
+                this.message = `Has aceptado el favor con id: ${id}. Se te ha enviado un correo con los datos del usuario`;
+                setTimeout(() => {
+                    this.message='';
+                    this.favour.status = 'asignado'
+                }, 3000)
             })
             .catch((error) => {
-                this.message = error.data.message;
+                this.message = error;
             })
         },
         // Votar Usuario
@@ -120,10 +122,13 @@ export default {
             favours.votarUsuario(favourId, this.userVote)
             .then((result) => {
                 this.message = result.data.message;
-                //alert(`Has votado al usuario ${favourUser} que ha ${favourType} el favor ${favourId} `);
+                setTimeout(() => {
+                    this.message='';
+                    this.favour.status='votado';
+                }, 1000)
             })
             .catch((error) => {
-                this.message = error.data.message;
+                this.message = error;
             })
         },
     },
