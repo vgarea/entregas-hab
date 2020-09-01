@@ -9,7 +9,7 @@ export default {
     // USERS
     // Añadir usuario
     addNewUser: function(email, password) {
-        return instance.post('/users', {
+        return instance.post('users', {
             email: email,
             password: password,
         })
@@ -19,31 +19,7 @@ export default {
     },
     // Listado de usuarios
     getUserData: function(idUser) {
-        return instance.get('/users/' + idUser,
-        {
-            headers: {
-                Authorization: `${api.getAuthToken()}`
-            }
-        })
-        .catch (error => {
-            return error.response.data.message;
-        })
-    },
-    // Listado de favores como asker
-    getAllFavoursAsker: function(idUser) {
-        return instance.get('/favours/asker/'+ idUser,
-        {
-            headers: {
-                Authorization: `${api.getAuthToken()}`
-            }
-        })
-        .catch (error => {
-            return error.response.data.message;
-        })
-    },
-    // Listado de favores como maker
-    getAllFavoursMaker: function(idUser) {
-        return instance.get('/favours/maker/'+ idUser,
+        return instance.get('users/' + idUser,
         {
             headers: {
                 Authorization: `${api.getAuthToken()}`
@@ -55,7 +31,7 @@ export default {
     },
     // Actualizar contraseña de usuario
     updateUser: function(idUser, passOld, passAct1) {
-        return instance.post('/users/'+ idUser +'/password', {
+        return instance.post('users/'+ idUser +'/password', {
             oldPassword: passOld,
             newPassword: passAct1
         },
@@ -70,7 +46,7 @@ export default {
     },
     updateData: function(idUser, formData){
 
-        return instance.put('/users/'+ idUser, formData,
+        return instance.put('users/'+ idUser, formData,
         {
             headers: {
                 Authorization: `${api.getAuthToken()}`
@@ -82,7 +58,7 @@ export default {
     },
     // Validar un usuario
     validateUser: function(regCode) {
-        return instance.get('/users/validate/' + regCode)
+        return instance.get('users/validate/' + regCode)
         .catch (error => {
             return error.response.data.message;
         })
