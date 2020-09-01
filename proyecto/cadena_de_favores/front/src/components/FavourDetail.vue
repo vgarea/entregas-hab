@@ -1,5 +1,10 @@
 <template>
     <article>
+        <header>
+            <h1>NECESITO {{ title }} </h1>
+            <img v-if='isFoto' :src='getImage(favour.user_maker_foto)' />
+            <img v-else :src='getImage("no-image.jpg")' />
+        </header>
         <!-- VALORES MODIFICABLES -->
         <section v-if='!edit'>
             <p><strong>Localidad:</strong></p><p>{{ favour.location }}</p>
@@ -10,10 +15,10 @@
             <p><strong>Fecha límite:</strong></p><p>{{ favour.deadline }}</p>
             <!-- PERSONAS -->
             <p><strong>Pide #FEIV:</strong></p><p>{{ favour.user_asker_name + ' ' + favour.user_asker_surname}}</p>
-            <p v-show='favour.user_maker_id !== null'><strong>Hace #FEIV:</strong></p>
-            <p v-show='favour.user_maker_id !== null'>{{ favour.user_maker_name + ' ' + favour.user_maker_surname }}</p>
+            <p v-show='isMaker'><strong>Hace #FEIV:</strong></p>
+            <p v-show='isMaker'>{{ favour.user_maker_name + ' ' + favour.user_maker_surname }}</p>
             <!-- BOTONES -->
-            <button v-show='(isIdUser === Number(favour.user_asker_id)) && ((favour.status === "asignado") || (favour.status === "pendiente"))' @click="editFavour">Editar</button>
+            <button v-show='isEditable' @click="editFavour">Editar</button>
         </section>
         <section v-else-if='editStatus'>
             <p><strong>Localidad:</strong></p><p>{{ favour.location }}</p>
@@ -22,7 +27,7 @@
             <p><strong>Razón:</strong></p><p>{{ favour.reason }}</p>
             <p><strong>Estado:</strong></p>
             <select name='select' v-model='newStatus'>
-                <option disabled value="">Estado</option>
+                <option disabled value=''>Estado</option>
                 <option value='asignado'>Asignado</option>
                 <option value='finalizado'>Finalizado</option>
                 <option value='cancelado'>Cancelado</option>
@@ -30,18 +35,20 @@
             <p><strong>Fecha límite:</strong></p><p>{{ favour.deadline }}</p>
             <!-- PERSONAS -->
             <p><strong>Pide #FEIV:</strong></p><p>{{ favour.user_asker_name + ' ' + favour.user_asker_surname}}</p>
-            <p v-show='favour.user_maker_id !== null'><strong>Hace #FEIV:</strong></p>
-            <p v-show='favour.user_maker_id !== null'>{{ favour.user_maker_name + ' ' + favour.user_maker_surname }}</p>
+            <p v-show='isMaker'><strong>Hace #FEIV:</strong></p>
+            <p v-show='isMaker'>{{ favour.user_maker_name + ' ' + favour.user_maker_surname }}</p>
             <!-- BOTONES -->
             <button @click="actualizarDatos">ActualizarDatos</button>
             <button @click="cancelar">Cancelar</button>
         </section>
         <section v-else>
-            <p><strong>Localidad:</strong></p><input type='text' v-show='edit' v-model='newLocation' placeholder="Localidad" />
-            <p><strong>Descripción:</strong></p><input type='text' v-show='edit' v-model='newDescription' placeholder="Descripción" />
+            <p><strong>Localidad:</strong></p>
+            <input type='text' v-show='edit' v-model='newLocation' placeholder="Localidad" />
+            <p><strong>Descripción:</strong></p>
+            <input type='text' v-show='edit' v-model='newDescription' placeholder="Descripción" />
             <p><strong>Categoría:</strong></p>
             <select name='select' v-model='newCategory'>
-                <option disabled value="">Categorías que puedes seleccionar</option>
+                <option disabled value=''>Categorías que puedes seleccionar</option>
                 <option value='manitas'>Manitas</option> 
                 <option value='nanny'>Nanny</option>
                 <option value='transporte'>Transporte</option>
@@ -50,7 +57,7 @@
             </select>
             <p><strong>Razón:</strong></p>
             <select name='select' v-model='newReason'>
-                <option disabled value="">Razón por la que necesitas ayuda</option>
+                <option disabled value=''>Razón por la que necesitas ayuda</option>
                 <option value='movilidad reducida'>Movilidad reducida</option> 
                 <option value='hospitalización'>Hospitalización</option>
                 <option value='vivo sol@'>Vivo sol@</option>
@@ -59,30 +66,30 @@
             </select>
             <p><strong>Estado:</strong></p>
             <select name='select' v-model='newStatus'>
-                <option disabled value="">Estado</option>
+                <option disabled value=''>Estado</option>
                 <option value='pendiente'>Pendiente</option>
                 <option value='cancelado'>Cancelado</option>
             </select>
             <p><strong>Fecha límite:</strong></p><input type='datetime-local' v-model='newDeadline' />
             <!-- PERSONAS -->
             <p><strong>Pide #FEIV:</strong></p><p>{{ favour.user_asker_name + ' ' + favour.user_asker_surname}}</p>
-            <p v-show='favour.user_maker_id !== null'><strong>Hace #FEIV:</strong></p>
-            <p v-show='favour.user_maker_id !== null'>{{ favour.user_maker_name + ' ' + favour.user_maker_surname }}</p>
+            <p v-show='isMaker'><strong>Hace #FEIV:</strong></p>
+            <p v-show='isMaker'>{{ favour.user_maker_name + ' ' + favour.user_maker_surname }}</p>
             <!-- BOTONES -->
             <button @click="actualizarDatos">ActualizarDatos</button>
             <button @click="cancelar">Cancelar</button>
         </section>
-        <button v-show='(isIdUser !== Number(favour.user_asker_id)) && (favour.user_maker_id === null) && (favour.status !== "cancelado") && isAuthenticated' @click="aceptFavour">¡Acepto el reto!</button>
+        <button v-show='isAcepted' @click="aceptFavour">¡Acepto el reto!</button>
     </article>
 </template>
 
 <script>
-import { getAuthToken, formatDateToDB, formatDateToInputDate, formatDateToUser, logout } from '@/api/utils';
+/* import { getAuthToken, formatDateToDB, formatDateToInputDate, formatDateToUser, logout } from '@/api/utils'; */
 import favours from '@/favours/favours';
 import axios from 'axios';
 
 export default {
-    name: 'FavoursData',
+    name: 'FavourDetail',
     data(){
         return{
             message:'',
@@ -106,10 +113,49 @@ export default {
         isIdUser: Number,
         favour: Object
     },
-    methods: {    
+    computed: {
+        title(){
+            let titleCategory;
+            switch (this.favour.category){
+                case 'nanny':
+                    titleCategory = 'UNA NANNY'
+                    break;
+                case 'transporte':
+                    titleCategory = 'TRANSPORTE'
+                    break;
+                case 'manitas':
+                    titleCategory = 'UN HANDYMAN/HANDYWOMAN'
+                    break;
+                case 'tareas casa':
+                    titleCategory = 'HOUSEKEEPER'
+                    break;
+                default:
+                    titleCategory = 'AYUDA'
+                    break;
+            }
+            return titleCategory;
+        },
+        isFoto() {
+            return this.favour.user_maker_foto !== null;
+        },
+        isMaker(){
+            return this.favour.user_maker_id !== null;
+        },
+        isEditable(){
+            return (this.isIdUser === parseInt(this.favour.user_asker_id)) && ((this.favour.status === "asignado") || (this.favour.status === "pendiente"));
+        },
+        isAcepted(){
+            return (this.isIdUser !== parseInt(this.favour.user_asker_id)) && (this.favour.user_maker_id === null) && (this.favour.status !== "cancelado") && this.isAuthenticated;
+        }
+    },
+    methods: {
+        // Recupera la imagen
+        getImage(name) {
+            return favours.getImageName(name);
+        },    
         // FUNCIÓN PARA LISTAR LOS FAVORES EN FUNCIÓN DE LA BÚSQUEDA
         aceptFavour(){
-            favours.aceptFavour(this.favour.id, this.favour.user_asker_id)
+            favours.aceptFavour(this.favour.id)
             .then(() => {
                 alert('Has aceptado el favor: '+ favourId);
             })
@@ -153,7 +199,7 @@ export default {
             this.newCategory = this.favour.category;
             this.newReason = this.favour.reason;
             this.newStatus = this.favour.status;
-            this.newDeadline = formatDateToInputDate(this.favour.deadline);
+            this.newDeadline = favours.formatDateToInputDate(this.favour.deadline);
         },
         cancelar(){
             if(this.favour.status === 'asignado') {
@@ -173,11 +219,11 @@ export default {
                     category: this.newCategory,
                     reason: this.newReason,
                     status: this.newStatus,
-                    deadline: formatDateToDB(this.newDeadline)
+                    deadline: favours.formatDateToDB(this.newDeadline)
                 },
                 {
                     headers: { 
-                        Authorization: `${getAuthToken()}`
+                        Authorization: `${favours.getAuthToken()}`
                     }
                 })
                 //console.log('Actualizado el Favor ' + response);
@@ -205,7 +251,7 @@ export default {
                 },
                 {
                     headers: { 
-                        Authorization: `${getAuthToken()}`
+                        Authorization: `${favours.getAuthToken()}`
                     }
                 });
                 alert(`Has votado al usuario ${favourUser} que ha ${favourType} el favor ${favourId} `);
@@ -218,7 +264,7 @@ export default {
     },
     created(){
         // APLICAR FORMATO A LAS FECHAS CON FUNCIÓN DESDE UTILS
-        this.favour.deadline = formatDateToUser(this.favour.deadline);
+        this.favour.deadline = favours.formatDateToUser(this.favour.deadline);
     },
     
 }

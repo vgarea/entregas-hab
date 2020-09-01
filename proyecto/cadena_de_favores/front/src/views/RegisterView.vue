@@ -2,22 +2,24 @@
     <main id='register'>
         <vue-headful title='REGISTRO' />
         <h1>REGISTRO</h1>
-        <input type='text'  v-model='email' placeholder='Email' />
-        <input type='password' v-model='password1' placeholder='Contraseña' />
-        <input type='password'  v-model='password' placeholder='Repite aquí tu contraseña' />
-        <button @click='validatingData()'> Enviar </button>
+        <input type='text' @focus="cleanError"  v-model='email' placeholder='Email' />
+        <input type='password' @focus="cleanError" v-model='password1' placeholder='Contraseña' />
+        <input type='password' @focus="cleanError" v-model='password' placeholder='Repite aquí tu contraseña' />
+        <p class='error'>{{ message }}</p>
         <p v-show='errorMsg'>
             *Tienes campos vacíos.
         </p>
+        <button @click='validatingData()'> Enviar </button>
     </main>
 </template>
 
 <script>
-import axios from 'axios';
+/* import axios from 'axios'; */
+import users from '@/users/users';
 import swal from 'sweetalert2';
 
 export default {
-name: 'Registro',
+name: 'RegisterView',
     data(){
         return {
             email: '',
@@ -25,6 +27,7 @@ name: 'Registro',
             password: '',
             createClient: false,
             errorMsg: false,
+            message: '',
         }
     },
     methods: {
@@ -44,7 +47,7 @@ name: 'Registro',
                 text: `${text[id].text}`,
                 icon: 'info',
                 confirmButtonText: 'Go',
-                confirmButtonColor: '#00ccff',
+                confirmButtonColor: 'var(--accent)',
             })
         },
         validatingData(){
@@ -58,23 +61,24 @@ name: 'Registro',
                 this.errorMsg = true;
                 this.createClient = false;
             } else {
-                this.sweetalertCreate(true);
-                this.errorMsg = false;
                 this.createClient = true;
                 this.addNewClient();
             }
         },
         addNewClient(){
             if(this.createClient === true){
-                axios.post('http://localhost:3001/users', {
+                users.addNewUser(this.email, this.password)
+                /* axios.post('http://localhost:3001/users', {
                     email: this.email,
                     password: this.password,
+                }) */
+                .then(response => {
+                    //console.log(response);
+                    this.sweetalertCreate(true);
+                    this.errorMsg = false;
                 })
-                .then(function(response){
-                    console.log(response);
-                })
-                .catch(function(error){
-                    console.error(error);
+                .catch(error => {
+                    this.message = error.response.data.message;
                 });
                 this.createClient = false;
                 this.cleanInputs();
@@ -86,7 +90,12 @@ name: 'Registro',
             this.email = '';
             this.password = '';
             this.password1 = '';
+            this.message = '';
         },
+         cleanError(){
+            this.message = '';
+            this.errorMsg = false;
+        }
     }
 }
 </script>

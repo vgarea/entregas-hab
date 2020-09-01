@@ -42,8 +42,8 @@ async function listFavoursFind(req, res, next) {
       queryResults = await connection.query(
       `
         SELECT F.id, F.creation_date, F.deadline, F.location, F.description, F.category, F.status, F.reason, F.user_asker_id, F.user_maker_id, F.rating_asker, F.rating_maker,
-        A.name AS user_asker_name, A.surname AS user_asker_surname,
-        M.name AS user_maker_name, M.surname AS user_maker_surname
+        A.name AS user_asker_name, A.surname AS user_asker_surname, A.foto AS user_asker_foto,
+        M.name AS user_maker_name, M.surname AS user_maker_surname, M.foto AS user_maker_foto
         FROM favours F
           INNER JOIN users A ON F.user_asker_id = A.id
           LEFT JOIN users M ON F.user_maker_id = M.id
@@ -56,8 +56,8 @@ async function listFavoursFind(req, res, next) {
       queryResults = await connection.query(
       `
         SELECT F.id, F.creation_date, F.deadline, F.location, F.description, F.category, F.status, F.reason, F.user_asker_id, F.user_maker_id, F.rating_asker, F.rating_maker,
-        A.name AS user_asker_name, A.surname AS user_asker_surname,
-        M.name AS user_maker_name, M.surname AS user_maker_surname
+        A.name AS user_asker_name, A.surname AS user_asker_surname, A.foto AS user_asker_foto,
+        M.name AS user_maker_name, M.surname AS user_maker_surname, M.foto AS user_maker_foto
         FROM favours F
           INNER JOIN users A ON F.user_asker_id = A.id
           LEFT JOIN users M ON F.user_maker_id = M.id
@@ -70,8 +70,8 @@ async function listFavoursFind(req, res, next) {
       queryResults = await connection.query(
       `
         SELECT F.id, F.creation_date, F.deadline, F.location, F.description, F.category, F.status, F.reason, F.user_asker_id, F.user_maker_id,
-        A.name AS user_asker_name, A.surname AS user_asker_surname,
-        M.name AS user_maker_name, M.surname AS user_maker_surname
+        A.name AS user_asker_name, A.surname AS user_asker_surname, A.foto AS user_asker_foto,
+        M.name AS user_maker_name, M.surname AS user_maker_surname, M.foto AS user_maker_foto
         FROM favours F
           INNER JOIN users A ON F.user_asker_id = A.id
           LEFT JOIN users M ON F.user_maker_id = M.id
@@ -84,8 +84,8 @@ async function listFavoursFind(req, res, next) {
       queryResults = await connection.query(
         `
           SELECT F.id, F.creation_date, F.deadline, F.location, F.description, F.category, F.status, F.reason, F.user_asker_id, F.user_maker_id,
-          A.name AS user_asker_name, A.surname AS user_asker_surname,
-          M.name AS user_maker_name, M.surname AS user_maker_surname
+          A.name AS user_asker_name, A.surname AS user_asker_surname, A.foto AS user_asker_foto,
+          M.name AS user_maker_name, M.surname AS user_maker_surname, M.foto AS user_maker_foto
           FROM favours F
             INNER JOIN users A ON F.user_asker_id = A.id
             LEFT JOIN users M ON F.user_maker_id = M.id

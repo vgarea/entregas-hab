@@ -4,11 +4,19 @@
 /* RESETEO DE ESTILOS */
 
 html {
-  --accent: #00ccff;
-  --gray: #222222;
+  /* --accent: #00ccff; */
+  --accent: #b2ca06;
+  --accentlt: #e7fd4f;
+  --accentdk: #7e9900;
+  --contrast: #ff6f00;
+  --contrastlt: #ffa040;
+  --contrastdk: #c43e00;
+  --gray: #3b3b3b;
+  --graymd: #757575;
+  --graylt: #cccccc;
   --light: #ffffff;
-  --red: #ad1111;
-  --green: #059005;
+  /* --red: #ad1111; */
+  /* --green: #059005; */
   --font: Quicksand, sans-serif;
 }
 
@@ -50,10 +58,13 @@ fieldset {
   height: 3rem;
   position: sticky;
 }
-
-#menu nav section.register.out {
-  margin-top: 0.5rem;
+#menu div {
+  max-width: 1200px;
+  margin: 0 auto;
 }
+/* #menu nav section.register.out {
+  margin-top: 0.5rem;
+} */
 
 #menu nav section.register.in {
   margin-top: 0.7rem;
@@ -62,7 +73,7 @@ fieldset {
 #menu nav section.register a {
   padding: 0.3rem 0.75rem;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: bold;
   color: var(--light);
 }
 
@@ -71,7 +82,7 @@ fieldset {
   display: flex;
   flex-direction: column;
   position: absolute;
-  right: 20rem;
+  right: 2rem;
   top: 3rem;
   text-align: left;
   background-color: var(--gray);
@@ -86,15 +97,21 @@ fieldset {
 }
 
 #menu nav {
-  margin: 0 24rem;
+  margin: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: initial;
 }
 
 #menu nav .register {
-  float: right;
+  /* float: right; */
+  flex-grow: 1;
+  text-align: right;
 }
 
 #menu nav .logo {
-  float: left;
+  /* float: left; */
   color: var(--light);
   font-weight: 700;
   font-size: 1.2rem;
@@ -112,6 +129,10 @@ fieldset {
 
 #menu nav #nav a.router-link-exact-active {
   color: var(--accent);
+}
+
+#menu nav .hamburgerSect {
+  margin: 0 1rem;
 }
 
 /* FOOTER */
@@ -142,10 +163,14 @@ button {
   border: none;
   background: var(--accent);
   color: var(--light);
-  padding: 0.3rem 0.75rem;
+  padding: 0.3rem 2rem;
   border-radius: 0.4rem;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: bold;
+}
+
+#validate button a {
+  color: var(--light);
 }
 
 input:focus,
@@ -176,7 +201,7 @@ li p,
 #addFavour section p {
   display: inline-block;
   width: 50%;
-  padding: 0.3rem;
+  padding: 0.4rem;
   vertical-align: top;
 }
 li div button {
@@ -188,7 +213,7 @@ li div.noStock,
 li div.edit {
   margin: 1rem auto;
 }
-li p:nth-child(even) {
+li p:nth-child(even){
   text-align: left;
 }
 li p:nth-child(odd) {
@@ -197,39 +222,82 @@ li p:nth-child(odd) {
 strong {
   font-weight: 600;
 }
+
 /* ESTILOS LISTADOS */
 ul {
   display: flex;
-  justify-content: center;
   flex-wrap: wrap;
   flex-direction: row;
+  justify-content: center;
+  align-items: stretch;
   margin: 0 auto;
   max-width: 1200px;
+  width: 1200px;
 }
 li,
 #addFavour section {
-  border: 2px solid var(--accent);
+  border: 2px solid #dddddd;
   background-color: var(--light);
-  border-radius: 2rem;
+  border-radius: 8px;
   width: 450px;
-  padding: 1rem;
+  /* padding: 1rem; */
   margin: 1rem;
+  box-shadow: 0 2px 6px rgba(22,22,22,0.2);
 }
 img {
-  height: 300px;
+  /* height: 300px; */
   /*border: 2px solid var(--accent);*/
-  box-shadow: 2px 2px 6px rgba(0, 204, 255, 0.1);
-  border-radius: 1.5rem;
+  box-shadow: 2px 2px 6px rgba(22, 22, 22, 0.2);
+  border-radius: 8px;
   object-fit: cover;
   object-position: center;
 }
 
+/* ESTILOS FAVOUR CARD */
+.description {
+  max-height: 5.5rem;
+  overflow: hidden;
+}
+
 /* ESTILOS FAVORESCARD && FAVORES EN PROFILE && CAJAS ESTILO FEIVS */
-#favores ul li button,
+#favores ul li article,
+#favorDetail ul li article,
+#heroe ul li article {
+  margin-bottom: 1rem;
+}
+#favores ul li header,
+#favorDetail ul li header,
+#heroe ul li header {
+  display: flex;
+  justify-content: start;
+  order: -1;
+  flex-direction: column;
+}
+#favores ul li header h1,
+#favorDetail ul li header h1,
+#heroe ul li header h1 {
+  color: var(--accent);
+/*   align-items: center;
+  align-self: center; */
+  text-transform: uppercase;
+}
+#favores ul li header img,
+#favorDetail ul li header img,
+#heroe ul li header img {
+  height: 300px;
+  order: -1;
+  border-radius: 8px 8px 0 0;
+}
+
+/* #favores ul li button, */
 #profile ul li button,
 #addFavour section button {
-  margin: 2rem auto 0 auto;
+  margin: 1rem auto;
   display: block;
+}
+#favores ul li button {
+  display: inline-block;
+  margin: 0 auto 1rem 0;
 }
 #favores ul li input,
 #profile ul li input,
@@ -237,10 +305,17 @@ img {
   display: inline-block;
   margin: 0;
 }
+#favorDetail {
+  margin: 5rem auto;
+}
 /* #favores ul li p:nth-child(3n + 2), */
-#favores ul li p:nth-child(2n + 2)
-#favores ul li input,
+#favores ul li p:nth-child(2n + 2),
 #favores ul li select,
+#favores ul li input,
+#favorDetail ul li input,
+#favorDetail ul li select,
+#favorDetail ul li p:nth-child(2n + 2),
+#heroe ul li p:nth-child(odd),
 /* #profile ul li p:nth-child(3n + 2), */
 #profile ul li p:nth-child(2n + 2),
 #profile ul li input,
@@ -251,13 +326,25 @@ img {
   text-align: left;
   width: 60%;
 }
+#favorDetail ul li input {
+  display: inline-block;
+  margin: 0;
+}
 /* #favores ul li p:nth-child(3n + 1),
 #profile ul li p:nth-child(3n + 1), */
 #favores ul li p:nth-child(2n + 1),
 #profile ul li p:nth-child(2n + 1),
+#favorDetail ul li p:nth-child(2n + 1),
+#heroe ul li p:nth-child(even),
 #addFavour section p:nth-child(odd) {
   text-align: right;
-  width: 40%;
+  width: 30%;
+}
+
+#favores .voteClass {
+  width: calc(60% - 4.5rem);
+  display: inline-block;
+  margin-right: 1rem;
 }
 
 /* ESTILOS ERRORES */
@@ -267,10 +354,115 @@ img {
   display: block;
 }
 
+/* ESTILOS LOADING */
+.loader {
+  font-size: 10px;
+  margin: 50px auto;
+  text-indent: -9999em;
+  width: 11em;
+  height: 11em;
+  border-radius: 50%;
+  background: var(--accent);
+  background: -moz-linear-gradient(left, var(--accent) 10%, rgba(180,202,35, 0) 42%);
+  background: -webkit-linear-gradient(left, var(--accent) 10%, rgba(180,202,35, 0) 42%);
+  background: -o-linear-gradient(left, var(--accent) 10%, rgba(180,202,35, 0) 42%);
+  background: -ms-linear-gradient(left, var(--accent) 10%, rgba(180,202,35, 0) 42%);
+  background: linear-gradient(to right, var(--accent) 10%, rgba(180,202,35, 0) 42%);
+  position: relative;
+  -webkit-animation: load3 1.4s infinite linear;
+  animation: load3 1.4s infinite linear;
+  -webkit-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+}
+.loader:before {
+  width: 50%;
+  height: 50%;
+  background: var(--light);
+  border-radius: 100% 0 0 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  content: '';
+}
+.loader:after {
+  background: var(--light);
+  width: 75%;
+  height: 75%;
+  border-radius: 50%;
+  content: '';
+  margin: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+@-webkit-keyframes load3 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes load3 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+/* ESTILOS HAMBURGER MENU */
+/* .hamburger {
+  cursor: pointer;
+  min-height: 22px;
+  max-width: 20px;
+}
+.hamburger-inner,
+.hamburger-inner:after,
+.hamburger-inner:before {
+  background-color: var(--accent);
+  position: absolute;
+  width: 24px;
+  height: 3px;
+  border-radius: 5px;
+  content: '';
+  transition-timing-function: ease;
+  transition-duration: .2s;
+  transition-property: transform,opacity;
+}
+.hamburger-inner:before {
+  top: 8px;
+}
+.hamburger-inner:after {
+  top: 16px;
+}
+.hamburger.open .hamburger-inner {
+  transform: translate3d(0,10px,0) rotate(45deg);
+}
+.hamburger.open .hamburger-inner:after,
+.fade-enter, .fade-leave-to {
+  transform: translate3d(0,-17px,0) rotate(-90deg);
+}
+.hamburger.open .hamburger-inner:before,
+.fade-enter-active, .fade-leave-active  {
+  transform: translate3d(0,-7px,0) rotate(90deg);
+} */
+
 /* MEDIA QUERIES */
 @media (max-width: 1200px) {
   html {
     font-size: 12px;
+  }
+  ul {
+    width: 100%;
   }
 }
 @media (max-width: 600px) {

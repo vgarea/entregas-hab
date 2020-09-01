@@ -1,12 +1,12 @@
 <template>
-  <main v-if='isLoading'>
-    Aquí el componente del loading
-  </main>
-  <main id='heroes' v-else>
+  <main id='heroes' v-if="isLoaded">
       <vue-headful title='#HEROES' />
       <h1>#HEROES</h1>
       <listaheroes :heroes='heroes' />
   </main>
+  <div class="loader" v-else>
+        Loading...
+  </div>
 </template>
 
 <script>
@@ -15,7 +15,7 @@ import listaheroes from '@/components/ListaHeroes.vue';
 import favours from '@/favours/favours'
 
 export default {
-  name: 'Heroes',
+  name: 'HeroesView',
   components: {
     listaheroes
   },
@@ -25,8 +25,8 @@ export default {
     }
   },
   computed: {
-    isLoading(){
-      return !!!this.heroes;
+    isLoaded(){
+      return this.heroes !== null;
     }
   },
   methods: {

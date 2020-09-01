@@ -1,43 +1,95 @@
 <template>
-    <div>
+    <div id='favorDetail'>
         <div v-if="isLoaded">
-            <router-link to="/">Volver atrás</router-link>
-            <product v-if="isLoaded" :product="product"></product>
-            <h3 class="text-left mt-3">Esta es la descripción del producto</h3>
-            <p class="text-left">
-                {{ product.description }}
-            </p>
+            <!-- <router-link to="/">Volver atrás</router-link> -->
+             <!-- <listafavours v-if="isLoaded"
+                :favours='favours'
+                :is-authenticated="isAuthenticated"
+                :is-id-user="isIdUser"
+            /> -->
+            <ul>
+                <!-- <li v-for="favour in favours" :key="favour.id"> -->
+                <li>
+                    <favourdata
+                        :is-authenticated="isAuthenticated"
+                        :is-id-user="isIdUser"
+                        :favour="favour"
+                    />
+                </li>
+            </ul>
         </div>
-
-        <div v-else class="spinner-border" role="status">
-            <span class="sr-only">Cargando...</span>
+          <div class="loader" v-else>
+                Loading...
         </div>
-
     </div>
 </template>
 
 <script>
 import api from "@/api/api";
-import product from "@/components/FavourDetail";
+import favourdata from '@/components/FavourDetail.vue';
+import favours from '@/favours/favours'
 
 export default {
-    name: "ProductDetailView",
+    name: "FavourDetailView",
+    props: {
+        isAuthenticated: Boolean,
+        isIdUser: Number
+    },
     components: {
-        product,
+        favourdata,
     },
     data() {
         return {
-            product: null
+            favour:null,
+            message:'',
+            searchFav: '',
+            locationFav: '',
+            categoryFav: '',
+            dataFav: ''
         }
     },
     computed: {
-        isLoaded() {
-            return this.product !== null;
+        isLoaded(){
+            return this.favour !== null;
+        }
+    },
+     methods: {
+        // Recupera la lista de favores
+        getFavours(id) {
+            if(this.locationFav.length > 0 || this.categoryFav.length > 0 || this.dataFav !== ''){
+                this.searchFav = '';
+            } else if(this.searchFav === '') {
+                this.searchFav = '%';
+            }
+
+            favours.getFavour(id)
+            .then(result => {
+                this.favour = result.data.data[0];
+            })
+            .then(() => {
+                this.cleanInputs();
+            })
+        },
+        // Recupera datos de la url para saber la búsqueda que viene de la home
+        viewFavours(id){
+            let url = window.location.href;
+            let searchValue = url.split("?");
+
+            searchValue[1] ? this.searchFav = searchValue[1] : false;
+            /* this.findFavours(); */
+            this.getFavours(id);
+        },
+        // Limpiar todos los campos
+        cleanInputs(){
+        // Mejorar con un bucle que busque todos los inputs y los limpie ;)
+        this.locationFav = '';
+        this.categoryFav = '';
+        this.dataFav = '';
         }
     },
     created() {
-        api.getProduct(this.$route.params.id)
-            .then(product => this.product = product)
+        /* this.findFavours(); */
+        this.viewFavours(this.$route.params.id);
     }
 }
 </script>

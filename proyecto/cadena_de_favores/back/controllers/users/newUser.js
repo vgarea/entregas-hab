@@ -32,7 +32,8 @@ async function newUser(req, res, next) {
     // http://localhost:3000/users/validate/454e5109e4f3245c63be6fddb9ab05e4296ad1c6
 
     const registrationCode = randomString(40);
-    const validationURL = `${process.env.PUBLIC_HOST}/users/validate/${registrationCode}`;
+    //const validationURL = `${process.env.PUBLIC_HOST}/users/validate/${registrationCode}`;
+    const validationURL = `${process.env.FRONT_HOST}/activar?${registrationCode}`;
 
     //Enviamos la url anterior por mail
     try {

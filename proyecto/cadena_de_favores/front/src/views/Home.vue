@@ -79,7 +79,7 @@ export default {
 
 <style scoped>
 h1, h2 {
-  background-color: rgba(0, 204, 255, 0.5);
+  background-color: rgba(180,202,35, 0.5);
   color: var(--light);
   padding: 3rem;
   margin: 0;
@@ -89,13 +89,14 @@ h1, h2 {
 #home #howIs {
   display: flex;
   flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
   max-width: 1200px;
-  margin: 0 auto;
 }
 #home #favours fieldset,
 #home #howIs fieldset {
   border: 1px solid var(--gray);
-  margin: 6rem auto;
+  margin: 6rem 1rem;
   padding: 2rem;
   border-radius: 1rem;
   width: 450px;

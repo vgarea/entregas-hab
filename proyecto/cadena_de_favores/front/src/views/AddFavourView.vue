@@ -1,8 +1,5 @@
 <template>
-  <main v-if='isNotLogued'>
-    Aquí el componente del loading
-  </main>
-  <main id="addFavour" v-else>
+  <main id="addFavour">
     <vue-headful title='ENVÍA TU #FEIV' />
       <h1>#FEIVS</h1>
       <section>
@@ -47,7 +44,7 @@ import favours from '@/favours/favours';
 import axios from 'axios';
 
 export default {
-  name: 'AddFavour',
+  name: 'AddFavourView',
   props: {
       isAuthenticated: Boolean,
   },

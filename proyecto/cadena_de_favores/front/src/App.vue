@@ -66,7 +66,9 @@ export default {
             //this.refresh = data.refresh;
             localStorage.setItem(TOKEN_KEY, this.token)
             this.getUser()
-                this.$router.push({name: 'Home'})
+                .then(() =>  {
+                    this.$router.push({name: 'Home'})
+                })
         },
         doLogout() {
             this.token = "";
@@ -74,8 +76,9 @@ export default {
             localStorage.removeItem(TOKEN_KEY);
             store.deleteUser();
             api.logout();
+            this.$router.push({name: 'Login'})
         },
-        getUser() {
+        async getUser() {
             return store.storeUser(api.getUserId());
             /* return api.getUserId()
             .then(user => {

@@ -14,8 +14,9 @@ const listFavours = require("./controllers/favours/listFavours");
 const listFavoursFind = require("./controllers/favours/listFavoursFind");
 const listFavoursAsker = require("./controllers/favours/listFavoursAsker");
 const listFavoursMaker = require("./controllers/favours/listFavoursMaker");
-const asignFavour = require("./controllers/favours/asignFavour");
+const getFavour = require("./controllers/favours/getFavour");
 const editFavour = require("./controllers/favours/editFavour");
+const asignFavour = require("./controllers/favours/asignFavour");
 const voteFavour = require("./controllers/favours/voteFavour");
 const newFavour = require("./controllers/favours/newFavour");
 const deleteFavour = require("./controllers/favours/deleteFavour");
@@ -64,6 +65,11 @@ app.use(express.static("static"));
 // GET - /favours ✅
 // Público
 app.get("/favours", listFavours);
+
+// Listar multiples entradas de favores
+// GET - /favours ✅
+// Público
+app.get("/favours/:id", getFavour);
 
 // Listar multiples entradas de favores
 // POST - /favours ✅

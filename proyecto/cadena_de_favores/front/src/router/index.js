@@ -5,6 +5,7 @@ import store from '@/store/store';
 
 import Home from '@/views/Home';
 import LoginView from '@/views/LoginView';
+import UserValidateView from '@/views/UserValidateView';
 import FavourListView from '@/views/FavourListView';
 import FavourDetailView from '@/views/FavourDetailView';
 import AddFavourView from '@/views/AddFavourView';
@@ -26,6 +27,11 @@ const routes = [
     path: '/login/',
     name: 'Login',
     component: LoginView,
+  },
+  {
+    path: '/activar/',
+    name: 'UserValidate',
+    component: UserValidateView,
   },
   {
     path: '/favours/',

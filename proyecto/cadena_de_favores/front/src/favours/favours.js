@@ -1,6 +1,8 @@
 import axios from 'axios';
 import api from '@/api/api';
-import { formatDateToDB } from '@/api/utils'
+
+import { format, addMinutes } from "date-fns";
+import es from "date-fns/locale/es";
 
 const instance = axios.create({
     baseURL: process.env.VUE_APP_SERVER_URL,
@@ -8,21 +10,52 @@ const instance = axios.create({
 
 export default {
     // FAVOURS
+    // Recuperar valores de un favor
+    getFavour: (id) => {
+        return instance.get('favours/' + id)
+        .catch((error) => {
+            return error;
+        })
+    },
     // Listar todos los favores
     getFavours: function(searchFav, locationFav, categoryFav, dataFav) {
         //console.log('searchFav '+searchFav+' locationFav '+locationFav+' categoryFav '+ categoryFav + ' dataFav ' +dataFav)
         return instance.post('favours/find', {
-        search: searchFav,
-        locationFavour: locationFav,
-        categoryFavour: categoryFav,
-        dataFavour: dataFav
+            search: searchFav,
+            locationFavour: locationFav,
+            categoryFavour: categoryFav,
+            dataFavour: dataFav
         })
         .then(response => {
             //console.log('response: '+response.data.data);
             return response.data.data;
         })
         .catch(error => {
-            console.error(error);
+            return error;
+        })
+    },
+    // Listado de favores como asker
+    getAllFavoursAsker: function(idUser) {
+        return instance.get('favours/asker/'+ idUser,
+        {
+            headers: {
+                Authorization: `${api.getAuthToken()}`
+            }
+        })
+        .catch (error => {
+            return error.response.data.message;
+        })
+    },
+    // Listado de favores como maker
+    getAllFavoursMaker: function(idUser) {
+        return instance.get('favours/maker/'+ idUser,
+        {
+            headers: {
+                Authorization: `${api.getAuthToken()}`
+            }
+        })
+        .catch (error => {
+            return error.response.data.message;
         })
     },
     // Images
@@ -39,7 +72,7 @@ export default {
             return response.data.data;
         })
         .catch(error => {
-            console.error(error);
+            return error;
         })
     },
     actualizarDatos: function(newLocation, newDescription, newCategory, newReason, newDeadline) {
@@ -49,7 +82,7 @@ export default {
             category: newCategory,
             reason: newReason,
             status: 'pendiente',
-            deadline: formatDateToDB(newDeadline)
+            deadline: this.formatDateToDB(newDeadline)
         },
         {
             headers: { 
@@ -60,12 +93,9 @@ export default {
             return error.response.data.message;
         })
     },
-    // FUNCIÓN PARA LISTAR LOS FAVORES EN FUNCIÓN DE LA BÚSQUEDA
-    aceptFavour: function(id, user_asker) {
-        const favourId = id;
-        const askerId = user_asker;
-        //console.log('favour_id: ' + favourId + ' | asker_id: ' + askerId);
-        return instance.post('favours/' + favourId, {
+    // Aceptar favor
+    aceptFavour: function(id) {
+        return instance.post('favours/' + id, {
             favour_status: 'asignado'
         },
         {
@@ -77,4 +107,68 @@ export default {
             return error.response.data.message;
         });
     },
+    // Votar usuario
+    votarUsuario: (favourId, userVote ) => {
+        return instance.post('favours/' + favourId + '/votes', {
+            vote: userVote
+        },
+        {
+            headers: { 
+                Authorization: `${api.getAuthToken()}`
+            }
+        })
+        .catch ((error) => {
+            console.log(error);
+            return error.response.data.message;
+        });
+    },
+    // Formatear fechas
+    // FUNCIÓN PARA CAMBIAR LA HORA A DB
+    formatDateToDB: (date) => {
+        let internalDate;
+        if(typeof date === 'string'){
+            internalDate = new Date(date);
+        } else {
+            internalDate = date;
+        }
+        const adjustedDate = addMinutes(
+            internalDate,
+            internalDate.getTimezoneOffset()
+        );
+        return format(adjustedDate, "yyyy-MM-dd HH:mm:ss", { locale: es });
+    },
+    // FUNCIÓN PARA CAMBIAR LA HORA EN LOS INPUT DATA-
+    formatDateToInputDate: (date) => {
+        let internalDate;
+
+        if(typeof date === 'string'){
+            internalDate = new Date(date);
+        } else {
+            internalDate = date;
+        }
+
+        const adjustedDate = addMinutes(
+            internalDate,
+            internalDate.getTimezoneOffset()
+        );
+
+        const dateDay = format(internalDate, "yyy-MM-dd", { locale: es });
+        const dateHour = format(internalDate, "p", { locale: es });
+
+        return String(dateDay +'T'+ dateHour);
+    },
+    // FUNCIÓN PARA PONER BIEN LA HORA EN LOCAL
+    formatDateToUser: (date) => {
+        let internalDate;
+        if(typeof date === 'string'){
+            internalDate = new Date(date);
+        } else {
+            internalDate = date;
+        }
+        const adjustedDate = addMinutes(
+            internalDate,
+            internalDate.getTimezoneOffset()
+        );
+        return format(new Date(adjustedDate), "yyyy-MM-dd p", { locale: es });
+    }
 }

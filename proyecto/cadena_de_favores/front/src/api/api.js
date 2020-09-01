@@ -18,7 +18,7 @@ export default {
                 return response.data.data;
             })
             .catch((error) => {
-                console.log(error);
+                return error;
             });
     },
     // Guardo el token
@@ -92,6 +92,5 @@ export default {
             tokenExpired = false;
         }
         return !!authToken && !tokenExpired;
-       
-    },
+    }
 }

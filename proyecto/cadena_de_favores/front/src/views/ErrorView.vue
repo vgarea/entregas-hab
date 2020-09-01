@@ -9,7 +9,7 @@
 
 <script>
 export default {
-    name: 'Error'
+    name: 'ErrorView'
 }
 </script>
 
