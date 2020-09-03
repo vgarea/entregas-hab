@@ -2,7 +2,7 @@
   <main id='home'>
     <vue-headful title='CADENA DE #FEIVS' />
     <header>
-      <h1>#FEIVORS</h1>
+      <h1>#FEIVS</h1>
     </header>
     <section id='favours'>
       <fieldset id='favourNeed'>
@@ -84,11 +84,43 @@ export default {
 </script>
 
 <style scoped>
-h1, h2 {
-  background-color: rgba(126,153,0, 0.5);
+#home {
+  font-weight: 600;
+}
+#home h1,
+#home h2 {
+  background-color: rgba(178, 202, 6, 0.5);
   color: var(--light);
+  /* background-color: rgba(126,153,0, 0.5); */
+  font-weight: bold;
   padding: 1rem;
   margin: 0;
+}
+#home h2,
+#home h3 {
+  color: var(--gray);
+  padding: 2rem 0;
+}
+#home h3 {
+  padding: 2rem 0 0 0
+}
+#home #howIs h3 {
+  padding: 4rem;
+  margin: 0;
+}
+#home h1:before {
+  content: '';
+  background-image: url('../assets/FEIV_home.jpg');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 668px;
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  opacity: 0.8;
 }
 h3 {
   font-size: 1.5rem;
@@ -108,6 +140,7 @@ h3 {
   padding: 2rem;
   border-radius: 1rem;
   width: 450px;
+  background: rgba(255,255,255,0.8);
 }
 #home #howIs fieldset {
   cursor: pointer;
@@ -118,7 +151,7 @@ h3 {
   color: var(--light);
 }
 #home #favours fieldset label {
-  color: var(--accent);
+  color: var(--accentdk);
   text-align: center;
   font-size: 1.3rem;
   font-weight: 700;
@@ -158,8 +191,13 @@ h3 {
   margin: 2rem 0 1rem 0;
 }
 
-section {
-  margin-bottom: 4rem;
+#home #heroe {
+  margin-top: 4rem;
+}
+
+#home section {
+  padding: 2rem 0;
+  background-color: rgba(126, 146, 0, 0.1);
 }
 @media(min-width:1201px) {
 #home #favours,
