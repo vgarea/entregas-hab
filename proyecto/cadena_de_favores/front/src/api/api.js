@@ -101,5 +101,5 @@ export default {
         .catch((error) => {
             throw error.response.data.message;
         });
-    }
+    },
 }

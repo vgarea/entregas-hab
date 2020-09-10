@@ -1,27 +1,29 @@
 <template>
     <article>
         <header>
+            <i class='status' :style="{ backgroundColor: status }"></i>
+            <a @click="favourBack" class='volver'></a>
             <h1>NECESITO {{ title }} </h1>
             <img v-if='isFoto' :src='getImage(favour.user_asker_foto)' />
             <img v-else :src='getImage("no-image.jpg")' />
         </header>
-        <a @click="$router.go(-1)" class='volver'>
+        <!-- <a @click="$router.go(-1)" class='volver'>
             <img
                 src="../assets/close.png"
                 alt="Volver"
             />
-        </a>
+        </a> -->
         <!-- VALORES MODIFICABLES -->
         <section v-if='!edit'>
             <p><strong>Localidad:</strong></p><p>{{ favour.location }}</p>
             <p><strong>Descripción:</strong></p><p>{{ favour.description }}</p>
             <p><strong>Categoría:</strong></p><p>{{ favour.category }}</p>
             <p><strong>Razón:</strong></p><p>{{ favour.reason }}</p>
-            <p><strong>Estado:</strong></p><p>{{ favour.status }}</p>
+            <!-- <p><strong>Estado:</strong></p><p>{{ favour.status }}</p> -->
             <p><strong>Fecha límite:</strong></p><p>{{ favour.deadline }}</p>
             <!-- PERSONAS -->
-            <p><strong>Pide #FEIV:</strong></p><p>{{ favour.user_asker_name + ' ' + favour.user_asker_surname}}</p>
-            <p v-show='isMaker'><strong>Hace #FEIV:</strong></p>
+            <p><strong>Pide <i class='icoBk logo lt'></i>FEIV:</strong></p><p>{{ favour.user_asker_name + ' ' + favour.user_asker_surname}}</p>
+            <p v-show='isMaker'><strong>Hace <i class='icoBk logo lt'></i>FEIV:</strong></p>
             <p v-show='isMaker'>{{ favour.user_maker_name + ' ' + favour.user_maker_surname }}</p>
             <!-- BOTONES -->
             <span class='error'>{{ message }}</span>
@@ -41,8 +43,8 @@
             </select>
             <p><strong>Fecha límite:</strong></p><p>{{ favour.deadline }}</p>
             <!-- PERSONAS -->
-            <p><strong>Pide #FEIV:</strong></p><p>{{ favour.user_asker_name + ' ' + favour.user_asker_surname}}</p>
-            <p v-show='isMaker'><strong>Hace #FEIV:</strong></p>
+            <p><strong>Pide <i class='icoBk logo lt'></i>FEIV:</strong></p><p>{{ favour.user_asker_name + ' ' + favour.user_asker_surname}}</p>
+            <p v-show='isMaker'><strong>Hace <i class='icoBk logo lt'></i>FEIV:</strong></p>
             <p v-show='isMaker'>{{ favour.user_maker_name + ' ' + favour.user_maker_surname }}</p>
             <!-- BOTONES -->
             <span class='error'>{{ message }}</span>
@@ -80,8 +82,8 @@
             </select>
             <p><strong>Fecha límite:</strong></p><input type='datetime-local' v-model='newDeadline' />
             <!-- PERSONAS -->
-            <p><strong>Pide #FEIV:</strong></p><p>{{ favour.user_asker_name + ' ' + favour.user_asker_surname}}</p>
-            <p v-show='isMaker'><strong>Hace #FEIV:</strong></p>
+            <p><strong>Pide <i class='icoBk logo lt'></i>FEIV:</strong></p><p>{{ favour.user_asker_name + ' ' + favour.user_asker_surname}}</p>
+            <p v-show='isMaker'><strong>Hace <i class='icoBk logo lt'></i>FEIV:</strong></p>
             <p v-show='isMaker'>{{ favour.user_maker_name + ' ' + favour.user_maker_surname }}</p>
             <!-- BOTONES -->
             <span class='error'>{{ message }}</span>
@@ -167,7 +169,27 @@ export default {
             && (this.favour.user_maker_id === null)
             && (this.favour.status !== "cancelado" || this.favour.status !== "asignado")
             && this.isAuthenticated;
-        }
+        },
+        // Estado del favor
+        status(){
+            let favourStatus
+            switch (this.favour.status) {
+                case 'asignado':
+                    favourStatus = 'var(--accentdk)'
+                    break;
+                case 'finalizado':
+                    favourStatus = 'var(--contrast)'
+                    break;
+                case 'cancelado':
+                    favourStatus = 'var(--gray)'
+                    break;
+                default:
+                    favourStatus = 'var(--accent)'
+                    break;
+            }
+            /* console.log('favourStatus', favourStatus); */
+            return favourStatus;
+        },
     },
     methods: {
         // Recupera la imagen
@@ -251,6 +273,11 @@ export default {
                 this.message = error;
             })
         },
+        // Volver / Cerrar
+        favourBack(){
+            this.$emit('isBack');
+            this.$router.go(-1);
+        }
     },
     created(){
         // Aplicar formato a las fechas

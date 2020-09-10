@@ -1,7 +1,9 @@
 <template>
   <main id='heroes' v-if="isLoaded">
       <vue-headful title='#HEROES' />
-      <h1>#HEROES</h1>
+      <header>
+        <h1><i class='icoWh logo bg'></i>HEROES</h1>
+      </header>
       <listaheroes :heroes='heroes' />
   </main>
   <div class="loader" v-else>

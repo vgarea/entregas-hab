@@ -1,0 +1,202 @@
+/* CABECERAS */
+h1 {
+  background-color: rgba(178, 202, 6, 0.5);
+  color: var(--light);
+  /* background-color: rgba(126,153,0, 0.5); */
+  font-weight: bold;
+  padding: 1rem;
+  margin: 0;
+}
+h1:before {
+    content: '';
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    opacity: 0.8;
+}
+#home h1:before {
+    background-image: url('../assets/FEIV_home_bg.jpg');
+    height: 650px;
+}
+#favours h1:before {
+    background-image: url('../assets/FEIV_find_bg.jpg');
+}
+#heroes h1:before {
+    background-image: url('../assets/FEIV_heroe_bg.jpg');
+}
+#addFavour h1:before {
+    background-image: url('../assets/FEIV_add_bg.jpg');
+}
+#register h1:before {
+    background-image: url('../assets/FEIV_register_bg.jpg');
+}
+#profile> header h1:before {
+    background-image: url('../assets/FEIV_profile_bg.jpg');
+}
+#login h1:before {
+    background-image: url('../assets/FEIV_login_bg.jpg');
+}
+#about h1:before {
+    background-image: url('../assets/aboutMe.jpeg');
+    background-position: top;
+}
+#favours h1:before,
+#heroes h1:before,
+#addFavour h1:before,
+#register h1:before,
+#login h1:before,
+#profile> header h1:before,
+#about h1:before {
+    height: 270px;
+}
+#home> header {
+    background-color: var(--backColorLt);
+    height: 608px;
+}
+#favours> header,
+#heroes> header,
+#addFavour> header,
+#register> header,
+#login section> header,
+#profile> header,
+#about header {
+    background-color: var(--backColorLt);
+    height: 225px;
+}
+#home #favours {
+    margin-top: -473px; /* -519px; */
+}
+#favours #favores #buscador {
+    background-color: rgba(255, 255, 255, 0.9);
+    width: fit-content;
+    margin: 0 auto;
+    padding: 0.8rem;
+    border-radius: 0.8rem;
+    box-shadow: var(--shadow);
+    margin-top: -25px;
+}
+/* ICON FEIVS */
+i.logoWh {
+    background-image: url('../assets/marca/FEIVS_logo.png');
+}
+i.logoBk {
+    background-image: url('../assets/marca/FEIVS_logo_bk.png');
+}
+i.logo {
+    display: inline-block;
+    background-position: center;
+    background-repeat: no-repeat;
+    /* margin-bottom: -2px;
+    border: none;
+    box-shadow: none;
+    display: inline-block; */
+}
+i.icoWh {
+    background-image: url('../assets/marca/FEIVS_icon.png');
+}
+i.icoBk {
+    background-image: url('../assets/marca/FEIVS_icon_bk.png');
+}
+i.icoAccent {
+    background-image: url('../assets/marca/FEIVS_icon_accent.png');
+}
+i.mn{
+    width: 0.8rem;
+    height: 0.8rem;
+    margin-bottom: -0.2rem;
+    background-size: 0.8rem;
+}
+i.lt{
+    width: 1.2rem;
+    height: 1.2rem;
+    margin-bottom: -0.2rem;
+    background-size: 1.2rem;
+}
+i.md{
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-bottom: -0.2rem;
+    background-size: 1.5rem;
+}
+i.bg{
+    width: 2rem;
+    height: 2rem;
+    margin-bottom: -0.3rem;
+    background-size: 2rem;
+}
+
+@media(max-width:1200px){
+    #home h1:before {
+        height: 550px;
+    }
+    #home> header {
+        height: 508px;
+    }
+    #home #favours {
+        margin-top: -351px; /* -376px; */
+    }
+}
+@media(max-width:899px){
+    #home h1:before {
+        height: 400px;
+    }
+    #home> header {
+        height: 360px;
+    }
+    #home #favours {
+        margin-top: -270px;
+    }
+}
+@media(max-width:640px) {
+    #home h1:before {
+        background-image: url('../assets/FEIV_home.jpg');
+    }
+    #favours h1:before {
+        background-image: url('../assets/FEIV_find.jpg');
+    }
+    #heroes h1:before {
+        background-image: url('../assets/FEIV_heroe.jpg');
+    }
+    #addFavour h1:before {
+        background-image: url('../assets/FEIV_add.jpg');
+    }
+    #register h1:before {
+        background-image: url('../assets/FEIV_register.jpg');
+    }
+    #login h1:before {
+        background-image: url('../assets/FEIV_login.jpg');
+    }
+    #profile> h1:before {
+        background-image: url('../assets/FEIV_profile.jpg');
+    }
+}
+@media(max-width:768px) {
+    #home h1:before {
+        height: 350px;
+    }
+    #home> header {
+        height: 310px;
+    }
+    #home #favours {
+        margin-top: -216px;
+    }
+}
+@media(max-width:599px) {
+    #home h1:before {
+        height: 480px;
+    }
+    #home> header {
+        height: 440px;
+    }
+    #home #favours{
+        margin-top: -395px;
+    }
+    #favours #favores #buscador {
+        margin-top: -75px;
+    }
+}

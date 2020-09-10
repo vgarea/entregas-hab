@@ -1,11 +1,16 @@
 <template>
   <main id='validate'>
-    <h1>¡USUARIO ACTIVADO!</h1>
+    <vue-headful title='VALIDACIÓN' />
+    <header>
+        <h1>¡USUARIO ACTIVADO!</h1>
+    </header>
     <h2>HAZ CLIC EN LOGIN PARA INICIAR SESIÓN</h2>
-    <p class='error'>{{ message }}</p>
-    <button>
-        <router-link :to="{ name: 'Login' }">Login</router-link>
-    </button>
+    <section>
+        <p class='error'>{{ message }}</p>
+        <button>
+            <router-link :to="{ name: 'Login' }">Login</router-link>
+        </button>
+    </section>
   </main>
 </template>
 

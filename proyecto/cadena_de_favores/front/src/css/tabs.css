@@ -1,0 +1,84 @@
+#profile> section .tabs_button {
+    font-size: 1.3rem;
+    margin: -2rem 0.2rem 1.5rem 0.2rem;
+}
+.default-tabs {
+position: relative;
+margin: 2rem auto;
+}
+.default-tabs__item,
+.tabs__item {
+    display: inline-block;
+    margin: 0 5px;
+    padding: 10px;
+    padding-bottom: 8px;
+    font-size: 16px;
+    letter-spacing: 0.8px;
+    color: var(--gray);
+    text-decoration: none;
+    border: none;
+    background-color: transparent;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.25s;
+}
+.default-tabs__item_active,
+.tabs__item_active {
+    color: var(--accent);
+}
+.default-tabs__item:hover {
+    border-bottom: 2px solid var(--accent);
+    color: var(--accent);
+    background-color:transparent
+}
+.default-tabs__item:focus {
+    outline: none;
+    border-bottom: 2px solid var(--accent);
+    color: var(--accent);
+}
+.default-tabs__item:first-child {
+    margin-left: 0;
+}
+.default-tabs__item:last-child {
+    margin-right: 0;
+}
+.default-tabs__active-line {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    background-color: var(--accent);
+    transition: transform 0.4s ease, width 0.4s ease;
+}
+input.inputFile::-webkit-file-upload-button {
+    visibility: hidden;
+}
+input[type="file"]:before {
+    content: 'Escoge Avatar';
+    display: inline-block;
+    border-radius: 0.4rem;
+    /* white-space: nowrap;
+    -webkit-user-select: none; */
+    cursor: pointer;
+    background-color: var(--accent);
+    color: var(--light);
+    padding: 0.1rem 1.2rem;
+    font-size: 1rem;
+    font-weight: bold;
+}
+/* input.inputFile:hover::before {
+}
+input.inputFile:active::before {
+  background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
+} */
+
+@media(max-width:768px){
+    input[type="file"]:before {
+        padding: 0.1rem 1rem;
+    }
+}
+@media(max-width:1200px){
+    input[type="file"]:before {
+        padding: 0.1rem 1rem;
+    }
+}

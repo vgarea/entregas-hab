@@ -2,27 +2,40 @@
   <main id="favours" >
     <vue-headful title='#FEIVS' />
     <header>
-      <h1>¿QUIERES SER UN #HÉROE?</h1>
+      <h1>¿QUIERES SER UN <i class='icoWh logo bg'></i>HÉROE?</h1>
     </header>
     <section id='favores' v-if="isLoaded">
-      <fieldset>
-        <p>
-          <h2 for='favour'>LISTADO DE #FEIS</h2>
-          <input type='text' v-model='locationFav' placeholder='Localización'>
-          <!-- CONVERTIR CATEGORY EN UN SELECT -->
-          <select name='select' v-model='categoryFav'>
-            <option disabled value=''>Categorías que puedes seleccionar</option>
-            <option value='manitas'>Manitas</option> 
-            <option value='nanny'>Nanny</option>
-            <option value='transporte'>Transporte</option>
-            <option value='tareas casa'>Tareas casa</option>
-            <option value='otros'>Otros</option>
-          </select>
-          <input type='datetime-local' v-model='dataFav'>
-          <button @click="getFavours">¿QUÉ PUEDES HACER?</button>
-        </p>
-      </fieldset>
-      <p>{{ message }}</p>
+      <section id='buscador'>
+        <input
+          type='text'
+          placeholder='Localización'
+          v-model='locationFav'
+          @focus='cleanError'
+        >
+        <!-- CONVERTIR CATEGORY EN UN SELECT -->
+        <select
+          name='select'
+          v-model='categoryFav'
+          @focus='cleanError'
+        >
+          <option disabled value=''>Categorías que puedes seleccionar</option>
+          <option value='manitas'>Manitas</option> 
+          <option value='nanny'>Nanny</option>
+          <option value='transporte'>Transporte</option>
+          <option value='tareas casa'>Tareas casa</option>
+          <option value='otros'>Otros</option>
+        </select>
+        <input 
+          type='datetime-local'
+          v-model='dataFav'
+          @focus='cleanError'
+        >
+        <button @click="getFavours">¿QUÉ PUEDES HACER?</button>
+      </section>
+      <header>
+        <h2 for='favour'>LISTADO DE <i class='logo icoBk bg'></i>FEVIS</h2>
+        <p>{{ message }}</p>
+      </header>
       <ul>
         <li v-for="favour in favours" :key="favour.id">
             <favourdata
@@ -81,6 +94,9 @@ export default {
       favours.getFavours(this.searchFav, this.locationFav, this.categoryFav, this.dataFav)
       .then(result => {
         this.favours = result;
+        if(!result.length > 0){
+          this.message = 'No hay resultados';
+        }
       })
       .then(() => {
         this.cleanInputs();
@@ -100,7 +116,11 @@ export default {
       this.locationFav = '';
       this.categoryFav = '';
       this.dataFav = '';
-    }
+    },
+    // Limpiamos los mensajes de error
+    cleanError(){
+      this.message = '';
+    },
   },
   created() {
     this.viewFavours();

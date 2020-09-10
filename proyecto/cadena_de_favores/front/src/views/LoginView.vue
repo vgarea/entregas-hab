@@ -1,31 +1,46 @@
 <template>
     <main id='login'>
-        <vue-headful title='Login' />
-        <section v-if="login">
-            <h1>Login</h1>
-            <label for="exampleInputEmail1">Email</label>
-            <input id="exampleInputEmail1" v-model='email' type='email' class="form-control" />
-            <label for="exampleInputPassword1">Password</label>
-            <input id="exampleInputPassword1" type='password' v-model='password' :class="{'is-invalid': isInvalid}" />
-            <p class='error'>{{ this.message }}</p>
-            <a @click="resetLogin">Recupera tu contraseña</a>
-            <button type="submit" @click="loginUser">Enviar</button>
+        <vue-headful title='LOGIN' />
+        <section v-if="login" id='new'>
+            <header>
+                <h1>LOGIN</h1>
+            </header>
+            <h2>RELLENA LOS DATOS</h2>
+            <section>
+                <label for="exampleInputEmail1">Email</label>
+                <input id="exampleInputEmail1" v-model='email' type='email' class="form-control" />
+                <label for="exampleInputPassword1">Password</label>
+                <input id="exampleInputPassword1" type='password' v-model='password' :class="{'is-invalid': isInvalid}" />
+                <p class='error'>{{ this.message }}</p>
+                <a @click="resetLogin">Recupera tu contraseña</a>
+                <button type="submit" @click="loginUser">Enviar</button>
+            </section>
         </section>
         <section v-else>
-            <section v-if='recover'>
-                <h1>Introduce tu nueva contraseña</h1>
-                <input v-model='code' type='password' placeholder='Código que te ha llegado al email' />
-                <input v-model='newPassword' type='password' placeholder='Contraseña' />
-                <input v-model='newPassword1' type='password' placeholder='Repite aquí la contraseña' />
-                <p class='error'>{{ this.message }}</p>
-                <button @click="resetPassword">Enviar</button>
+            <section v-if='recover' id='recover'>
+                <header>
+                    <h1>Introduce tu nueva contraseña</h1>
+                </header>
+                <h2>RELLENA LOS DATOS</h2>
+                <section>
+                    <input v-model='code' type='password' placeholder='Código que te ha llegado al email' />
+                    <input v-model='newPassword' type='password' placeholder='Contraseña' />
+                    <input v-model='newPassword1' type='password' placeholder='Repite aquí la contraseña' />
+                    <p class='error'>{{ this.message }}</p>
+                    <button @click="resetPassword">Enviar</button>
+                </section>
             </section>
-            <section v-else>
-                <h1>Recupera tu contraseña</h1>
-                <input v-model='emailRecover' type='text' placeholder='Email' />
-                <a @click="recoverLogin()">Pulsa aquí si ya tienes el código</a>
-                <p class='error'>{{ this.messageMail }}</p>
-                <button @click="recoverPassword">Enviar</button>
+            <section v-else id='reset'>
+                <header>
+                    <h1>Recupera tu contraseña</h1>
+                </header>
+                <h2>RELLENA LOS DATOS</h2>
+                <section>
+                    <input v-model='emailRecover' type='text' placeholder='Email' />
+                    <a @click="recoverLogin()">Pulsa aquí si ya tienes el código</a>
+                    <p class='error'>{{ this.messageMail }}</p>
+                    <button @click="recoverPassword">Enviar</button>
+                </section>
             </section>
         </section>
     </main>

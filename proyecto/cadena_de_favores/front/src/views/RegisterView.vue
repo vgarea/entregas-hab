@@ -1,12 +1,17 @@
 <template>
     <main id='register'>
         <vue-headful title='REGISTRO' />
-        <h1>REGISTRO</h1>
-        <input type='text' @focus="cleanError"  v-model='email' placeholder='Email' />
-        <input type='password' @focus="cleanError" v-model='password1' placeholder='Contraseña' />
-        <input type='password' @focus="cleanError" v-model='password' placeholder='Repite aquí tu contraseña' />
-        <p class='error'>{{ message }}</p>
-        <button @click='validatingData'> Enviar </button>
+        <header>
+            <h1>REGISTRO</h1>
+        </header>
+        <h2>RELLENA LOS DATOS</h2>
+        <section>
+            <input type='text' @focus="cleanError"  v-model='email' placeholder='Email' />
+            <input type='password' @focus="cleanError" v-model='password1' placeholder='Contraseña' />
+            <input type='password' @focus="cleanError" v-model='password' placeholder='Repite aquí tu contraseña' />
+            <p class='error'>{{ message }}</p>
+            <button @click='validatingData'> Enviar </button>
+        </section>
     </main>
 </template>
 

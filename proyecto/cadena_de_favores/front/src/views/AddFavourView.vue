@@ -1,9 +1,11 @@
 <template>
   <main id="addFavour">
     <vue-headful title='ENVÍA TU #FEIV' />
-      <h1>#FEIVS</h1>
+    <header>
+      <h1><i class='icoWh logo bg'></i>FEIVS</h1>
+    </header>
+      <h2>¿QUÉ NECESITAS?</h2>
       <section>
-        <h2>¿QUÉ NECESITAS?</h2>
         <p><strong>Localidad:</strong></p><input type='text' @focus="cleanError" v-model='newLocation' placeholder="Localidad" />
         <p><strong>Descripción:</strong></p><input type='text' @focus="cleanError" v-model='newDescription' placeholder="Descripción" />
 
@@ -28,7 +30,7 @@
         
         <p><strong>Fecha límite:</strong></p><input type='datetime-local' @focus="cleanError" v-model='newDeadline' />
         <span class='error'>{{ message }}</span>
-        <button @click="addFavour">Envía tu #FEIV</button>
+        <button @click="addFavour">Envía tu <i class='logo icoWh lt'></i>FEIV</button>
       </section>
   </main>
 </template>
@@ -107,7 +109,4 @@ export default {
 </script>
 
 <style scoped>
-  #addFavour section {
-    margin: 5rem auto 1rem auto;
-  }
 </style>

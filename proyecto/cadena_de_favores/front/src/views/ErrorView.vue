@@ -1,6 +1,6 @@
 <template>
     <div id='error'>
-        <vue-headful title='Error' />
+        <vue-headful title='ERROR' />
         <header>
             <h1>404 - Parece que te has perdido</h1>
         </header>

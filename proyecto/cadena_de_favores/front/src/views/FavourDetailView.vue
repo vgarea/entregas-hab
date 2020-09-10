@@ -1,5 +1,5 @@
 <template>
-    <div id='favourDetail'>
+    <main id='favourDetail'>
         <div v-if="isLoaded">
             <ul>
                 <li>
@@ -15,7 +15,7 @@
           <div class="loader" v-else>
                 Loading...
         </div>
-    </div>
+    </main>
 </template>
 
 <script>

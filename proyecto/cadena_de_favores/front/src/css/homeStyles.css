@@ -1,0 +1,142 @@
+#home {
+  font-weight: 600;
+}
+/* #home h1, */
+#home h2 {
+  background-color: rgba(178, 202, 6, 0.5);
+  color: var(--light);
+  /* background-color: rgba(126,153,0, 0.5); */
+  font-weight: bold;
+  padding: 1rem;
+  margin: 0;
+}
+/* #home h2, */
+#home h3 {
+  color: var(--gray);
+  padding: 2rem 0;
+}
+#home h3 {
+  padding: 2rem 0 0 0
+}
+#home #howIs h3 {
+  padding: 4rem 0;
+  margin: 0;
+}
+/* #home h1:before {
+  content: '';
+  background-image: url('../assets/FEIV_home.jpg');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 668px;
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  opacity: 0.8;
+} */
+h3 {
+  font-size: 1.5rem;
+}
+/* #home #favours{
+  margin-top: -376px;
+} */
+#home #favours,
+#home #howIs {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+  max-width: 1200px;
+}
+#home #favours fieldset,
+#home #howIs fieldset {
+  /* border: 1px solid var(--accentdk); */
+  /* margin: 6rem 1rem;
+  padding: 2rem;
+  width: 450px; */
+  margin: 1rem;
+  padding: 2rem 3.5rem;
+  width: 280px;
+  border-radius: 1rem;
+  background: rgba(255,255,255,0.8);
+  box-shadow: var(--shadowBg)
+}
+#home #howIs fieldset {
+  cursor: pointer;
+}
+#home #howIs fieldset:hover,
+#home #howIs fieldset:hover h3 {
+  background-color: var(--accent);
+  color: var(--light);
+}
+#home #howIs fieldset:hover img {
+  src: '../assets/marca/FEIVS_logo_wh.png';
+}
+#home #favours fieldset label {
+  color: var(--accentdk);
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: 700;
+  padding: 0 1rem;
+  margin-bottom: 1rem;
+  display: inline-block;
+}
+
+#home #favours fieldset input {
+  width: 100%;
+  margin-top: 0;
+}
+#home #favours fieldset p {
+  color: var(--gray);
+}
+#home #favours fieldset#favourNeed p,
+#home #favours fieldset input {
+  font-size: 1.2rem;
+  line-height: 1.2;
+}
+#home #favours fieldset#favourNeed p {
+  margin: 2rem 0 1rem 0
+}
+
+#home #favours fieldset#favourAsk p{
+  font-size: .9rem;
+  line-height: 1.1;
+}
+
+#home #favours fieldset input,
+#home #favours fieldset button {
+  display: inline;
+  text-align: center;
+}
+
+#home #favours fieldset button {
+  margin: 2rem 0 1rem 0;
+}
+
+#home #heroe {
+  margin-top: 4rem;
+}
+
+#home> section {
+  padding: 1rem 0;
+  background-color: rgba(126, 146, 0, 0.05);
+}
+#home #favours {
+  background-color: transparent;
+}
+@media(min-width:900px) {
+  #home #favours fieldset,
+  #home #howIs fieldset {
+    margin: 5rem 1rem;
+    padding: 2rem;
+    width: 400px;
+  }
+}
+@media(min-width:1201px) {
+  #home #favours,
+  #home #howIs {
+      max-width: none;
+    }
+}

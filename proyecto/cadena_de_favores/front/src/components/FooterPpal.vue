@@ -1,6 +1,6 @@
 <template>
     <footer id="footer">
-        <p>vanessa almao | #FEIVS | drgnzt_2020Ⓒ</p>
+        <p>vanessa almao |  <i class='logo icoWh lt'></i>FEIVS  | vgarea_2020 Ⓒ</p>
     </footer>
 </template>
 <script>

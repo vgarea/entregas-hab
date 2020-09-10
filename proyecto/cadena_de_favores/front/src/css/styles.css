@@ -5,6 +5,7 @@
 
 html {
   /* --accent: #00ccff; */
+  /* --accent: #b2ca06; */
   --accent: #b2ca06;
   --accentlt: #e7fd4f;
   --accentdk: #7e9900;
@@ -18,6 +19,9 @@ html {
   /* --red: #ad1111; */
   /* --green: #059005; */
   --font: Quicksand, sans-serif;
+  --shadow: 0 2px 6px rgba(22, 22, 22, 0.2);
+  --shadowBg: 2px 2px 6px rgba(22, 22, 22, 0.2);
+  --backColorLt: rgba(126, 146, 0, 0.1);
 }
 
 * {
@@ -45,6 +49,10 @@ fieldset {
   border: none;
 }
 
+.colAccent {
+  color: var(--accent);
+}
+
 /* APP */
 #app {
   margin: 0 auto;
@@ -69,9 +77,9 @@ fieldset {
   margin-top: 0.5rem;
 } */
 
-#menu nav section.register.in {
-  /* margin-top: 0.7rem; */
-}
+/* #menu nav section.register.in {
+  margin-top: 0.7rem; 
+} */
 
 #menu nav section.register a {
   padding: 0.3rem 0.75rem;
@@ -95,6 +103,7 @@ fieldset {
   text-decoration: none;
   font-size: 1.2rem;
   padding: 0.4rem;
+  display: block;
 }
 
 #menu nav {
@@ -118,7 +127,7 @@ fieldset {
   color: var(--light);
   font-weight: 700;
   font-size: 1.2rem;
-  margin: 0.7rem;
+  /* margin: 0.7rem; */
 }
 #menu nav .register button {
   margin: 0.5rem;
@@ -140,7 +149,13 @@ fieldset {
 
 /* FOOTER */
 footer {
-  margin: 2rem 0;
+  padding: 1rem;
+  background-color: var(--gray);
+  position: sticky;
+}
+footer p {
+  color: var(--light);
+  font-weight: 600;
 }
 
 /* ESTILOS GENERALES */
@@ -159,6 +174,7 @@ select {
   background: none;
   border: 1px dashed var(--accent);
   padding: 0.2rem;
+  font-size: 1rem;
 }
 
 button {
@@ -189,15 +205,19 @@ button:hover {
 input[type='datetime-local' i] {
   font-size: 1rem;
   font-family: var(--font);
+  background-color: var(--light);
+  border-radius: 0.2rem;
+  border: 1px dashed var(--accent); 
 }
 
 /* ESTILOS TEXTOS */
 h1 {
   font-size: 2rem;
+  font-weight: bold;
   margin: 2rem;
 }
 h2 {
-  font-size: 1.5rem
+  font-size: 1.8rem
 }
 h2,
 h3 {
@@ -240,21 +260,60 @@ ul {
   max-width: 1200px;
   width: 1200px;
 }
+main {
+  background-color: var(--backColorLt);
+}
+#favourDetail {
+  padding: 5rem;
+}
+#addFavour,
+#login,
+#register,
+#favourDetail {
+  min-height: calc(100vh - 20px);
+}
+#profile> section {
+  min-height: calc(100vh - 25vh);
+}
 li,
-#addFavour section {
-  border: 2px solid #dddddd;
+#addFavour section,
+#login section section,
+#register section,
+#profile>section>section>section.ficha {
+  /* border: 2px solid #dddddd; */
   background-color: var(--light);
-  border-radius: 8px;
+  border-radius: 0.8rem;
   width: 400px;
   /* padding: 1rem; */
   margin: 1rem;
-  box-shadow: 0 2px 6px rgba(22,22,22,0.2);
+  box-shadow: var(--shadowBg);
+}
+#addFavour section,
+#login section section,
+#register section,
+#profile>section>section>section.ficha {
+  padding:1rem;
+  margin: 4rem auto 0 auto;
+}
+#profile>section>section>section.ficha input.inputFile {
+  max-width: 190px;
+}
+#profile>section>section>section.ficha h2 {
+  color: var(--accent);
+  margin: 1rem 0 1.5rem 0;
+}
+#login section section,
+#register section{
+  margin: auto;
+}
+#login section#new input {
+  text-align: center;
 }
 img {
   /* height: 300px; */
   /*border: 2px solid var(--accent);*/
-  box-shadow: 2px 2px 6px rgba(22, 22, 22, 0.2);
-  border-radius: 8px;
+  box-shadow: var(--shadowBg);
+  border-radius: 0.8rem;
   object-fit: cover;
   object-position: center;
 }
@@ -263,6 +322,20 @@ img {
 .description {
   max-height: 5.5rem;
   overflow: hidden;
+}
+ul li i.status {
+  border-radius: .6rem 0px .6rem 0px;
+  -moz-border-radius: .6rem 0px .6px 0px;
+  -webkit-border-radius: .6rem 0px .6rem 0px;
+  border: 0px solid var(--gray);
+  width: 4rem;
+  height: 4rem;
+  position: absolute;
+  opacity: 0.75;
+  background-color: transparent; /* depende del estado del favor */
+}
+#heroes #heroe {
+  margin-top: 3rem;
 }
 #favores ul li article,
 #favourDetail ul li article,
@@ -288,6 +361,7 @@ img {
   align-self: center; */
   text-transform: uppercase;
   margin: 1rem 0 0 0;
+  background-color: transparent;
 }
 #favores ul li header h2,
 #favourDetail ul li header h2,
@@ -306,28 +380,22 @@ img {
 #profile ul li header img {
   height: 200px;
   order: -1;
-  border-radius: 8px 8px 0 0;
+  border-radius: 0.8rem 0.8rem 0 0;
 }
 
 /* #favores ul li button, */
 #profile ul li button,
+#favores ul li button,
+#favourDetail ul li button,
 #addFavour section button {
   margin: 1rem auto;
   display: block;
-}
-#favores ul li button,
-#favourDetail ul li .vote button {
-  display: inline-block;
-  /* margin: 0 auto 1rem 0; */
 }
 #favores ul li input,
 #profile ul li input,
 #addFavour section input {
   display: inline-block;
   margin: 0;
-}
-#favourDetail {
-  margin: 5rem auto;
 }
 /* #favores ul li p:nth-child(3n + 2), */
 #favores ul li p:nth-child(2n + 2),
@@ -337,6 +405,7 @@ img {
 #favourDetail ul li select,
 #favourDetail ul li p:nth-child(2n + 2),
 #heroe ul li p:nth-child(odd),
+#heroe ul li div.vue-star-rating,
 /* #profile ul li p:nth-child(3n + 2), */
 #profile ul li p:nth-child(2n + 2),
 #profile ul li input,
@@ -347,7 +416,8 @@ img {
   text-align: left;
   width: 60%;
 }
-#favourDetail ul li input {
+#favourDetail ul li input,
+#heroe ul li div.vue-star-rating {
   display: inline-block;
   margin: 0;
 }
@@ -361,11 +431,37 @@ img {
   text-align: right;
   width: 30%;
 }
-#favores .voteClass,
-#favourDetail .voteClass {
-  width: calc(60% - 4.5rem);
+#favores ul li .vote input.voteClass,
+#profile ul li .vote input.voteClass,
+#favourDetail .vote input.voteClass {
+  width: calc(60% - 5.5rem);
   display: inline-block;
   margin-right: 1rem;
+}
+
+#favores ul li .vote button,
+#profile ul li .vote button,
+#favourDetail ul li .vote button {
+  display: inline-block;
+  margin: 0 0 0 0.5rem; 
+}
+
+/* ESTILOS BUSCADOR DE FAVORES */
+#favours #favores #buscador input {
+  margin: 0;
+  display: inline-block;
+}
+#favours #favores #buscador select {
+  margin: 0 1rem;
+  display: inline-block;
+  background-color: var(--light);
+}
+#favours #favores #buscador button {
+  display: inline-block;
+  margin: 0 0 0 1rem;
+}
+#favours #favores ul {
+margin-top: 3rem
 }
 
 /* ESTILOS ERRORES */
@@ -377,18 +473,31 @@ img {
 
 /* ESTILOS BOTONES NAVEGACIÓN */
 .volver {
-  position: relative;
+  background-image: url('../assets/close.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 4rem;
+  width: 4rem;
+  height: 4rem;
+  position: absolute;
+  margin-left: calc(400px - 4rem);
+  background-color: var(--accent);
+  border-radius: 0px 0.6rem 0px 0.6rem;
+  -moz-border-radius: 0px 0.6rem 0px 0.6px;
+  -webkit-border-radius: 0px 0.6rem 0px 0.6rem;
+  border: 0px solid var(--gray);
+  /* position: relative; */
   /* top: -30rem; */
   /* right: -16rem; */
-  top: -16rem;
-  right: -11rem;
+  /* top: -16rem; */
+  /* right: -11rem; */
   cursor: pointer;
 }
-.volver img {
+/* .volver img {
   width: 35px;
   box-shadow: none;
   background-color: var(--accent);
-}
+} */
 
 /* ESTILOS LOADING */
 .loader {
@@ -457,12 +566,12 @@ img {
 
 /* MEDIA QUERIES */
 @media(min-width:1201px) {
-  .volver {
+  /* .volver {
+    top: -15.5rem;
+    right: -10.5rem;
     top: -16rem;
-    right: -11rem;
-    /* top: -16rem; */
-    /* right: -8rem; */
-  }
+    right: -8rem;
+  } */
 }
 @media (max-width: 1200px) {
   html {
@@ -474,24 +583,56 @@ img {
   #menu {
     height: 43px;
   }
-  .volver {
-    top: -20rem;
+  /* .volver {
+    top: -19.5rem;
     right: -14.5rem;
+  } */
+  #profile>section>section>section.ficha input.inputFile {
+    max-width: 120px;
   }
 }
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   html {
     font-size: 10px;
   }
   li,
-  #addFavour section {
+  #addFavour section,
+  #login section section,
+  #register section,
+  #profile>section>section>section.ficha {
     width: 280px;
-    margin: 0;
+    /* margin: 0; */
+  }
+  #profile>section>section>section.ficha input.inputFile {
+      max-width: 120px;
   }
   .volver {
+    margin-left: calc(280px - 4rem);
     /* top: -37rem; */
-    top: -23rem;
-    right: -11rem;
+    /* top: -24rem; */
+    /* right: -11rem; */
+  }
+  #heroe ul li div.vue-star-rating {
+    width: 65%;
+  }
+}
+@media (max-width: 623px) {
+  #favours #favores #buscador button {
+    margin: 1rem 0 0 1rem;
+  }
+  #favourDetail {
+    padding:0;
+  }
+}
+@media (max-width: 599px) {
+  #favours #favores #buscador input,
+  #favours #favores #buscador select,
+  #favours #favores #buscador button {
+    margin: 1rem auto;
+    display: block;
+  }
+  #favours #favores #buscador {
+    margin-top: -75px;
   }
 }
 @media (max-width: 320px) {

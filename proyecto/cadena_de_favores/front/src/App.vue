@@ -93,5 +93,7 @@ export default {
 
 <style>
     /* IMPORT HOJA DE ESTILOS GENERAL */
-    @import "css/estilos.css";
+    @import "css/styles.css";
+    @import "css/tabs.css";
+    @import "css/headerStyles.css";
 </style>

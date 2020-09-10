@@ -4,35 +4,66 @@
     </div>
     <main id='profile' v-else>
         <vue-headful title='MIS DATOS' />
-        <section>
+        <header>
             <h1>MODIFICA TUS DATOS</h1>
-            <h2>LOGIN</h2>
-                <label>{{ this.emailAct }}</label>
-                <input type='password' @focus="cleanError('pass')" v-model='passOld' placeholder='Password antigua' />
-                <input type='password' @focus="cleanError('pass')" v-model='passAct0' placeholder='Nueva password' />
-                <input type='password' @focus="cleanError('pass')" v-model='passAct1' placeholder='Repite la nueva password' />
-                <p class='error'>{{ messagePass }}</p>
-                <button @click='updateUser'>Actualizar contraseña</button>
-            <h2>DATOS</h2>
-                <input type='text' @focus="cleanError" v-model='nameAct' placeholder='Nombre' />
-                <input type='text' @focus="cleanError" v-model='surnameAct' placeholder='Apellidos' />
-                <input type='text' @focus="cleanError" v-model='aliasAct' placeholder='Escribe aquí tu alias' />
-                <input type="file" @focus="cleanError" ref="avatarAct" @change="uploadAvatar">
-                <p>Nombre del avatar: {{avatarAct.name}}</p>
-                <p class='error'>{{ messageData }}</p>
-                <button @click='updateData'>Actualizar datos</button>
-            <h2>HISTÓRICO DE #FEIVS</h2>
-            <button @click="getAllFavoursAsker">Solicitados</button><button @click="getAllFavoursMaker">Realizados</button>
-            <ul>
-                <li v-for="favour in favours" :key="favour.id">
-                    <favourdata
-                        :is-authenticated="isAuthenticated"
-                        :is-id-user="isIdUser"
-                        :favour="favour"
-                    />
-                </li>
-            </ul>
-            <p class='error'>{{ message }}</p>
+        </header>
+        <section>
+            <tabs
+            :tabs="tabs"
+            :currentTab="currentTab"
+            :wrapper-class="'default-tabs'"
+            :tab-class="'default-tabs__item'"
+            :tab-active-class="'default-tabs__item_active'"
+            :line-class="'default-tabs__active-line'"
+            @onClick="handleClick"
+            />
+            <section class="content">
+                <section v-if="currentTab === 'tab1'" class='ficha'>
+                    <header>
+                        <h2>PASSWORD NUEVA</h2>
+                    </header>
+                    <article >
+                        <label>{{ this.emailAct }}</label>
+                        <input type='password' @focus="cleanError('pass')" v-model='passOld' placeholder='Password antigua' />
+                        <input type='password' @focus="cleanError('pass')" v-model='passAct0' placeholder='Nueva password' />
+                        <input type='password' @focus="cleanError('pass')" v-model='passAct1' placeholder='Repite la nueva password' />
+                        <p class='error'>{{ messagePass }}</p>
+                        <button @click='updateUser'>Actualizar contraseña</button>
+                        <p class='error'>{{ message }}</p>
+                    </article>
+                </section>
+                <section v-if="currentTab === 'tab2'" class='ficha'>
+                    <header>
+                        <h2>CAMBIA TUS DATOS</h2>
+                    </header>
+                    <article>
+                        <input type='text' @focus="cleanError" v-model='nameAct' placeholder='Nombre' />
+                        <input type='text' @focus="cleanError" v-model='surnameAct' placeholder='Apellidos' />
+                        <input type='text' @focus="cleanError" v-model='aliasAct' placeholder='Escribe aquí tu alias' />
+                        <input type="file" @focus="cleanError" ref="avatarAct" @change="uploadAvatar" class='inputFile'>
+                        <p>Nombre del avatar: {{avatarAct.name}}</p>
+                        <p class='error'>{{ messageData }}</p>
+                        <button @click='updateData'>Actualizar datos</button>
+                        <p class='error'>{{ message }}</p>
+                    </article>
+                </section>
+                <section v-if="currentTab === 'tab3'">
+                    <h2>HISTÓRICO DE <i class='logo icoBk bg'></i>FEIVS</h2>
+                    <button @click="getAllFavoursAsker" class='tabs__item default-tabs__item tabs_button' :class="{'tabs__item_active':isActive}">SOLICITADOS</button>
+                    <button @click="getAllFavoursMaker" class='tabs__item default-tabs__item tabs_button' :class="{'tabs__item_active':!isActive}">REALIZADOS</button>
+                    <ul>
+                        <li v-for="favour in favours" :key="favour.id">
+                            <favourdata
+                                :is-authenticated="isAuthenticated"
+                                :is-id-user="isIdUser"
+                                :favour="favour"
+                                @isBack="goToHistoric"
+                            />
+                        </li>
+                    </ul>
+                    <p class='error'>{{ message }}</p>
+                </section>
+            </section>
         </section>
     </main>
 </template>
@@ -45,6 +76,8 @@ import api from '@/api/api';
 import users from '@/users/users';
 import favours from '@/favours/favours';
 
+import Tabs from 'vue-tabs-with-active-line';
+
 export default {
   name: 'ProfileView',
   props: {
@@ -53,7 +86,8 @@ export default {
       favour: Array,
   },
   components: {
-    favourdata
+    favourdata,
+    Tabs
   },
   data() {
     return {
@@ -70,7 +104,14 @@ export default {
         message: '',
         messagePass: '',
         messageData: '',
-        avatarAct: ''
+        avatarAct: '',
+        tabs: [
+            { title: 'HISTÓRICO', value: 'tab3'},
+            { title: 'LOGIN', value: 'tab1' },
+            { title: 'DATOS', value: 'tab2' },
+        ],
+        currentTab: 'tab3',
+        isActive: false,
     }
   },
   computed: {
@@ -162,18 +203,20 @@ export default {
             console.log('MAKER:');
             console.log(response.data.data);
             this.favours = response.data.data;
+            this.isActive = !this.isActive;
         })
         .catch(error => {
-            this.message = error.response.data.message;
+            this.message = error;
         });
     },
     // Listar los favores que subió este usuario
-    async getAllFavoursAsker(){
+    getAllFavoursAsker(){
         return favours.getAllFavoursAsker(this.idUser)
         .then(response => {
             console.log('ASKER:');
             console.log(response.data.data);
             this.favours = response.data.data;
+            this.isActive = !this.isActive;
         })
         .catch(error => {
             this.message = error;
@@ -182,14 +225,23 @@ export default {
     // Limpiamos los mensajes de error
     cleanError(type){
         if(type === 'pass'){
-            this.messagePass = ''
+            this.messagePass = '';
         } else {
             this.messageData = ''
         }
     },
+    // Tabs
+    handleClick(newTab) {
+      this.currentTab = newTab;
+    },
+    // Ir al tab de Histórico
+    goToHistoric(){
+        this.currentTab = 'tab3'
+    }
   },
   created() {
     this.getUserData();
+    this.getAllFavoursAsker();
   }
 }
 </script>

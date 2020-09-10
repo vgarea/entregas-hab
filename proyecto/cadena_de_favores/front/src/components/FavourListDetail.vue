@@ -2,6 +2,7 @@
     <article>
         <router-link :to="{ name: 'Favour', params: { id: favour.id } }"  v-if='isLoaded'>
             <header>
+                <i class='status' :style="{ backgroundColor: status }"></i>
                 <h1>NECESITO {{ title }} </h1>
                 <img v-if='isFoto' class='askerFoto' :src='getImage(favour.user_asker_foto)' />
                 <img v-else :src='getImage("no-image.jpg")' />
@@ -9,10 +10,10 @@
             <content>
                 <p><strong>Localidad:</strong></p><p>{{ favour.location }}</p>
                 <p><strong>Descripción:</strong></p><p class='description'>{{ favour.description }}</p>
-                <p><strong>Estado:</strong></p><p>{{ favour.status }}</p>
+                <!-- <p><strong>Estado:</strong></p><p>{{ favour.status }}</p> -->
                 <p><strong>Fecha límite:</strong></p><p>{{ formatDate(favour.deadline) }}</p>
                 <!-- BOTONES -->
-                <section v-show='canVote'>
+                <section class='vote' v-show='canVote'>
                     <p><strong>Voto:</strong></p>
                     <input @click.prevent="" class='voteClass' type='text' v-model='userVote' placeholder="Voto" />
                     <button @click.prevent="votarUsuario">ok</button>
@@ -65,6 +66,25 @@ export default {
                     break;
             }
             return titleCategory;
+        },
+        // Estado del favor
+        status(){
+            let favourStatus
+            switch (this.favour.status) {
+                case 'asignado':
+                    favourStatus = 'var(--accentdk)'
+                    break;
+                case 'finalizado':
+                    favourStatus = 'var(--contrast)'
+                    break;
+                case 'cancelado':
+                    favourStatus = 'var(--gray)'
+                    break;
+                default:
+                    favourStatus = 'var(--accent)'
+                    break;
+            }
+            return favourStatus;
         },
         isLoaded(){
             return this.favour !== null;
