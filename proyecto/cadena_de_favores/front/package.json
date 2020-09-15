@@ -17,6 +17,7 @@
     "dotenv": "^8.2.0",
     "jsonwebtoken": "^8.5.1",
     "jwt-decode": "^2.2.0",
+    "locutus": "^2.0.12",
     "mysql": "^2.18.1",
     "sweetalert2": "^9.17.1",
     "vue": "^2.6.11",

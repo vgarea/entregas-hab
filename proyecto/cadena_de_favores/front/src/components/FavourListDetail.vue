@@ -2,7 +2,7 @@
     <article>
         <router-link :to="{ name: 'Favour', params: { id: favour.id } }"  v-if='isLoaded'>
             <header>
-                <i class='status' :style="{ backgroundColor: status }"></i>
+                <i class='status' :class='[status[0], status[1]]'></i>
                 <h1>NECESITO {{ title }} </h1>
                 <img v-if='isFoto' class='askerFoto' :src='getImage(favour.user_asker_foto)' />
                 <img v-else :src='getImage("no-image.jpg")' />
@@ -69,21 +69,26 @@ export default {
         },
         // Estado del favor
         status(){
-            let favourStatus
+            let favourStatus = [];
             switch (this.favour.status) {
                 case 'asignado':
-                    favourStatus = 'var(--accentdk)'
+                    favourStatus[0] = 'statusAssigned';
+                    favourStatus[1] = 'statusAssigned:after';
                     break;
                 case 'finalizado':
-                    favourStatus = 'var(--contrast)'
+                    favourStatus[0] = 'statusFinished';
+                    favourStatus[1] = 'statusFinished:after';
                     break;
                 case 'cancelado':
-                    favourStatus = 'var(--gray)'
+                    favourStatus[0] = 'statusCanceled';
+                    favourStatus[1] = 'statusCanceled:after';
                     break;
                 default:
-                    favourStatus = 'var(--accent)'
+                    favourStatus[0] = 'statusInProgress';
+                    favourStatus[1] = 'statusInProgress:after';
                     break;
             }
+            /* console.log('favourStatus', favourStatus); */
             return favourStatus;
         },
         isLoaded(){

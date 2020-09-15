@@ -2,7 +2,6 @@
 h1 {
   background-color: rgba(178, 202, 6, 0.5);
   color: var(--light);
-  /* background-color: rgba(126,153,0, 0.5); */
   font-weight: bold;
   padding: 1rem;
   margin: 0;
@@ -21,7 +20,7 @@ h1:before {
 }
 #home h1:before {
     background-image: url('../assets/FEIV_home_bg.jpg');
-    height: 650px;
+    height: 466px;
 }
 #favours h1:before {
     background-image: url('../assets/FEIV_find_bg.jpg');
@@ -56,7 +55,7 @@ h1:before {
 }
 #home> header {
     background-color: var(--backColorLt);
-    height: 608px;
+    height: 0;
 }
 #favours> header,
 #heroes> header,
@@ -68,9 +67,6 @@ h1:before {
     background-color: var(--backColorLt);
     height: 225px;
 }
-#home #favours {
-    margin-top: -473px; /* -519px; */
-}
 #favours #favores #buscador {
     background-color: rgba(255, 255, 255, 0.9);
     width: fit-content;
@@ -80,6 +76,7 @@ h1:before {
     box-shadow: var(--shadow);
     margin-top: -25px;
 }
+
 /* ICON FEIVS */
 i.logoWh {
     background-image: url('../assets/marca/FEIVS_logo.png');
@@ -91,10 +88,6 @@ i.logo {
     display: inline-block;
     background-position: center;
     background-repeat: no-repeat;
-    /* margin-bottom: -2px;
-    border: none;
-    box-shadow: none;
-    display: inline-block; */
 }
 i.icoWh {
     background-image: url('../assets/marca/FEIVS_icon.png');
@@ -130,26 +123,20 @@ i.bg{
     background-size: 2rem;
 }
 
-@media(max-width:1200px){
+/* RESPONSIVE */
+@media(max-width:1200px) {
     #home h1:before {
-        height: 550px;
-    }
-    #home> header {
-        height: 508px;
-    }
-    #home #favours {
-        margin-top: -351px; /* -376px; */
+        height: 390px;
     }
 }
-@media(max-width:899px){
+@media(max-width:899px) {
     #home h1:before {
-        height: 400px;
+        height: 348px;
     }
-    #home> header {
-        height: 360px;
-    }
-    #home #favours {
-        margin-top: -270px;
+  }
+@media(max-width:768px) {
+    #home h1:before {
+        height: 300px;
     }
 }
 @media(max-width:640px) {
@@ -175,28 +162,11 @@ i.bg{
         background-image: url('../assets/FEIV_profile.jpg');
     }
 }
-@media(max-width:768px) {
-    #home h1:before {
-        height: 350px;
-    }
-    #home> header {
-        height: 310px;
-    }
-    #home #favours {
-        margin-top: -216px;
-    }
-}
 @media(max-width:599px) {
-    #home h1:before {
-        height: 480px;
-    }
-    #home> header {
-        height: 440px;
-    }
-    #home #favours{
-        margin-top: -395px;
-    }
     #favours #favores #buscador {
         margin-top: -75px;
+    }
+    #home h1:before {
+        height: 480px;
     }
 }

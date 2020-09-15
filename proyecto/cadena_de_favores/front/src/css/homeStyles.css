@@ -1,79 +1,95 @@
 #home {
   font-weight: 600;
 }
-/* #home h1, */
 #home h2 {
   background-color: rgba(178, 202, 6, 0.5);
   color: var(--light);
-  /* background-color: rgba(126,153,0, 0.5); */
   font-weight: bold;
   padding: 1rem;
   margin: 0;
 }
-/* #home h2, */
 #home h3 {
+  font-size: 1.5rem;
   color: var(--gray);
-  padding: 2rem 0;
+  padding: 2rem;
+  margin: 0 auto 2rem auto;
 }
-#home h3 {
-  padding: 2rem 0 0 0
+#home #whatIs h3 {
+  width: 75%;
+  max-width: 600px;
+}
+#home #howIs {
+  display: flex;
+  max-width: 1600px;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding-bottom: 2rem;
 }
 #home #howIs h3 {
-  padding: 4rem 0;
-  margin: 0;
+  margin: 0 auto;
 }
-/* #home h1:before {
-  content: '';
-  background-image: url('../assets/FEIV_home.jpg');
+/* #home #whatIs:before {
+  content:'';
+  background-image: url('../assets/FEIVS_pattern.jpg');
   background-position: center center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  height: 668px;
+  background-repeat: repeat;
+  background-size: auto;
   position: absolute;
   width: 100%;
+  height: 100%;
   top: 0;
   left: 0;
   z-index: -1;
-  opacity: 0.8;
+  opacity: 0.1;
 } */
-h3 {
-  font-size: 1.5rem;
+
+#home #whatIs img {
+  width: 50%;
+  box-shadow: none;
 }
-/* #home #favours{
-  margin-top: -376px;
-} */
-#home #favours,
-#home #howIs {
+#home #howIs img {
+  width: 80%;
+  box-shadow: none;
+}
+#home #favours {
+  margin: 38px 0 -38px 0
+}
+#home #favours/* ,
+#home #howIs  */{
   display: flex;
   flex-direction: row;
   justify-content: center;
   flex-wrap: wrap;
   max-width: 1200px;
 }
-#home #favours fieldset,
-#home #howIs fieldset {
-  /* border: 1px solid var(--accentdk); */
-  /* margin: 6rem 1rem;
-  padding: 2rem;
-  width: 450px; */
+#home #favours fieldset/* ,
+#home #howIs fieldset  */{
   margin: 1rem;
   padding: 2rem 3.5rem;
   width: 280px;
   border-radius: 1rem;
   background: rgba(255,255,255,0.8);
-  box-shadow: var(--shadowBg)
+  box-shadow: var(--shadowBg);
 }
-#home #howIs fieldset {
+#home #howIs fieldset img {
+  width: 400px;
+  margin: 1rem;
+  padding: 0;
+  border-radius: 1rem;
+  background: rgba(255,255,255,0.8);
+  box-shadow: var(--shadowBg);
+}
+/* #home #howIs fieldset {
   cursor: pointer;
-}
-#home #howIs fieldset:hover,
+} */
+/* #home #howIs fieldset:hover,
 #home #howIs fieldset:hover h3 {
   background-color: var(--accent);
   color: var(--light);
-}
-#home #howIs fieldset:hover img {
+} */
+/* #home #howIs fieldset:hover img {
   src: '../assets/marca/FEIVS_logo_wh.png';
-}
+} */
 #home #favours fieldset label {
   color: var(--accentdk);
   text-align: center;
@@ -99,36 +115,27 @@ h3 {
 #home #favours fieldset#favourNeed p {
   margin: 2rem 0 1rem 0
 }
-
 #home #favours fieldset#favourAsk p{
   font-size: .9rem;
   line-height: 1.1;
 }
-
 #home #favours fieldset input,
 #home #favours fieldset button {
   display: inline;
   text-align: center;
 }
-
 #home #favours fieldset button {
   margin: 2rem 0 1rem 0;
 }
-
 #home #heroe {
-  margin-top: 4rem;
-}
-
-#home> section {
-  padding: 1rem 0;
-  background-color: rgba(126, 146, 0, 0.05);
+  margin: 4rem 0;
 }
 #home #favours {
   background-color: transparent;
 }
 @media(min-width:900px) {
-  #home #favours fieldset,
-  #home #howIs fieldset {
+  #home #favours fieldset/* ,
+  #home #howIs fieldset */ {
     margin: 5rem 1rem;
     padding: 2rem;
     width: 400px;
@@ -139,4 +146,42 @@ h3 {
   #home #howIs {
       max-width: none;
     }
+  #home #howIs fieldset {
+    min-width: 550px;
+  }
+}
+@media(max-width:1200px){
+  #home #favours {
+    margin: 42px 0 -10px 0
+  }
+}
+@media(max-width:899px) {
+  #home #favours {
+    margin: 60px 0 15px 0;
+  }
+}
+@media(max-width:768px) {
+  #home #favours {
+    margin: 60px 0 15px 0;
+  }
+  #home #howIs fieldset img {
+    width: 280px;
+  }
+}
+@media(max-width:599px) {
+  #home #favours {
+    margin: 58px 0 18px 0;
+  }
+  #home h3 {
+    width: 300px;
+    margin: 0 auto 1rem auto;
+  }
+  #home #whatIs img {
+    width: 300px;
+    box-shadow: none;
+  }
+  #home #howIs img {
+    width: 80%;
+    box-shadow: none;
+  }
 }

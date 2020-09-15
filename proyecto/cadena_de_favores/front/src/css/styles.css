@@ -7,12 +7,17 @@ html {
   /* --accent: #00ccff; */
   /* --accent: #b2ca06; */
   --accent: #b2ca06;
+  --accentRGB: 178, 202, 6;
   --accentlt: #e7fd4f;
   --accentdk: #7e9900;
+  --accentdkRGB: 126, 153, 0;
   --contrast: #ff6f00;
+  --contrastRGB: 255, 111, 0;
   --contrastlt: #ffa040;
+  --contrastltRGB: 255, 160, 64;
   --contrastdk: #c43e00;
   --gray: #3b3b3b;
+  --grayRGB: 59, 59, 59;
   --graymd: #757575;
   --graylt: #cccccc;
   --light: #ffffff;
@@ -58,6 +63,9 @@ fieldset {
   margin: 0 auto;
   text-align: center;
 }
+#app> main {
+  min-height: calc(100vh - 102px);
+}
 
 /* HEADER */
 #menu {
@@ -81,7 +89,8 @@ fieldset {
   margin-top: 0.7rem; 
 } */
 
-#menu nav section.register a {
+#menu nav section.register a,
+#menu nav section.logo a {
   padding: 0.3rem 0.75rem;
   font-size: 1rem;
   font-weight: bold;
@@ -257,12 +266,26 @@ ul {
   justify-content: center;
   align-items: stretch;
   margin: 0 auto;
-  max-width: 1200px;
-  width: 1200px;
+  max-width: 1600px;
+  /* width: 1200px; */
 }
 main {
   background-color: var(--backColorLt);
 }
+/* main:before {
+  content:'';
+  background-image: url('../assets/FEIVS_pattern.jpg');
+  background-position: center center;
+  background-repeat: repeat;
+  background-size: auto;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  z-index: -1;
+  opacity: 0.1;
+  top: 0;
+} */
 #favourDetail {
   padding: 5rem;
 }
@@ -331,8 +354,70 @@ ul li i.status {
   width: 4rem;
   height: 4rem;
   position: absolute;
-  opacity: 0.75;
-  background-color: transparent; /* depende del estado del favor */
+}
+.statusAssigned {
+  background-color: rgba(var(--contrastRGB), 0.75);
+}
+.statusAssigned:after {
+  background-image: url('../assets/statusIcon_asignado.png');
+  content: '';
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  height: 100%;
+  z-index: 10;
+}
+.statusFinished {
+  background-color: rgba(var(--accentdkRGB), 0.75);
+}
+.statusFinished:after {
+  background-image: url('../assets/statusIcon_finalizado.png');
+  content: '';
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  height: 100%;
+  z-index: 10;
+}
+.statusCanceled {
+  background-color: rgba(var(--grayRGB), 0.75);
+}
+.statusCanceled:after {
+  background-image: url('../assets/statusIcon_cancelado.png');
+  content: '';
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  height: 100%;
+  z-index: 10;
+}
+.statusInProgress {
+  background-color: rgba(var(--contrastltRGB), 0.75);
+}
+.statusInProgress:after {
+  background-image: url('../assets/statusIcon_pendiente.png');
+  content: '';
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  height: 100%;
+  z-index: 10;
 }
 #heroes #heroe {
   margin-top: 3rem;
@@ -565,6 +650,11 @@ margin-top: 3rem
 }
 
 /* MEDIA QUERIES */
+@media(max-width:1400px) {
+/*   ul {
+    max-width: 1200px;
+  } */
+}
 @media(min-width:1201px) {
   /* .volver {
     top: -15.5rem;
@@ -577,8 +667,8 @@ margin-top: 3rem
   html {
     font-size: 12px;
   }
-  ul {
-    width: 100%;
+  #app> main {
+    min-height: calc(100vh - 84px);
   }
   #menu {
     height: 43px;
@@ -595,12 +685,18 @@ margin-top: 3rem
   html {
     font-size: 10px;
   }
+  #app> main {
+    min-height: calc(100vh - 78px);
+  }
+/*   ul {
+    max-width: 600px;
+  } */
   li,
   #addFavour section,
   #login section section,
   #register section,
   #profile>section>section>section.ficha {
-    width: 280px;
+    max-width: 280px;
     /* margin: 0; */
   }
   #profile>section>section>section.ficha input.inputFile {
@@ -634,6 +730,9 @@ margin-top: 3rem
   #favours #favores #buscador {
     margin-top: -75px;
   }
+/*   ul {
+    width: 280px;
+  } */
 }
 @media (max-width: 320px) {
   body > div {

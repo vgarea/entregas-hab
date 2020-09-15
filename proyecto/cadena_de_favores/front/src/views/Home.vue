@@ -29,7 +29,10 @@
     </section>
     <section id='whatIs'>
       <h2>¿QUÉ ES <i class='logoWh logo bg'></i>FEIV?</h2>
-      <h3><i class='logoBk logo md'></i>FEIVS conecta a personas que necesitan AYUDA con <i class='logoBk logo md'></i>HÉROES dispuestos a AYUDARLES </h3>
+      <fieldset>
+        <img :src='getImage("FEIVS_home.png")' />
+        <h3><i class='logoBk logo md'></i>FEIVS conecta a personas que necesitan AYUDA con <i class='logoBk logo md'></i>HÉROES dispuestos a AYUDARLES </h3>
+      </fieldset>
     </section>
     <section id='topHeroes'>
       <h2>TOP<i class='icoWh logo bg'></i>HEROES</h2>
@@ -41,11 +44,13 @@
       <h2>¿CÓMO PUEDO?</h2>
     </section>
     <section id='howIs'>
-      <fieldset @click="askFavour()">
+      <fieldset> <!-- @click="askFavour()" -->
           <h3>¿PEDIR UN <i class='icoBk logo lt'></i>FEIV?</h3>
+          <img :src='getImage("FEIVS_home_añadir.png")' />
       </fieldset>
-      <fieldset @click="makeFavour()">
+      <fieldset> <!-- @click="makeFavour()" -->
           <h3>¿HACER UN <i class='icoBk logo lt'></i>FEIV?</h3>
+          <img :src='getImage("FEIVS_home_aceptar.png")' />
       </fieldset>
     </section>
   </main>
@@ -75,12 +80,16 @@ export default {
     addFavour(){
       this.$router.push('/add-favour');
     },
-    askFavour(){
-
+    // Recupera la imagen
+    getImage(name) {
+        return favours.getImageName(name);
     },
-    makeFavour(){
+    /* askFavour(){
 
-    },
+    }, */
+    /* makeFavour(){
+
+    }, */
     getHeroes(){
       favours.getAllHeroes()
       .then(result => {

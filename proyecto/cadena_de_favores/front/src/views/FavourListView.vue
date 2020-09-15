@@ -54,7 +54,6 @@
 
 <script>
 import favourdata from '@/components/FavourListDetail.vue';
-
 import favours from '@/favours/favours';
 
 export default {
@@ -104,11 +103,13 @@ export default {
     },
     // Recupera datos de la url para saber la búsqueda que viene de la home
     viewFavours(){
-        let url = window.location.href;
+        let url = decodeURI(window.location.href);
         let searchValue = url.split("?");
 
         searchValue[1] ? this.searchFav = searchValue[1] : false;
         this.getFavours();
+        // Le quitamos la búsqueda a la url
+        window.location.href = searchValue[0];
     },
     // Limpiar todos los campos
     cleanInputs(){

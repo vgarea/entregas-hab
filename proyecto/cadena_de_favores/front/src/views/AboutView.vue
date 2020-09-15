@@ -37,13 +37,13 @@ export default {
   margin: 2rem;
   background-image: url('../assets/profile.jpg');
   background-repeat: no-repeat;
-  background-position: center right;
+  background-position: right 3rem;
   background-size: auto;
   min-height: 250px;
   max-width: 700px;
 }
 #about> section {
-  margin: 0 auto;
+  margin: 2rem auto;
 }
 #about p {
   font-size: 1.5rem;
